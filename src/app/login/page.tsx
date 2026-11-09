@@ -49,18 +49,44 @@ function LoginContent() {
   }, [initialRoleParam]);
 
   const handleLogin = (role: UserRole) => {
+    if (isLoggingIn) return;
     setIsLoggingIn(true);
-    setUserRole(role, role === "client" ? "client@payguard.ai" : "freelancer@payguard.ai");
+    setSelectedRole(role);
+
+    const email = role === "client" ? "client@payguard.ai" : "freelancer@payguard.ai";
+    setUserRole(role, email);
+
+    // Synchronously write to localStorage to guarantee instant hydration without page reloads
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem("payguard_store_v2");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.state) {
+            parsed.state.userRole = role;
+            parsed.state.userEmail = email;
+            localStorage.setItem("payguard_store_v2", JSON.stringify(parsed));
+          }
+        }
+      } catch {
+        // ignore storage errors
+      }
+    }
+
+    const destination =
+      redirectTarget ||
+      (role === "client" ? "/dashboard" : "/bounties?role=freelancer");
+
+    // Immediate browser navigation avoids Next.js 16 partial prefetch router stalls
+    if (typeof window !== "undefined") {
+      window.location.assign(destination);
+    } else {
+      router.push(destination);
+    }
 
     setTimeout(() => {
-      if (redirectTarget) {
-        router.push(redirectTarget);
-      } else if (role === "client") {
-        router.push("/dashboard");
-      } else {
-        router.push("/bounties?role=freelancer");
-      }
-    }, 350);
+      setIsLoggingIn(false);
+    }, 4000);
   };
 
   return (
@@ -117,11 +143,11 @@ function LoginContent() {
             <motion.div
               whileHover={{ y: -3 }}
               transition={{ duration: 0.2 }}
-              onClick={() => setSelectedRole("client")}
+              onClick={() => handleLogin("client")}
               className={`rounded-[28px] border p-6 sm:p-8 flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
                 selectedRole === "client"
                   ? "border-[#007aff] bg-[#007aff]/5 ring-2 ring-[#007aff]/20 shadow-lg"
-                  : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)]"
+                  : "border-[var(--border)] bg-[var(--surface)] hover:border-[#007aff]/60 hover:bg-[#007aff]/5"
               }`}
             >
               {selectedRole === "client" && (
@@ -178,19 +204,22 @@ function LoginContent() {
               </div>
 
               <div className="pt-6 mt-6 border-t border-[var(--border)]">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="w-full justify-center"
+                <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleLogin("client");
                   }}
                   disabled={isLoggingIn}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-[#007AFF] hover:bg-[#0066d6] active:scale-[0.98] text-white font-ui font-semibold text-base flex items-center justify-center gap-2 transition-all shadow-md disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  <span>Sign In as Client</span>
+                  <span>
+                    {isLoggingIn && selectedRole === "client"
+                      ? "Opening Dashboard..."
+                      : "Sign In as Client"}
+                  </span>
                   <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
+                </button>
               </div>
             </motion.div>
 
@@ -198,11 +227,11 @@ function LoginContent() {
             <motion.div
               whileHover={{ y: -3 }}
               transition={{ duration: 0.2 }}
-              onClick={() => setSelectedRole("freelancer")}
+              onClick={() => handleLogin("freelancer")}
               className={`rounded-[28px] border p-6 sm:p-8 flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
                 selectedRole === "freelancer"
                   ? "border-emerald-500 bg-emerald-500/5 ring-2 ring-emerald-500/20 shadow-lg"
-                  : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)]"
+                  : "border-[var(--border)] bg-[var(--surface)] hover:border-emerald-500/60 hover:bg-emerald-500/5"
               }`}
             >
               {selectedRole === "freelancer" && (
@@ -259,19 +288,22 @@ function LoginContent() {
               </div>
 
               <div className="pt-6 mt-6 border-t border-[var(--border)]">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="w-full justify-center border-emerald-500/40 hover:bg-emerald-500/10 dark:text-emerald-400 text-emerald-600"
+                <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleLogin("freelancer");
                   }}
                   disabled={isLoggingIn}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-ui font-semibold text-base flex items-center justify-center gap-2 transition-all shadow-md disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  <span>Sign In as Freelancer</span>
+                  <span>
+                    {isLoggingIn && selectedRole === "freelancer"
+                      ? "Opening Workspace..."
+                      : "Sign In as Freelancer"}
+                  </span>
                   <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
+                </button>
               </div>
             </motion.div>
           </div>

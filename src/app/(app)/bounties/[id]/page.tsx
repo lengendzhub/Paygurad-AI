@@ -58,6 +58,14 @@ function BountyDetailContent({ params }: PageProps) {
   const [copiedOrder, setCopiedOrder] = useState(false);
 
   useEffect(() => {
+    if (roleParam === "freelancer" && userRole !== "freelancer") {
+      setUserRole("freelancer");
+    } else if (roleParam === "client" && userRole !== "client") {
+      setUserRole("client");
+    }
+  }, [roleParam, userRole, setUserRole]);
+
+  useEffect(() => {
     if (localBounty) {
       setBounty(localBounty);
       setLoading(false);

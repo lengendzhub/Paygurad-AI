@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Coins,
   PlusCircle,
@@ -17,9 +18,28 @@ import { StatusChip } from "@/components/ui/StatusChip";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function BountiesListPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-xs text-[var(--fg-muted)] font-mono">Loading bounties...</div>}>
+      <BountiesListContent />
+    </Suspense>
+  );
+}
+
+function BountiesListContent() {
+  const searchParams = useSearchParams();
+  const roleParam = searchParams.get("role");
   const userRole = usePayGuardStore((state) => state.userRole);
+  const setUserRole = usePayGuardStore((state) => state.setUserRole);
   const bounties = usePayGuardStore((state) => state.bounties);
   const fetchBountiesFromServer = usePayGuardStore((state) => state.fetchBountiesFromServer);
+
+  useEffect(() => {
+    if (roleParam === "freelancer" && userRole !== "freelancer") {
+      setUserRole("freelancer");
+    } else if (roleParam === "client" && userRole !== "client") {
+      setUserRole("client");
+    }
+  }, [roleParam, userRole, setUserRole]);
 
   useEffect(() => {
     fetchBountiesFromServer();
