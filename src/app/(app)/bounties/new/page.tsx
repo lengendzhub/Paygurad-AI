@@ -429,15 +429,17 @@ export default function NewBountyWizardPage() {
                   </p>
                 </div>
 
-                {/* PayPal Checkout Button - Blue Apple Style (tagline disabled) */}
-                <div className="pt-2 rounded-2xl overflow-hidden bg-[var(--surface-strong)]">
+                {/* Standalone Blue PayPal Button (no tagline, banner-style full width) */}
+                <div className="pt-2 rounded-2xl overflow-hidden min-h-[52px]">
                   <PayPalButtons
+                    key={`paypal-blue-standalone-${amount}`}
+                    fundingSource="paypal"
+                    forceReRender={[amount, "blue", currentStep]}
                     style={{
-                      layout: "horizontal",
                       color: "blue",
                       shape: "rect",
                       height: 48,
-                      tagline: false,
+                      label: "paypal",
                     }}
                     createOrder={async () => {
                       setFundError(null);
