@@ -34,18 +34,18 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
     <>
       {/* Desktop Left Sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 flex-col justify-between border-r border-[var(--border)] bg-[var(--bg)] p-6 min-h-screen sticky top-0 font-ui">
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Brand */}
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5 group">
+            <Link href="/" className="flex items-center gap-3 group">
               <div className="w-9 h-9 rounded-xl bg-[#0088cc] flex items-center justify-center text-[#000000] group-hover:scale-105 transition-transform">
                 <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <span className="font-bold text-base tracking-tight text-[var(--fg)] block leading-none">
                   PayGuard
                 </span>
-                <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--fg-muted)] leading-none mt-0.5 block">
+                <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--fg-muted)] leading-none block">
                   AI Escrow
                 </span>
               </div>

@@ -26,15 +26,15 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
     <header className="sticky top-0 z-40 w-full backdrop-blur-2xl bg-[var(--bg)]/85 border-b border-[var(--border)] transition-all">
       <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href="/" className="flex items-center gap-3 group">
           <div className="w-9 h-9 rounded-xl bg-[#0088cc] flex items-center justify-center text-[#000000] group-hover:scale-105 transition-transform">
             <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
           </div>
-          <div>
+          <div className="space-y-1.5">
             <span className="font-ui font-semibold text-base tracking-tight text-[var(--fg)] block leading-none">
               PayGuard
             </span>
-            <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--fg-muted)] leading-none mt-0.5 block">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--fg-muted)] leading-none block">
               AI Escrow
             </span>
           </div>
