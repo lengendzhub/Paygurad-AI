@@ -69,11 +69,6 @@ export function MarketingFooter() {
                 Product Roadmap
               </Link>
             </li>
-            <li>
-              <Link href="/settings" className="hover:text-[var(--fg)] transition">
-                Sandbox Credentials
-              </Link>
-            </li>
           </ul>
         </div>
 

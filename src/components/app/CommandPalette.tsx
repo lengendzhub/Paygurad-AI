@@ -8,7 +8,6 @@ import {
   Coins,
   PlusCircle,
   TableProperties,
-  Settings,
   HelpCircle,
   Shield,
   Milestone,
@@ -102,13 +101,6 @@ export function CommandPalette({
               >
                 <TableProperties className="w-4 h-4 text-[#007AFF]" />
                 <span>Escrow & Payout Ledger</span>
-              </Command.Item>
-              <Command.Item
-                onSelect={() => navigateTo("/settings")}
-                className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
-              >
-                <Settings className="w-4 h-4 text-[var(--fg-muted)]" />
-                <span>Settings & Sandbox Credentials</span>
               </Command.Item>
             </Command.Group>
 

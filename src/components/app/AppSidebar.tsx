@@ -8,7 +8,6 @@ import {
   Coins,
   PlusCircle,
   TableProperties,
-  Settings,
   ShieldCheck,
   Command,
   ExternalLink,
@@ -27,7 +26,6 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
     { label: "Bounties", href: "/bounties", icon: Coins },
     { label: "Create Bounty", href: "/bounties/new", icon: PlusCircle },
     { label: "Ledger", href: "/ledger", icon: TableProperties },
-    { label: "Settings", href: "/settings", icon: Settings },
   ];
 
   return (
