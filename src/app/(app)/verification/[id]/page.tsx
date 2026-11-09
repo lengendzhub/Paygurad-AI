@@ -182,8 +182,8 @@ function VerificationSignatureContent({ params }: PageProps) {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 font-mono text-xs text-[#0088cc] uppercase tracking-widest mb-1">
-            <span className="w-2 h-2 rounded-full bg-[#0088cc] animate-pulse" />
+          <div className="flex items-center gap-2 font-mono text-xs text-[#007AFF] uppercase tracking-widest mb-1">
+            <span className="w-2 h-2 rounded-full bg-[#007AFF] animate-pulse" />
             <span>Gemini Autonomous Verification &amp; Approval Gate</span>
           </div>
           <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
@@ -210,9 +210,9 @@ function VerificationSignatureContent({ params }: PageProps) {
 
       {/* Live Auditing Stage Indicator */}
       {isAuditing && (
-        <GlassCard className="p-8 border-[#0088cc]/30 bg-[#0088cc]/5 space-y-6">
+        <GlassCard className="p-8 border-[#007AFF]/30 bg-[#007AFF]/5 space-y-6">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/30 flex items-center justify-center text-[#0088cc]">
+            <div className="w-10 h-10 rounded-2xl bg-[#007AFF]/10 border border-[#007AFF]/30 flex items-center justify-center text-[#007AFF]">
               <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             </div>
             <div>
@@ -246,7 +246,7 @@ function VerificationSignatureContent({ params }: PageProps) {
                       isPast
                         ? "bg-emerald-500/20 dark:text-emerald-400 text-emerald-700"
                         : isCurrent
-                        ? "bg-[#0088cc]/20 text-[#0088cc] animate-pulse"
+                        ? "bg-[#007AFF]/20 text-[#007AFF] animate-pulse"
                         : "bg-[var(--surface)] text-[var(--fg-subtle)]"
                     }`}
                   >
@@ -398,7 +398,7 @@ function VerificationSignatureContent({ params }: PageProps) {
                   <div className="space-y-1">
                     <span className="text-[10px] text-[var(--fg-subtle)] uppercase block font-ui">Payout Batch ID</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-[#0088cc] truncate max-w-[200px]">
+                      <span className="text-[#007AFF] truncate max-w-[200px]">
                         {payoutResult?.data?.batch_header?.payout_batch_id || bounty.payoutBatchId || "SANDBOX_SIMULATED"}
                       </span>
                       <button

@@ -38,7 +38,7 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
           {/* Brand */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-[#0088cc] flex items-center justify-center text-[#000000] group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 rounded-xl bg-[#007AFF] flex items-center justify-center text-white group-hover:scale-105 transition-transform">
                 <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
               </div>
               <div className="space-y-1.5">
@@ -70,12 +70,12 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
                     flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all
                     ${
                       isActive
-                        ? "bg-[#0088cc]/15 text-[#0088cc] border border-[#0088cc]/30 font-semibold"
+                        ? "bg-[#007AFF]/15 text-[#007AFF] border border-[#007AFF]/30 font-semibold"
                         : "text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--surface)]"
                     }
                   `}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-[#0088cc]" : "text-[var(--fg-muted)]"}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? "text-[#007AFF]" : "text-[var(--fg-muted)]"}`} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -125,7 +125,7 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
               href={item.href}
               className={`
                 flex flex-col items-center gap-1 p-2 rounded-xl transition text-[11px] font-medium
-                ${isActive ? "text-[#0088cc]" : "text-[var(--fg-muted)] hover:text-[var(--fg)]"}
+                ${isActive ? "text-[#007AFF]" : "text-[var(--fg-muted)] hover:text-[var(--fg)]"}
               `}
             >
               <Icon className="w-5 h-5" />

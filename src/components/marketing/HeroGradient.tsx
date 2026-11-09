@@ -17,7 +17,7 @@ export function HeroGradient({ className = "" }: HeroGradientProps) {
         className="absolute inset-0 opacity-[0.07]"
         style={{
           background:
-            "linear-gradient(135deg, #78C5EF 0%, #51A0D5 45%, transparent 85%)",
+            "linear-gradient(135deg, #409CFF 0%, #007AFF 45%, transparent 85%)",
         }}
       />
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--bg)] to-transparent" />

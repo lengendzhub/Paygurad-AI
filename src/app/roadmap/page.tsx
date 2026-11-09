@@ -95,12 +95,12 @@ export default function RoadmapPage() {
   useScrollRefresh();
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#0088cc]/30 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#007AFF]/30 selection:text-white overflow-x-hidden">
       <MarketingNav />
 
       <main className="flex-1 max-w-4xl mx-auto px-6 py-20 w-full space-y-16">
         <div className="space-y-4 text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0088cc]/10 border border-[#0088cc]/20 text-[#0088cc] text-xs font-ui uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#007AFF]/10 border border-[#007AFF]/20 text-[#007AFF] text-xs font-ui uppercase tracking-wider">
             Protocol Evolution
           </div>
           <div>
@@ -113,8 +113,8 @@ export default function RoadmapPage() {
           </p>
         </div>
 
-        {/* Timeline with #0088cc spine */}
-        <div className="relative pl-6 sm:pl-8 border-l-2 border-[#0088cc]/40 space-y-10">
+        {/* Timeline with #007AFF spine */}
+        <div className="relative pl-6 sm:pl-8 border-l-2 border-[#007AFF]/40 space-y-10">
           {ROADMAP.map((item) => {
             const isExpanded = expandedId === item.id;
             const Icon = item.icon;
@@ -126,7 +126,7 @@ export default function RoadmapPage() {
               },
               IN_PROGRESS: {
                 label: "In Active Development",
-                color: "bg-[#0088cc]/10 text-[#0088cc] border-[#0088cc]/30",
+                color: "bg-[#007AFF]/10 text-[#007AFF] border-[#007AFF]/30",
               },
               PLANNED: {
                 label: "Planned Architecture",
@@ -145,7 +145,7 @@ export default function RoadmapPage() {
                       item.status === "COMPLETED"
                         ? "border-emerald-500 bg-emerald-500 text-black"
                         : item.status === "IN_PROGRESS"
-                        ? "border-[#0088cc] bg-[#0088cc] text-black"
+                        ? "border-[#007AFF] bg-[#007AFF] text-black"
                         : "border-[var(--border-strong)] bg-[var(--bg)] text-[var(--fg-subtle)]"
                     }
                   `}
@@ -159,7 +159,7 @@ export default function RoadmapPage() {
                     rounded-[28px] border bg-[var(--surface)] backdrop-blur-xl transition-all duration-300 overflow-hidden
                     ${
                       isExpanded
-                        ? "border-[#0088cc]/40 bg-[var(--surface-strong)] shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+                        ? "border-[#007AFF]/40 bg-[var(--surface-strong)] shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
                         : "border-[var(--border)] hover:border-[var(--border-strong)]"
                     }
                   `}
@@ -190,7 +190,7 @@ export default function RoadmapPage() {
                     <div className="w-8 h-8 rounded-full bg-[var(--surface-strong)] border border-[var(--border)] flex items-center justify-center text-[var(--fg-muted)] shrink-0 mt-1">
                       <ChevronDown
                         className={`w-4 h-4 transition-transform duration-300 ${
-                          isExpanded ? "rotate-180 text-[#0088cc]" : ""
+                          isExpanded ? "rotate-180 text-[#007AFF]" : ""
                         }`}
                       />
                     </div>
@@ -204,7 +204,7 @@ export default function RoadmapPage() {
                       <ul className="space-y-2.5 font-body text-sm text-[var(--fg-muted)]">
                         {item.details.map((detail, idx) => (
                           <li key={idx} className="flex items-start gap-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#0088cc] mt-2 shrink-0" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#007AFF] mt-2 shrink-0" />
                             <span>{detail}</span>
                           </li>
                         ))}

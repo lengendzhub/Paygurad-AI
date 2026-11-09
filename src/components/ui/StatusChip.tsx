@@ -10,8 +10,8 @@ export function StatusChip({ status, size = "md" }: StatusChipProps) {
   const config = {
     FUNDED_IN_ESCROW: {
       label: "In Escrow",
-      color: "bg-[#0088cc]/15 text-[#0088cc] border-[#0088cc]/30",
-      dot: "bg-[#0088cc]",
+      color: "bg-[#007AFF]/15 text-[#007AFF] border-[#007AFF]/30",
+      dot: "bg-[#007AFF]",
     },
     SUBMITTED: {
       label: "Submitted",

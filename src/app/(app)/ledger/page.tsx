@@ -43,28 +43,28 @@ export default function LedgerPage() {
   const gridTheme = useMemo(() => {
     if (isLight) {
       return themeQuartz.withPart(colorSchemeLight).withParams({
-        accentColor: "#0088cc",
+        accentColor: "#007aff",
         backgroundColor: "#ffffff",
-        foregroundColor: "#111827",
-        borderColor: "rgba(0, 0, 0, 0.08)",
-        headerTextColor: "#4b5563",
-        headerBackgroundColor: "#f8fafc",
-        rowHoverColor: "rgba(0, 0, 0, 0.03)",
-        selectedRowBackgroundColor: "rgba(0, 136, 204, 0.08)",
+        foregroundColor: "#1d1d1f",
+        borderColor: "rgba(29, 29, 31, 0.08)",
+        headerTextColor: "#6e6e73",
+        headerBackgroundColor: "#f5f5f7",
+        rowHoverColor: "rgba(0, 122, 255, 0.04)",
+        selectedRowBackgroundColor: "rgba(0, 122, 255, 0.08)",
         fontFamily: "var(--font-body), Arial, sans-serif",
         headerFontFamily: "var(--font-ui), system-ui, sans-serif",
         fontSize: 13,
       });
     }
     return themeQuartz.withPart(colorSchemeDark).withParams({
-      accentColor: "#0088cc",
+      accentColor: "#007aff",
       backgroundColor: "#000000",
-      foregroundColor: "#eeeeee",
-      borderColor: "rgba(238, 238, 238, 0.14)",
-      headerTextColor: "#979797",
-      headerBackgroundColor: "rgba(238, 238, 238, 0.04)",
-      rowHoverColor: "rgba(238, 238, 238, 0.05)",
-      selectedRowBackgroundColor: "rgba(0, 136, 204, 0.12)",
+      foregroundColor: "#f5f5f7",
+      borderColor: "rgba(245, 245, 247, 0.12)",
+      headerTextColor: "#aaaaaa",
+      headerBackgroundColor: "#1d1d1f",
+      rowHoverColor: "rgba(245, 245, 247, 0.05)",
+      selectedRowBackgroundColor: "rgba(0, 122, 255, 0.14)",
       fontFamily: "var(--font-body), Arial, sans-serif",
       headerFontFamily: "var(--font-ui), system-ui, sans-serif",
       fontSize: 13,
@@ -108,7 +108,7 @@ export default function LedgerPage() {
         headerName: "Bounty ID",
         width: 130,
         cellRenderer: (params: any) => (
-          <div className="flex items-center gap-1.5 font-mono text-[#0088cc] font-bold">
+          <div className="flex items-center gap-1.5 font-mono text-[#007AFF] font-bold">
             <span>{params.value}</span>
           </div>
         ),
@@ -240,7 +240,7 @@ export default function LedgerPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-[#0088cc] uppercase tracking-widest mb-1">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#007AFF] uppercase tracking-widest mb-1">
             <ShieldCheck className="w-4 h-4 dark:text-emerald-400 text-emerald-600" />
             <span>Immutable Escrow Ledger</span>
           </div>
@@ -279,7 +279,7 @@ export default function LedgerPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Quick filter ledger..."
-            className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-10 pr-4 py-2 text-xs font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc]"
+            className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-10 pr-4 py-2 text-xs font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF]"
           />
         </div>
 
@@ -364,7 +364,7 @@ export default function LedgerPage() {
               <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--fg-subtle)] block">
                 PayPal Orders v2 Capture
               </span>
-              <div className="p-3 rounded-xl dark:bg-black/60 bg-black/5 border border-[var(--border)] font-mono text-[#0088cc] break-all">
+              <div className="p-3 rounded-xl dark:bg-black/60 bg-black/5 border border-[var(--border)] font-mono text-[#007AFF] break-all">
                 {selectedBounty.escrowOrderId}
               </div>
             </div>
@@ -383,7 +383,7 @@ export default function LedgerPage() {
             {selectedBounty.audit && (
               <div className="space-y-3 p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)]">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-[#0088cc]">
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-[#007AFF]">
                     Gemini Audit Result
                   </span>
                   <span className="font-body tabular-nums font-bold text-[var(--fg)]">

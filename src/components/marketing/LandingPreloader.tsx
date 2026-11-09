@@ -79,7 +79,7 @@ export function LandingPreloader({ onComplete }: LandingPreloaderProps) {
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="relative mb-6"
             >
-              <div className="w-14 h-14 rounded-2xl bg-[#0088cc] flex items-center justify-center text-[#000000]">
+              <div className="w-14 h-14 rounded-2xl bg-[#007AFF] flex items-center justify-center text-[#000000]">
                 <ShieldCheck className="w-7 h-7 stroke-[2.5]" />
               </div>
             </motion.div>
@@ -103,7 +103,7 @@ export function LandingPreloader({ onComplete }: LandingPreloaderProps) {
             <div className="w-56 sm:w-64 space-y-2.5">
               <div className="h-[2px] w-full bg-[var(--border)] rounded-full overflow-hidden relative">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-[#78C5EF] to-[#0088cc] rounded-full"
+                  className="h-full bg-gradient-to-r from-[#409CFF] to-[#007AFF] rounded-full"
                   style={{ width: `${progress}%` }}
                   transition={{ ease: "easeOut", duration: 0.1 }}
                 />

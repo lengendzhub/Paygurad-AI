@@ -41,7 +41,7 @@ export function ScrollReveal({
   baseRotation = 0,
   enableBlur = false,
   blurStrength = 8,
-  highlightColor = "#0088cc",
+  highlightColor = "#007AFF",
   rotationEnd = "bottom 80%",
   wordAnimationEnd = "bottom 65%",
   containerClassName = "",

@@ -93,7 +93,7 @@ function BountyDetailContent({ params }: PageProps) {
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-sm font-bold text-[#0088cc] bg-[#0088cc]/10 border border-[#0088cc]/20 px-3 py-1 rounded-xl">
+              <span className="font-mono text-sm font-bold text-[#007AFF] bg-[#007AFF]/10 border border-[#007AFF]/20 px-3 py-1 rounded-xl">
                 {bounty.id}
               </span>
               <StatusChip status={bounty.status} />
@@ -229,7 +229,7 @@ function BountyDetailContent({ params }: PageProps) {
         {/* Right Column: Escrow Financial Details & Action */}
         <div className="lg:col-span-5 space-y-6 font-ui">
           {/* Action Callout */}
-          <GlassCard className="p-6 space-y-4 border-[#0088cc]/30 bg-[#0088cc]/5">
+          <GlassCard className="p-6 space-y-4 border-[#007AFF]/30 bg-[#007AFF]/5">
             <h2 className="font-display text-2xl text-[var(--fg)]">Deliverable Action</h2>
 
             {bounty.status === "FUNDED_IN_ESCROW" || bounty.status === "REJECTED_NEEDS_WORK" ? (
@@ -249,7 +249,7 @@ function BountyDetailContent({ params }: PageProps) {
                 {bounty.submissionText && (
                   <Link href={`/verification/${bounty.id}`}>
                     <Button variant="secondary" size="md" className="w-full justify-center mt-2">
-                      <Sparkles className="w-4 h-4 mr-2 text-[#0088cc]" />
+                      <Sparkles className="w-4 h-4 mr-2 text-[#007AFF]" />
                       Run Gemini AI Verification &amp; Payout
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </Button>

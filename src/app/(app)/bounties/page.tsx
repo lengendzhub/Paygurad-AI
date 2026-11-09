@@ -102,7 +102,7 @@ export default function BountiesListPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by ID, title, or keyword..."
-            className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-10 pr-4 py-2.5 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
+            className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-10 pr-4 py-2.5 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] transition"
           />
         </div>
 
@@ -133,7 +133,7 @@ export default function BountiesListPage() {
           <select
             value={sortBy}
             onChange={(e: any) => setSortBy(e.target.value)}
-            className="bg-[var(--surface)] border border-[var(--border)] text-[var(--fg)] rounded-xl px-3 py-1.5 text-xs font-ui focus:outline-none focus:border-[#0088cc]"
+            className="bg-[var(--surface)] border border-[var(--border)] text-[var(--fg)] rounded-xl px-3 py-1.5 text-xs font-ui focus:outline-none focus:border-[#007AFF]"
           >
             <option value="newest" className="bg-[var(--bg)]">Newest First</option>
             <option value="amount_desc" className="bg-[var(--bg)]">Highest Reward</option>
@@ -165,13 +165,13 @@ export default function BountiesListPage() {
               <GlassCard className="p-6 h-full flex flex-col justify-between hover:border-[var(--border-strong)] transition group space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-[#0088cc]">
+                    <span className="font-mono text-xs font-bold text-[#007AFF]">
                       {bounty.id}
                     </span>
                     <StatusChip status={bounty.status} size="sm" />
                   </div>
 
-                  <h3 className="font-ui text-base font-semibold text-[var(--fg)] group-hover:text-[#0088cc] transition line-clamp-2">
+                  <h3 className="font-ui text-base font-semibold text-[var(--fg)] group-hover:text-[#007AFF] transition line-clamp-2">
                     {bounty.title}
                   </h3>
 
@@ -183,7 +183,7 @@ export default function BountiesListPage() {
                 <div className="space-y-3 pt-3 border-t border-[var(--border)]">
                   <div className="flex items-center justify-between text-xs text-[var(--fg-muted)]">
                     <span className="flex items-center gap-1.5 font-mono text-[11px]">
-                      <Layers className="w-3.5 h-3.5 text-[#0088cc]" />
+                      <Layers className="w-3.5 h-3.5 text-[#007AFF]" />
                       {bounty.requirements.length} Criteria
                     </span>
                     <span className="text-[11px] font-mono text-[var(--fg-subtle)]">
@@ -201,7 +201,7 @@ export default function BountiesListPage() {
                       </div>
                     </div>
 
-                    <div className="w-8 h-8 rounded-full bg-[var(--surface-strong)] group-hover:bg-[#0088cc] group-hover:text-black flex items-center justify-center text-[var(--fg-muted)] transition">
+                    <div className="w-8 h-8 rounded-full bg-[var(--surface-strong)] group-hover:bg-[#007AFF] group-hover:text-black flex items-center justify-center text-[var(--fg-muted)] transition">
                       <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>

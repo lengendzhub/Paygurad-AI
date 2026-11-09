@@ -20,7 +20,7 @@ export function Stepper({ steps, currentStep, className = "" }: StepperProps) {
         {/* Connecting progress line */}
         <div className="absolute top-4 left-6 right-6 h-[2px] bg-[var(--border)] -z-0" />
         <div
-          className="absolute top-4 left-6 h-[2px] bg-[#0088cc] transition-all duration-500 -z-0"
+          className="absolute top-4 left-6 h-[2px] bg-[#007AFF] transition-all duration-500 -z-0"
           style={{
             width: `${Math.min(100, Math.max(0, (currentStep / (steps.length - 1)) * 100))}%`,
           }}
@@ -40,7 +40,7 @@ export function Stepper({ steps, currentStep, className = "" }: StepperProps) {
                     isCompleted
                       ? "bg-emerald-500 text-black"
                       : isCurrent
-                      ? "bg-[#0088cc] text-black ring-4 ring-[#0088cc]/20"
+                      ? "bg-[#007AFF] text-black ring-4 ring-[#007AFF]/20"
                       : "bg-[var(--surface-strong)] border border-[var(--border)] text-[var(--fg-subtle)]"
                   }
                 `}

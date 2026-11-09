@@ -8,11 +8,11 @@
   --font-body: var(--font-body), Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-brand-black: #000000;
-  --color-brand-light: #eeeeee;
-  --color-brand-muted-dark: #979797;
-  --color-brand-subtle-dark: #666666;
-  --color-brand-accent: #0088cc;
+  --color-brand-black: #1d1d1f;
+  --color-brand-light: #f5f5f7;
+  --color-brand-muted-dark: #aaaaaa;
+  --color-brand-subtle-dark: #86868b;
+  --color-brand-accent: #007aff;
 
   --color-bg: var(--bg);
   --color-fg: var(--fg);
@@ -28,18 +28,18 @@
 
 :root {
   --bg: #000000;
-  --fg: #eeeeee;
-  --fg-muted: #979797;
-  --fg-subtle: #666666;
-  --accent: #51A0D5;
-  --accent-light: #78C5EF;
-  --accent-mid: #51A0D5;
-  --on-accent: #000000;
-  --surface: rgba(238, 238, 238, 0.05);
-  --surface-strong: rgba(238, 238, 238, 0.09);
-  --border: rgba(238, 238, 238, 0.14);
-  --border-strong: #666666;
-  --accent-gradient: linear-gradient(135deg, #78C5EF, #51A0D5);
+  --fg: #f5f5f7;
+  --fg-muted: #aaaaaa;
+  --fg-subtle: #86868b;
+  --accent: #007aff;
+  --accent-light: #409CFF;
+  --accent-mid: #007aff;
+  --on-accent: #ffffff;
+  --surface: rgba(29, 29, 31, 0.65);
+  --surface-strong: #1d1d1f;
+  --border: rgba(245, 245, 247, 0.12);
+  --border-strong: #aaaaaa;
+  --accent-gradient: linear-gradient(135deg, #409CFF, #007aff);
 
   /* Semantic status */
   --status-approved: #22c55e;
@@ -52,18 +52,18 @@ html[data-theme="light"],
 .light,
 html.light {
   --bg: #f5f5f7;
-  --fg: #111827;
-  --fg-muted: #4b5563;
-  --fg-subtle: #6b7280;
-  --accent: #0088cc;
-  --accent-light: #38bdf8;
-  --accent-mid: #0284c7;
+  --fg: #1d1d1f;
+  --fg-muted: #6e6e73;
+  --fg-subtle: #aaaaaa;
+  --accent: #007aff;
+  --accent-light: #409CFF;
+  --accent-mid: #0062cc;
   --on-accent: #ffffff;
   --surface: rgba(255, 255, 255, 0.85);
   --surface-strong: #ffffff;
-  --border: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.16);
-  --accent-gradient: linear-gradient(135deg, #0284c7, #38bdf8);
+  --border: rgba(29, 29, 31, 0.08);
+  --border-strong: rgba(29, 29, 31, 0.18);
+  --accent-gradient: linear-gradient(135deg, #007aff, #409CFF);
 
   /* Semantic status */
   --status-approved: #16a34a;
@@ -110,7 +110,7 @@ body {
 
 /* Focus ring everywhere */
 :focus-visible {
-  outline: 2px solid #0088cc !important;
+  outline: 2px solid #007AFF !important;
   outline-offset: 2px !important;
 }
 

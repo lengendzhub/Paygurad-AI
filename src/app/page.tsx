@@ -120,7 +120,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#0088cc]/30 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#007AFF]/30 selection:text-white overflow-x-hidden">
       {/* Landing Page Load & Entrance Sequence */}
       <LandingPreloader onComplete={() => setIsLoaded(true)} />
 
@@ -184,12 +184,12 @@ export default function LandingPage() {
               {/* Header with abstract indicator */}
               <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#0088cc] animate-pulse" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#007AFF] animate-pulse" />
                   <span className="font-ui text-xs uppercase tracking-wider text-[var(--fg-muted)]">
                     Escrow Verification
                   </span>
                 </div>
-                <span className="font-ui text-xs uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-[#0088cc]/30 text-[#0088cc] bg-[#0088cc]/10">
+                <span className="font-ui text-xs uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-[#007AFF]/30 text-[#007AFF] bg-[#007AFF]/10">
                   Protocol Active
                 </span>
               </div>
@@ -197,8 +197,8 @@ export default function LandingPage() {
               {/* Abstract Score Ring Skeleton */}
               <div className="my-6 flex items-center justify-between gap-6 p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)]">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full border-4 border-[var(--border)] border-t-[#0088cc] flex items-center justify-center">
-                    <span className="w-2 h-2 rounded-full bg-[#0088cc]" />
+                  <div className="w-14 h-14 rounded-full border-4 border-[var(--border)] border-t-[#007AFF] flex items-center justify-center">
+                    <span className="w-2 h-2 rounded-full bg-[#007AFF]" />
                   </div>
                   <div>
                     <div className="font-ui text-xs uppercase tracking-wider text-[var(--fg-muted)]">
@@ -264,7 +264,7 @@ export default function LandingPage() {
         <div className="flex justify-center -translate-y-4 sm:-translate-y-6 z-10">
           <span className="text-[10px] font-ui uppercase tracking-widest text-[var(--fg-subtle)] hover:text-[var(--fg)] transition-colors flex items-center gap-1.5 cursor-pointer">
             Scroll to explore
-            <ChevronDown className="w-3.5 h-3.5 animate-bounce text-[#0088cc]" />
+            <ChevronDown className="w-3.5 h-3.5 animate-bounce text-[#007AFF]" />
           </span>
         </div>
       </section>
@@ -297,15 +297,15 @@ export default function LandingPage() {
                   Funds are authorized in PayPal escrow upfront. If the freelancer fails to meet the formal acceptance criteria, funds are never released.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs text-[#0088cc]">
+              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs text-[#007AFF]">
                 PayPal Orders API v2
               </div>
             </div>
 
             {/* Protocol Arbiter Middle */}
-            <div className="rounded-[28px] border border-[#0088cc]/40 bg-[#0088cc]/5 p-8 flex flex-col justify-between relative">
+            <div className="rounded-[28px] border border-[#007AFF]/40 bg-[#007AFF]/5 p-8 flex flex-col justify-between relative">
               <div>
-                <span className="font-ui text-xs uppercase tracking-wider text-[#0088cc] font-semibold block mb-3">
+                <span className="font-ui text-xs uppercase tracking-wider text-[#007AFF] font-semibold block mb-3">
                   PayGuard Protocol
                 </span>
                 <h3 className="font-display text-2xl text-[var(--fg)] mb-3">
@@ -315,7 +315,7 @@ export default function LandingPage() {
                   Evaluates each requirement individually using structured JSON output. Zero human delays, zero subjective platform bias, 100% objective validation.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[#0088cc]/20 font-ui text-xs text-[#0088cc] font-semibold">
+              <div className="mt-6 pt-4 border-t border-[#007AFF]/20 font-ui text-xs text-[#007AFF] font-semibold">
                 Google Gemini 3.5 Flash
               </div>
             </div>
@@ -333,7 +333,7 @@ export default function LandingPage() {
                   Freelancers inspect funded escrow before writing a single line of code. Deliver code that passes criteria, and payouts hit your PayPal instantly.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs text-[#0088cc]">
+              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs text-[#007AFF]">
                 PayPal Payouts API v1
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function LandingPage() {
       <section className="py-28 px-6 lg:px-12 bg-[var(--bg)] border-b border-[var(--border)]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <span className="font-ui text-xs uppercase tracking-wider text-[#0088cc] block mb-2">
+            <span className="font-ui text-xs uppercase tracking-wider text-[#007AFF] block mb-2">
               Step-by-Step Architecture
             </span>
             <RevealStatement preset="enter">
@@ -362,10 +362,10 @@ export default function LandingPage() {
                   className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-strong)] transition-all p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
                 >
                   <div className="flex items-center gap-5">
-                    <span className="font-ui text-3xl font-bold text-[#0088cc]/40">
+                    <span className="font-ui text-3xl font-bold text-[#007AFF]/40">
                       {step.num}
                     </span>
-                    <div className="w-12 h-12 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/30 flex items-center justify-center text-[#0088cc] shrink-0">
+                    <div className="w-12 h-12 rounded-2xl bg-[#007AFF]/10 border border-[#007AFF]/30 flex items-center justify-center text-[#007AFF] shrink-0">
                       <Icon className="w-6 h-6 stroke-[1.75]" />
                     </div>
                     <div>
@@ -399,7 +399,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="space-y-1">
-            <div className="font-body tabular-nums text-4xl sm:text-5xl font-bold text-[#0088cc]">
+            <div className="font-body tabular-nums text-4xl sm:text-5xl font-bold text-[#007AFF]">
               <AnimatedCounter value={0} />
             </div>
             <div className="text-xs uppercase tracking-wider text-[var(--fg-muted)]">
@@ -415,7 +415,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="space-y-1">
-            <div className="font-body tabular-nums text-4xl sm:text-5xl font-bold text-[#0088cc]">
+            <div className="font-body tabular-nums text-4xl sm:text-5xl font-bold text-[#007AFF]">
               <AnimatedCounter value={0} />
             </div>
             <div className="text-xs uppercase tracking-wider text-[var(--fg-muted)]">
@@ -429,7 +429,7 @@ export default function LandingPage() {
       <section className="py-28 px-6 lg:px-12 bg-[var(--bg)] border-b border-[var(--border)]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <span className="font-ui text-xs uppercase tracking-wider text-[#0088cc] block mb-2">
+            <span className="font-ui text-xs uppercase tracking-wider text-[#007AFF] block mb-2">
               Engineered for Resilience
             </span>
             <RevealStatement preset="enter">
@@ -449,7 +449,7 @@ export default function LandingPage() {
               className="md:col-span-2 rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-8 flex flex-col justify-between"
             >
               <div>
-                <Shield className="w-8 h-8 text-[#0088cc] mb-4" />
+                <Shield className="w-8 h-8 text-[#007AFF] mb-4" />
                 <h3 className="font-display text-3xl text-[var(--fg)] mb-2">
                   Prompt-Injection Isolation Envelope
                 </h3>
@@ -457,7 +457,7 @@ export default function LandingPage() {
                   Freelancer deliverables are treated as untrusted user payloads. They are quarantined in a sandboxed schema evaluator that Gemini tests against strict boolean criteria. No conversational overrides can hijack the disbursement trigger.
                 </p>
               </div>
-              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#0088cc]">
+              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#007AFF]">
                 Security First Protocol
               </div>
             </div>
@@ -473,7 +473,7 @@ export default function LandingPage() {
               className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-8 flex flex-col justify-between"
             >
               <div>
-                <Zap className="w-8 h-8 text-[#0088cc] mb-4" />
+                <Zap className="w-8 h-8 text-[#007AFF] mb-4" />
                 <h3 className="font-display text-2xl text-[var(--fg)] mb-2">
                   Sub-Second Audits
                 </h3>
@@ -481,7 +481,7 @@ export default function LandingPage() {
                   Evaluations execute via Google Gemini 3.5 Flash, providing comprehensive code analysis, automated test verification, and structured confidence scores in seconds.
                 </p>
               </div>
-              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#0088cc]">
+              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#007AFF]">
                 Real-Time Verification
               </div>
             </div>
@@ -497,7 +497,7 @@ export default function LandingPage() {
               className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-8 flex flex-col justify-between"
             >
               <div>
-                <TableProperties className="w-8 h-8 text-[#0088cc] mb-4" />
+                <TableProperties className="w-8 h-8 text-[#007AFF] mb-4" />
                 <h3 className="font-display text-2xl text-[var(--fg)] mb-2">
                   AG Grid Ledger
                 </h3>
@@ -505,7 +505,7 @@ export default function LandingPage() {
                   Full institutional record-keeping. Filter, sort, and inspect every captured escrow order and batch payout ID with deep audit drawer trails.
                 </p>
               </div>
-              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#0088cc]">
+              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#007AFF]">
                 Complete Traceability
               </div>
             </div>
@@ -521,7 +521,7 @@ export default function LandingPage() {
               className="md:col-span-2 rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-8 flex flex-col justify-between"
             >
               <div>
-                <Lock className="w-8 h-8 text-[#0088cc] mb-4" />
+                <Lock className="w-8 h-8 text-[#007AFF] mb-4" />
                 <h3 className="font-display text-3xl text-[var(--fg)] mb-2">
                   Non-Custodial Sandbox Architecture
                 </h3>
@@ -529,7 +529,7 @@ export default function LandingPage() {
                   PayGuard never touches client or freelancer funds directly. All custody is maintained within PayPal's official merchant infrastructure using OAuth2 credentials and certified endpoint handshakes.
                 </p>
               </div>
-              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#0088cc]">
+              <div className="mt-8 font-ui text-xs uppercase tracking-wider text-[#007AFF]">
                 Certified PayPal Integration
               </div>
             </div>
@@ -541,7 +541,7 @@ export default function LandingPage() {
       <section className="py-28 px-6 lg:px-12 bg-[var(--bg)] border-b border-[var(--border)]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <span className="font-ui text-xs uppercase tracking-wider text-[#0088cc] block mb-2">
+            <span className="font-ui text-xs uppercase tracking-wider text-[#007AFF] block mb-2">
               Common Questions
             </span>
             <RevealStatement preset="enter">
@@ -566,7 +566,7 @@ export default function LandingPage() {
                     </span>
                     <ChevronDown
                       className={`w-5 h-5 text-[var(--fg-muted)] shrink-0 transition-transform duration-300 ${
-                        isOpen ? "rotate-180 text-[#0088cc]" : ""
+                        isOpen ? "rotate-180 text-[#007AFF]" : ""
                       }`}
                     />
                   </button>

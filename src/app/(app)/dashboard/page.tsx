@@ -187,28 +187,28 @@ assert validate_card("4532015112830367") == False`);
   const gridTheme = useMemo(() => {
     if (isLight) {
       return themeQuartz.withPart(colorSchemeLight).withParams({
-        accentColor: "#0088cc",
+        accentColor: "#007aff",
         backgroundColor: "#ffffff",
-        foregroundColor: "#111827",
-        borderColor: "rgba(0, 0, 0, 0.08)",
-        headerTextColor: "#4b5563",
-        headerBackgroundColor: "#f8fafc",
-        rowHoverColor: "rgba(0, 0, 0, 0.03)",
-        selectedRowBackgroundColor: "rgba(0, 136, 204, 0.08)",
+        foregroundColor: "#1d1d1f",
+        borderColor: "rgba(29, 29, 31, 0.08)",
+        headerTextColor: "#6e6e73",
+        headerBackgroundColor: "#f5f5f7",
+        rowHoverColor: "rgba(0, 122, 255, 0.04)",
+        selectedRowBackgroundColor: "rgba(0, 122, 255, 0.08)",
         fontFamily: "var(--font-body), Arial, sans-serif",
         headerFontFamily: "var(--font-ui), system-ui, sans-serif",
         fontSize: 13,
       });
     }
     return themeQuartz.withPart(colorSchemeDark).withParams({
-      accentColor: "#0088cc",
+      accentColor: "#007aff",
       backgroundColor: "#000000",
-      foregroundColor: "#eeeeee",
-      borderColor: "rgba(238, 238, 238, 0.14)",
-      headerTextColor: "#979797",
-      headerBackgroundColor: "rgba(238, 238, 238, 0.04)",
-      rowHoverColor: "rgba(238, 238, 238, 0.05)",
-      selectedRowBackgroundColor: "rgba(0, 136, 204, 0.12)",
+      foregroundColor: "#f5f5f7",
+      borderColor: "rgba(245, 245, 247, 0.12)",
+      headerTextColor: "#aaaaaa",
+      headerBackgroundColor: "#1d1d1f",
+      rowHoverColor: "rgba(245, 245, 247, 0.05)",
+      selectedRowBackgroundColor: "rgba(0, 122, 255, 0.14)",
       fontFamily: "var(--font-body), Arial, sans-serif",
       headerFontFamily: "var(--font-ui), system-ui, sans-serif",
       fontSize: 13,
@@ -222,7 +222,7 @@ assert validate_card("4532015112830367") == False`);
         headerName: "Bounty ID",
         width: 120,
         cellRenderer: (params: any) => (
-          <div className="font-mono text-[#0088cc] font-bold">{params.value}</div>
+          <div className="font-mono text-[#007AFF] font-bold">{params.value}</div>
         ),
       },
       {
@@ -330,7 +330,7 @@ assert validate_card("4532015112830367") == False`);
       {/* 4 Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <GlassCard className="p-6 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#0088cc]">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#007AFF]">
             <span className="flex items-center gap-1.5">
               <Lock className="w-3.5 h-3.5" />
               Total Escrow Locked
@@ -345,7 +345,7 @@ assert validate_card("4532015112830367") == False`);
         </GlassCard>
 
         <GlassCard className="p-6 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#0088cc]">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#007AFF]">
             <span className="flex items-center gap-1.5">
               <Coins className="w-3.5 h-3.5" />
               Active Bounties
@@ -402,7 +402,7 @@ assert validate_card("4532015112830367") == False`);
                   Lock bounty funds securely with PayPal Orders v2
                 </p>
               </div>
-              <div className="p-2 rounded-xl bg-[#0088cc]/10 text-[#0088cc]">
+              <div className="p-2 rounded-xl bg-[#007AFF]/10 text-[#007AFF]">
                 <Lock className="w-4 h-4" />
               </div>
             </div>
@@ -434,7 +434,7 @@ assert validate_card("4532015112830367") == False`);
                     type="text"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3.5 py-2.5 text-xs text-[var(--fg)] focus:outline-none focus:border-[#0088cc] font-medium"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3.5 py-2.5 text-xs text-[var(--fg)] focus:outline-none focus:border-[#007AFF] font-medium"
                   />
                 </div>
 
@@ -446,7 +446,7 @@ assert validate_card("4532015112830367") == False`);
                     rows={4}
                     value={newReqs}
                     onChange={(e) => setNewReqs(e.target.value)}
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 text-xs text-[var(--fg)] focus:outline-none focus:border-[#0088cc] font-mono leading-relaxed resize-none"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 text-xs text-[var(--fg)] focus:outline-none focus:border-[#007AFF] font-mono leading-relaxed resize-none"
                   />
                 </div>
 
@@ -458,7 +458,7 @@ assert validate_card("4532015112830367") == False`);
                     type="text"
                     value={newAmount}
                     onChange={(e) => setNewAmount(e.target.value)}
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3.5 py-2.5 text-xs text-[var(--fg)] font-mono font-bold focus:outline-none focus:border-[#0088cc]"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3.5 py-2.5 text-xs text-[var(--fg)] font-mono font-bold focus:outline-none focus:border-[#007AFF]"
                   />
                 </div>
 
@@ -566,7 +566,7 @@ assert validate_card("4532015112830367") == False`);
               <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-[#0088cc]">
+                    <span className="font-mono text-xs font-bold text-[#007AFF]">
                       {selectedBounty.id}
                     </span>
                     <span className="font-ui text-xs font-semibold text-[var(--fg)]">
@@ -599,7 +599,7 @@ assert validate_card("4532015112830367") == False`);
                     type="email"
                     value={freelancerEmail}
                     onChange={(e) => setFreelancerEmail(e.target.value)}
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[var(--fg)] font-mono focus:outline-none focus:border-[#0088cc]"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[var(--fg)] font-mono focus:outline-none focus:border-[#007AFF]"
                   />
                 </div>
               </div>
@@ -613,7 +613,7 @@ assert validate_card("4532015112830367") == False`);
                     Python / JS
                   </span>
                 </div>
-                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] overflow-hidden focus-within:border-[#0088cc] transition">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] overflow-hidden focus-within:border-[#007AFF] transition">
                   <textarea
                     rows={7}
                     value={submissionText}
@@ -727,7 +727,7 @@ assert validate_card("4532015112830367") == False`);
                     <div className="grid grid-cols-2 gap-2 text-[var(--fg)]">
                       <div>
                         <span className="text-[10px] text-[var(--fg-subtle)] uppercase block font-ui">Batch ID</span>
-                        <span className="text-[#0088cc] truncate block">
+                        <span className="text-[#007AFF] truncate block">
                           {localAudit.payout?.data?.batch_header?.payout_batch_id || "SANDBOX_PAYOUT_VERIFIED"}
                         </span>
                       </div>

@@ -29,9 +29,9 @@ export function Button({
   }[size];
 
   const variantStyles = {
-    // Primary: #0088cc fill, #000000 label (clean, no glow)
+    // Primary: Apple System Blue #007AFF with white label
     primary:
-      "bg-[#0088cc] text-[#000000] font-semibold hover:brightness-105 active:scale-[0.98]",
+      "bg-[#007AFF] text-white font-semibold hover:brightness-105 active:scale-[0.98]",
     // Secondary: transparent, 1px var(--border-strong)
     secondary:
       "bg-transparent border border-[var(--border-strong)] text-[var(--fg)] hover:bg-[var(--surface-strong)] hover:border-[var(--fg-muted)] active:scale-[0.98]",

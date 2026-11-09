@@ -150,7 +150,7 @@ export default function NewBountyWizardPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Task title"
-                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] transition"
                 />
                 {errors.title && (
                   <p className="text-xs dark:text-red-400 text-red-600 mt-1 flex items-center gap-1 font-body">
@@ -169,7 +169,7 @@ export default function NewBountyWizardPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Brief description of the expected deliverable..."
-                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition resize-none"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] transition resize-none"
                 />
               </div>
 
@@ -186,7 +186,7 @@ export default function NewBountyWizardPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-8 pr-4 py-3 text-sm font-body tabular-nums text-[var(--fg)] font-mono placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-8 pr-4 py-3 text-sm font-body tabular-nums text-[var(--fg)] font-mono placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] transition"
                   />
                 </div>
                 {errors.amount && (
@@ -234,7 +234,7 @@ export default function NewBountyWizardPage() {
                     value={item}
                     onChange={(e) => updateCriterion(index, e.target.value)}
                     placeholder="Measurable requirement..."
-                    className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-sm text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
+                    className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-sm text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] transition"
                   />
                   <div className="flex items-center gap-1 shrink-0">
                     <button
@@ -279,7 +279,7 @@ export default function NewBountyWizardPage() {
               <button
                 type="button"
                 onClick={addCriterion}
-                className="inline-flex items-center gap-2 text-xs font-ui font-semibold text-[#0088cc] hover:underline py-2 transition cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-ui font-semibold text-[#007AFF] hover:underline py-2 transition cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Another Criterion
@@ -317,7 +317,7 @@ export default function NewBountyWizardPage() {
             <div className="rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] p-5 space-y-4">
               <div className="flex items-start justify-between border-b border-[var(--border)] pb-4">
                 <div>
-                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#0088cc]">
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#007AFF]">
                     Bounty Overview
                   </span>
                   <h3 className="font-display text-xl font-normal text-[var(--fg)] mt-0.5">{title}</h3>
@@ -347,7 +347,7 @@ export default function NewBountyWizardPage() {
                         key={i}
                         className="flex items-start gap-2 text-xs text-[var(--fg)] bg-[var(--surface)] p-2.5 rounded-xl border border-[var(--border)]"
                       >
-                        <span className="font-mono text-[#0088cc]">{i + 1}.</span>
+                        <span className="font-mono text-[#007AFF]">{i + 1}.</span>
                         <span>{c}</span>
                       </div>
                     ))}
@@ -395,7 +395,7 @@ export default function NewBountyWizardPage() {
                 <div className="space-y-1">
                   <h3 className="font-display text-2xl text-[var(--fg)]">Escrow Successfully Locked!</h3>
                   <p className="font-body text-xs text-[var(--fg-muted)]">
-                    Bounty ID: <span className="font-mono text-[#0088cc]">{fundSuccess.id}</span> · Order:{" "}
+                    Bounty ID: <span className="font-mono text-[#007AFF]">{fundSuccess.id}</span> · Order:{" "}
                     <span className="font-mono dark:text-emerald-400 text-emerald-600">{fundSuccess.escrowOrderId}</span>
                   </p>
                 </div>
@@ -419,8 +419,8 @@ export default function NewBountyWizardPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-[#0088cc]/10 border border-[#0088cc]/20 text-xs text-[var(--fg-muted)] space-y-1 font-body">
-                  <div className="font-semibold text-[#0088cc] flex items-center gap-1.5">
+                <div className="p-4 rounded-xl bg-[#007AFF]/10 border border-[#007AFF]/20 text-xs text-[var(--fg-muted)] space-y-1 font-body">
+                  <div className="font-semibold text-[#007AFF] flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4" />
                     PayPal Orders v2 Non-Custodial Lock
                   </div>

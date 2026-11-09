@@ -46,13 +46,13 @@ export default function SecurityPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#0088cc]/30 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#007AFF]/30 selection:text-white overflow-x-hidden">
       <MarketingNav />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-20 w-full space-y-16">
         {/* Title */}
         <div className="space-y-4 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0088cc]/10 border border-[#0088cc]/20 text-[#0088cc] text-xs font-ui uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#007AFF]/10 border border-[#007AFF]/20 text-[#007AFF] text-xs font-ui uppercase tracking-wider">
             Deterministic Security
           </div>
           <h1 className="font-display text-4xl sm:text-6xl font-normal tracking-tight text-[var(--fg)]">
@@ -88,13 +88,13 @@ export default function SecurityPage() {
               <div className="text-xs font-semibold text-[var(--fg)]">Untrusted Submission</div>
               <div className="text-[10px] text-[var(--fg-muted)]">Plaintext / Code string</div>
             </div>
-            <div className="p-4 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/20 space-y-2">
-              <div className="text-[11px] font-mono text-[#0088cc] uppercase">Boundary</div>
+            <div className="p-4 rounded-2xl bg-[#007AFF]/10 border border-[#007AFF]/20 space-y-2">
+              <div className="text-[11px] font-mono text-[#007AFF] uppercase">Boundary</div>
               <div className="text-xs font-semibold text-[var(--fg)]">Schema Encapsulation</div>
               <div className="text-[10px] text-[var(--fg-muted)]">Sanitized context block</div>
             </div>
             <div className="p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border-strong)] space-y-2">
-              <div className="text-[11px] font-mono text-[#0088cc] uppercase">Arbiter</div>
+              <div className="text-[11px] font-mono text-[#007AFF] uppercase">Arbiter</div>
               <div className="text-xs font-semibold text-[var(--fg)]">Gemini Structured JSON</div>
               <div className="text-[10px] text-[var(--fg-muted)]">Type.BOOLEAN outputs</div>
             </div>
@@ -117,7 +117,7 @@ export default function SecurityPage() {
                   key={i}
                   className="p-6 rounded-[24px] bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-strong)] transition-all space-y-3"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#0088cc]/10 border border-[#0088cc]/20 flex items-center justify-center text-[#0088cc]">
+                  <div className="w-10 h-10 rounded-xl bg-[#007AFF]/10 border border-[#007AFF]/20 flex items-center justify-center text-[#007AFF]">
                     <Icon className="w-5 h-5 stroke-[1.75]" />
                   </div>
                   <h3 className="font-ui text-base font-semibold text-[var(--fg)]">{layer.title}</h3>
@@ -132,7 +132,7 @@ export default function SecurityPage() {
 
         {/* Audit Trail Note */}
         <div className="p-6 rounded-[24px] bg-[var(--surface)] border border-[var(--border)] flex items-start gap-4">
-          <Fingerprint className="w-6 h-6 text-[#0088cc] shrink-0 mt-0.5" />
+          <Fingerprint className="w-6 h-6 text-[#007AFF] shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="font-ui text-sm font-semibold text-[var(--fg)]">
               Cryptographic Audit Records

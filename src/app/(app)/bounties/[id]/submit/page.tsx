@@ -142,7 +142,7 @@ assert validate_card("4532015112830367") == False`);
           <span>Back to bounty details</span>
         </Link>
 
-        <span className="text-xs font-mono text-[#0088cc]">
+        <span className="text-xs font-mono text-[#007AFF]">
           Escrow Locked: ${bounty.amount} USD
         </span>
       </div>
@@ -177,7 +177,7 @@ assert validate_card("4532015112830367") == False`);
                       if (emailError) setEmailError(null);
                     }}
                     placeholder="name@example.com"
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-11 pr-4 py-3 text-sm text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] font-mono transition"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-11 pr-4 py-3 text-sm text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] font-mono transition"
                   />
                 </div>
                 {emailError && (
@@ -221,10 +221,10 @@ assert validate_card("4532015112830367") == False`);
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] overflow-hidden focus-within:border-[#0088cc] transition">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] overflow-hidden focus-within:border-[#007AFF] transition">
                   <div className="px-4 py-2 border-b border-[var(--border)] bg-[var(--surface)] flex items-center justify-between text-xs font-mono text-[var(--fg-muted)]">
                     <div className="flex items-center gap-2">
-                      <Code2 className="w-3.5 h-3.5 text-[#0088cc]" />
+                      <Code2 className="w-3.5 h-3.5 text-[#007AFF]" />
                       <span>submission-payload</span>
                     </div>
                     <span className="text-[11px] text-[var(--fg-subtle)]">
@@ -265,7 +265,7 @@ assert validate_card("4532015112830367") == False`);
           <GlassCard className="p-6 space-y-4">
             <div className="flex items-start justify-between border-b border-[var(--border)] pb-3">
               <div>
-                <span className="font-mono text-xs text-[#0088cc] font-bold">
+                <span className="font-mono text-xs text-[#007AFF] font-bold">
                   {bounty.id}
                 </span>
                 <h3 className="font-display text-xl text-[var(--fg)] mt-0.5">
@@ -292,7 +292,7 @@ assert validate_card("4532015112830367") == False`);
                     key={idx}
                     className="p-3 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] flex items-start gap-2.5 text-xs text-[var(--fg)]"
                   >
-                    <span className="font-mono text-[#0088cc] shrink-0 mt-0.5 font-bold">
+                    <span className="font-mono text-[#007AFF] shrink-0 mt-0.5 font-bold">
                       {idx + 1}.
                     </span>
                     <span className="leading-relaxed">{req}</span>
@@ -302,7 +302,7 @@ assert validate_card("4532015112830367") == False`);
             </div>
 
             <div className="pt-3 border-t border-[var(--border)] text-[11px] text-[var(--fg-muted)] flex items-center gap-2">
-              <Lock className="w-3.5 h-3.5 text-[#0088cc] shrink-0" />
+              <Lock className="w-3.5 h-3.5 text-[#007AFF] shrink-0" />
               <span>PayPal Escrow Order: {bounty.escrowOrderId.slice(0, 14)}...</span>
             </div>
           </GlassCard>

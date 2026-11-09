@@ -93,7 +93,7 @@ export default function SettingsPage() {
               flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-ui font-semibold transition cursor-pointer border
               ${
                 resolvedTheme === "dark"
-                  ? "bg-[#0088cc] text-black border-[#0088cc]"
+                  ? "bg-[#007AFF] text-black border-[#007AFF]"
                   : "bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-strong)] hover:text-[var(--fg)]"
               }
             `}
@@ -108,7 +108,7 @@ export default function SettingsPage() {
               flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-ui font-semibold transition cursor-pointer border
               ${
                 resolvedTheme === "light"
-                  ? "bg-[#0088cc] text-black border-[#0088cc]"
+                  ? "bg-[#007AFF] text-black border-[#007AFF]"
                   : "bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-strong)] hover:text-[var(--fg)]"
               }
             `}
@@ -122,7 +122,7 @@ export default function SettingsPage() {
       {/* 1. Sandbox Credential Status (Never expose raw secrets) */}
       <GlassCard className="p-6 space-y-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/20 flex items-center justify-center text-[#0088cc]">
+          <div className="w-10 h-10 rounded-2xl bg-[#007AFF]/10 border border-[#007AFF]/20 flex items-center justify-center text-[#007AFF]">
             <Key className="w-5 h-5" />
           </div>
           <div>
@@ -164,7 +164,7 @@ export default function SettingsPage() {
       {/* 2. Protocol Glossary */}
       <GlassCard className="p-6 space-y-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/20 flex items-center justify-center text-[#0088cc]">
+          <div className="w-10 h-10 rounded-2xl bg-[#007AFF]/10 border border-[#007AFF]/20 flex items-center justify-center text-[#007AFF]">
             <BookOpen className="w-5 h-5" />
           </div>
           <div>

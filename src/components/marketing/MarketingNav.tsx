@@ -27,7 +27,7 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
       <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-[#0088cc] flex items-center justify-center text-[#000000] group-hover:scale-105 transition-transform">
+          <div className="w-9 h-9 rounded-xl bg-[#007AFF] flex items-center justify-center text-white group-hover:scale-105 transition-transform">
             <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
           </div>
           <div className="space-y-1.5">

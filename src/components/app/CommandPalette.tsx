@@ -79,14 +79,14 @@ export function CommandPalette({
                 onSelect={() => navigateTo("/dashboard")}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
               >
-                <LayoutDashboard className="w-4 h-4 text-[#0088cc]" />
+                <LayoutDashboard className="w-4 h-4 text-[#007AFF]" />
                 <span>Dashboard</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigateTo("/bounties")}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
               >
-                <Coins className="w-4 h-4 text-[#0088cc]" />
+                <Coins className="w-4 h-4 text-[#007AFF]" />
                 <span>Active Bounties</span>
               </Command.Item>
               <Command.Item
@@ -100,7 +100,7 @@ export function CommandPalette({
                 onSelect={() => navigateTo("/ledger")}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
               >
-                <TableProperties className="w-4 h-4 text-[#0088cc]" />
+                <TableProperties className="w-4 h-4 text-[#007AFF]" />
                 <span>Escrow & Payout Ledger</span>
               </Command.Item>
               <Command.Item
@@ -117,21 +117,21 @@ export function CommandPalette({
                 onSelect={() => navigateTo("/how-it-works")}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
               >
-                <HelpCircle className="w-4 h-4 text-[#0088cc]" />
+                <HelpCircle className="w-4 h-4 text-[#007AFF]" />
                 <span>Interactive Protocol Flow</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigateTo("/security")}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
               >
-                <Shield className="w-4 h-4 text-[#0088cc]" />
+                <Shield className="w-4 h-4 text-[#007AFF]" />
                 <span>Prompt Injection Defense Architecture</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigateTo("/roadmap")}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
               >
-                <Milestone className="w-4 h-4 text-[#0088cc]" />
+                <Milestone className="w-4 h-4 text-[#007AFF]" />
                 <span>Product Roadmap Timeline</span>
               </Command.Item>
             </Command.Group>
@@ -145,7 +145,7 @@ export function CommandPalette({
                     className="flex items-center justify-between px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
                   >
                     <span className="truncate max-w-[280px]">{b.title}</span>
-                    <span className="font-mono text-xs text-[#0088cc]">${b.amount}</span>
+                    <span className="font-mono text-xs text-[#007AFF]">${b.amount}</span>
                   </Command.Item>
                 ))}
               </Command.Group>

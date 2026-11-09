@@ -38,9 +38,9 @@ export function ScoreRing({
   // Track: subtle ring
   const trackColor = isLight ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.15)";
 
-  // Stroke: #0088cc while animating, settling to semantic status colour
+  // Stroke: #007AFF while animating, settling to semantic status colour
   const strokeColor = !isSettled
-    ? "#0088cc"
+    ? "#007AFF"
     : approved
     ? (isLight ? "#16a34a" : "#22c55e")
     : (isLight ? "#dc2626" : "#ef4444");

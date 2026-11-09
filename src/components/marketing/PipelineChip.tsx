@@ -11,7 +11,7 @@ export function PipelineChip() {
       href="/how-it-works"
       className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-ui font-medium tracking-wide bg-[var(--surface)] hover:bg-[var(--surface-strong)] border border-[var(--border)] transition-all group"
     >
-      <span className="w-1.5 h-1.5 rounded-full bg-[#0088cc] animate-pulse" />
+      <span className="w-1.5 h-1.5 rounded-full bg-[#007AFF] animate-pulse" />
       <AccentText preset="chip" showBorder={false}>
         Orders v2 → Gemini → Payouts v1
       </AccentText>

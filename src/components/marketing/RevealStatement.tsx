@@ -28,7 +28,7 @@ export function RevealStatement({
         baseRotation={2}
         enableBlur={true}
         blurStrength={8}
-        highlightColor="#0088cc"
+        highlightColor="#007AFF"
         rotationEnd="bottom 80%"
         wordAnimationEnd="bottom 65%"
         textClassName={`font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-center leading-tight font-normal ${className}`}

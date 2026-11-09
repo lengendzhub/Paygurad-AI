@@ -41,7 +41,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${display.variable} ${ui.variable} ${body.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-body bg-[var(--bg)] text-[var(--fg)] antialiased selection:bg-[#0088cc]/30 selection:text-white">
+      <body className="min-h-full flex flex-col font-body bg-[var(--bg)] text-[var(--fg)] antialiased selection:bg-[#007AFF]/30 selection:text-white">
         <ThemeProvider
           attribute={["class", "data-theme"]}
           defaultTheme="dark"

@@ -32,7 +32,7 @@ export function EmptyState({
         ${compact ? "p-8" : "p-12 md:p-16"}
       `}
     >
-      <div className="w-14 h-14 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] flex items-center justify-center mb-4 text-[#0088cc]">
+      <div className="w-14 h-14 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] flex items-center justify-center mb-4 text-[#007AFF]">
         <Icon className="w-6 h-6 stroke-[1.75]" />
       </div>
       <h3 className="font-display text-2xl font-normal text-[var(--fg)] tracking-tight">

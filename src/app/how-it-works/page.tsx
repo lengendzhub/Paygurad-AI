@@ -113,13 +113,13 @@ export default function HowItWorksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#0088cc]/30 selection:text-white">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#007AFF]/30 selection:text-white">
       <MarketingNav />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-16 md:py-24">
         {/* Title Header with ScrollReveal enter */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <span className="font-ui text-xs font-semibold uppercase tracking-wider text-[#0088cc]">
+          <span className="font-ui text-xs font-semibold uppercase tracking-wider text-[#007AFF]">
             Protocol Architecture
           </span>
           <div>
@@ -168,7 +168,7 @@ export default function HowItWorksPage() {
                 y1="50%"
                 x2="100%"
                 y2="50%"
-                stroke="#0088cc"
+                stroke="#007AFF"
                 strokeWidth="2"
                 strokeDasharray="6 6"
                 className="animate-[dash_1s_linear_infinite]"
@@ -200,12 +200,12 @@ export default function HowItWorksPage() {
                     relative z-10 w-44 rounded-[28px] border p-5 cursor-pointer backdrop-blur-xl transition-all duration-300
                     ${
                       isSelected
-                        ? "border-[#0088cc] bg-[var(--surface-strong)] -translate-y-1"
+                        ? "border-[#007AFF] bg-[var(--surface-strong)] -translate-y-1"
                         : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
                     }
                     ${
                       isSimActive
-                        ? "ring-2 ring-[#0088cc] scale-105"
+                        ? "ring-2 ring-[#007AFF] scale-105"
                         : ""
                     }
                   `}
@@ -219,11 +219,11 @@ export default function HowItWorksPage() {
                     ) : isSimPassed ? (
                       <CheckCircle2 className="w-4 h-4 dark:text-emerald-400 text-emerald-600" />
                     ) : (
-                      <div className="w-2 h-2 rounded-full bg-[#0088cc]/60" />
+                      <div className="w-2 h-2 rounded-full bg-[#007AFF]/60" />
                     )}
                   </div>
 
-                  <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/25 flex items-center justify-center text-[#0088cc] mb-3">
+                  <div className="w-10 h-10 rounded-2xl bg-[#007AFF]/10 border border-[#007AFF]/25 flex items-center justify-center text-[#007AFF] mb-3">
                     <Icon className="w-5 h-5 stroke-[1.75]" />
                   </div>
 
@@ -253,7 +253,7 @@ export default function HowItWorksPage() {
               <div className="flex items-start justify-between pb-6 border-b border-[var(--border)]">
                 <div>
                   <div className="flex items-center gap-3">
-                    <span className="font-ui text-xs font-semibold uppercase tracking-wider text-[#0088cc]">
+                    <span className="font-ui text-xs font-semibold uppercase tracking-wider text-[#007AFF]">
                       Technical Specification
                     </span>
                     <span className="text-xs font-mono text-[var(--fg-subtle)] bg-[var(--surface-strong)] px-2.5 py-0.5 rounded-full border border-[var(--border)]">
@@ -284,7 +284,7 @@ export default function HowItWorksPage() {
 
                 <div>
                   <h4 className="font-ui text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2 flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5 text-[#0088cc]" />
+                    <Code2 className="w-3.5 h-3.5 text-[#007AFF]" />
                     Sent Payload Keys
                   </h4>
                   <div className="space-y-1.5 font-mono text-xs text-[var(--fg-muted)] bg-[var(--surface-strong)] p-3.5 rounded-2xl border border-[var(--border)]">
