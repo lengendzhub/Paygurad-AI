@@ -78,15 +78,9 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
             </button>
           )}
 
-          <Link href="/login?role=client">
-            <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-xs font-medium">
-              Client Portal
-            </Button>
-          </Link>
-
-          <Link href="/login?role=freelancer">
-            <Button variant="primary" size="sm" className="hidden sm:inline-flex text-xs font-medium">
-              Freelancer Portal
+          <Link href="/login">
+            <Button variant="primary" size="sm" className="hidden sm:inline-flex text-xs font-semibold">
+              Login
               <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </Link>
@@ -115,15 +109,10 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
               {link.label}
             </Link>
           ))}
-          <div className="pt-3 border-t border-[var(--border)] space-y-2">
-            <Link href="/login?role=client" onClick={() => setMobileMenuOpen(false)} className="block">
-              <Button variant="ghost" size="sm" className="w-full justify-center">
-                Client Portal
-              </Button>
-            </Link>
-            <Link href="/login?role=freelancer" onClick={() => setMobileMenuOpen(false)} className="block">
+          <div className="pt-3 border-t border-[var(--border)]">
+            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="block">
               <Button variant="primary" size="sm" className="w-full justify-center">
-                Freelancer Portal
+                Login
                 <ArrowRight className="w-3.5 h-3.5 ml-1" />
               </Button>
             </Link>

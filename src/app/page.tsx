@@ -174,15 +174,9 @@ export default function LandingPage() {
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
-              <Link href="/login?role=client" className="w-full sm:w-auto">
+              <Link href="/login" className="w-full sm:w-auto">
                 <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                  <span>Client Portal</span>
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
-              <Link href="/login?role=freelancer" className="w-full sm:w-auto">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto border-emerald-500/40 hover:bg-emerald-500/10 dark:text-emerald-400 text-emerald-600">
-                  <span>Freelancer Portal</span>
+                  <span>Login</span>
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
@@ -658,15 +652,9 @@ export default function LandingPage() {
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/login?role=client" className="w-full sm:w-auto">
+            <Link href="/login" className="w-full sm:w-auto">
               <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                <span>Client Portal</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
-            </Link>
-            <Link href="/login?role=freelancer" className="w-full sm:w-auto">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto border-emerald-500/40 hover:bg-emerald-500/10 dark:text-emerald-400 text-emerald-600">
-                <span>Freelancer Portal</span>
+                <span>Login</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>

@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   Command,
   ExternalLink,
-  UserCheck,
   Building2,
   Laptop,
   LogOut,
@@ -28,6 +27,7 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
   const userRole = usePayGuardStore((state) => state.userRole);
   const userEmail = usePayGuardStore((state) => state.userEmail);
   const setUserRole = usePayGuardStore((state) => state.setUserRole);
+  const logout = usePayGuardStore((state) => state.logout);
 
   const navItems =
     userRole === "client"
@@ -76,12 +76,6 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
               <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--fg-muted)]">
                 Active Persona
               </span>
-              <Link
-                href="/login"
-                className="text-[10px] text-[#007aff] hover:underline font-medium"
-              >
-                Change
-              </Link>
             </div>
 
             <div className="flex items-center justify-between gap-2">
@@ -167,16 +161,21 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
             </button>
           )}
 
-          <Link
-            href="/login"
-            className="flex items-center justify-between px-3.5 py-2 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition"
+          <button
+            type="button"
+            onClick={() => {
+              logout();
+              if (typeof window !== "undefined") {
+                window.location.assign("/");
+              }
+            }}
+            className="w-full flex items-center justify-between px-3.5 py-2 text-xs text-[var(--fg-muted)] hover:text-red-400 hover:bg-red-500/10 rounded-xl transition cursor-pointer"
           >
             <span className="flex items-center gap-2">
               <LogOut className="w-3.5 h-3.5" />
-              Change Persona
+              Logout
             </span>
-            <span className="text-[10px] font-mono text-[var(--fg-subtle)]">Portal</span>
-          </Link>
+          </button>
 
           <Link
             href="/"
@@ -211,13 +210,19 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
             </Link>
           );
         })}
-        <Link
-          href="/login"
-          className="flex flex-col items-center gap-1 p-2 rounded-xl transition text-[11px] font-medium text-[var(--fg-muted)] hover:text-[var(--fg)]"
+        <button
+          type="button"
+          onClick={() => {
+            logout();
+            if (typeof window !== "undefined") {
+              window.location.assign("/");
+            }
+          }}
+          className="flex flex-col items-center gap-1 p-2 rounded-xl transition text-[11px] font-medium text-[var(--fg-muted)] hover:text-red-400 cursor-pointer"
         >
-          <UserCheck className="w-5 h-5" />
-          <span>Role</span>
-        </Link>
+          <LogOut className="w-5 h-5" />
+          <span>Logout</span>
+        </button>
       </div>
     </>
   );
