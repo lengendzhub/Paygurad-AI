@@ -126,7 +126,7 @@ export default function LandingPage() {
       <MarketingNav onOpenCommand={() => setCommandOpen(true)} />
 
       {/* ── 1. ATTENTION (HERO SECTION) ── */}
-      <section className="relative min-h-[100svh] flex flex-col justify-between overflow-hidden bg-[var(--bg)] pt-20 pb-16 px-6 lg:px-12">
+      <section className="relative min-h-[100svh] flex flex-col justify-between overflow-hidden bg-[var(--bg)] pt-20 pb-10 sm:pb-12 px-6 lg:px-12">
         {/* Soft atmospheric gradient lighting in #78C5EF and #51A0D5 */}
         <HeroGradient />
 
@@ -258,11 +258,11 @@ export default function LandingPage() {
           </motion.div>
         </div>
 
-        {/* Scroll down indicator */}
-        <div className="flex justify-center pt-8 z-10">
-          <span className="text-[10px] font-ui uppercase tracking-widest text-[var(--fg-subtle)] flex items-center gap-1.5">
+        {/* Scroll down indicator - lifted up into optimal viewport fold */}
+        <div className="flex justify-center -translate-y-4 sm:-translate-y-6 z-10">
+          <span className="text-[10px] font-ui uppercase tracking-widest text-[var(--fg-subtle)] hover:text-[var(--fg)] transition-colors flex items-center gap-1.5 cursor-pointer">
             Scroll to explore
-            <ChevronDown className="w-3 h-3 animate-bounce" />
+            <ChevronDown className="w-3.5 h-3.5 animate-bounce text-[#0088cc]" />
           </span>
         </div>
       </section>
