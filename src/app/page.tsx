@@ -8,25 +8,25 @@ import {
   ModuleRegistry,
   ColDef,
   themeQuartz,
-  colorSchemeDark
+  colorSchemeDark,
 } from "ag-grid-community";
 import {
   ShieldCheck,
   Sparkles,
   CheckCircle2,
   XCircle,
-  DollarSign,
-  Send,
-  Lock,
   ArrowRight,
-  ExternalLink,
-  Code2,
-  Cpu,
-  RefreshCw
+  Lock,
+  Zap,
+  TrendingUp,
+  ChevronDown,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 const gridDarkTheme = themeQuartz.withPart(colorSchemeDark);
+
+/* ─── Types ─────────────────────────────────────────── */
 
 interface Bounty {
   id: string;
@@ -39,6 +39,8 @@ interface Bounty {
   aiScore?: number;
   freelancerEmail?: string;
 }
+
+/* ─── Seed Data ─────────────────────────────────────── */
 
 const INITIAL_BOUNTIES: Bounty[] = [
   {
@@ -61,24 +63,96 @@ const INITIAL_BOUNTIES: Bounty[] = [
   },
 ];
 
+/* ─── Reusable Animated Components ──────────────────── */
+
+function FadeIn({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function GlassCard({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={`
+        relative rounded-3xl border border-white/[0.06]
+        bg-white/[0.03] backdrop-blur-xl
+        shadow-[0_8px_32px_rgba(0,0,0,0.35)]
+        transition-all duration-300 hover:bg-white/[0.05]
+        ${className}
+      `}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function StatusPill({ status }: { status: Bounty["status"] }) {
+  const config = {
+    FUNDED_IN_ESCROW: { label: "In Escrow", color: "bg-blue-500/15 text-blue-400 border-blue-500/20" },
+    RELEASED_BY_AI: { label: "Released by AI", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20" },
+    REJECTED_NEEDS_WORK: { label: "Rejected", color: "bg-rose-500/15 text-rose-400 border-rose-500/20" },
+  }[status];
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase border ${config.color}`}
+    >
+      <span className="relative flex h-1.5 w-1.5">
+        <span className="animate-ping absolute h-full w-full rounded-full bg-current opacity-75" />
+        <span className="relative rounded-full h-1.5 w-1.5 bg-current" />
+      </span>
+      {config.label}
+    </span>
+  );
+}
+
+/* ─── Main App ──────────────────────────────────────── */
+
 export default function PayGuardApp() {
   const [bounties, setBounties] = useState<Bounty[]>(INITIAL_BOUNTIES);
   const [selectedBountyId, setSelectedBountyId] = useState<string>("BNT-101");
 
-  // New Bounty Form State
   const [newTitle, setNewTitle] = useState("Build a Regex Email Validator in JS");
   const [newReqs, setNewReqs] = useState(
     "1. Function named isValidEmail(email).\n2. Returns boolean using regex.\n3. Rejects addresses missing an @ or domain extension."
   );
   const [newAmount, setNewAmount] = useState("20.00");
 
-  // Freelancer Submission State
   const [freelancerEmail, setFreelancerEmail] = useState("sb-freelancer@personal.example.com");
   const [submissionText, setSubmissionText] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [lastResult, setLastResult] = useState<any>(null);
 
   const selectedBounty = bounties.find((b) => b.id === selectedBountyId) || bounties[0];
+
+  /* ─── Handlers ──────────────────────────────────────── */
 
   const handleVerifyAndPayout = async () => {
     if (!submissionText.trim()) return;
@@ -167,28 +241,16 @@ assert validate_card("4532015112830367") == False`);
     setSelectedBountyId(newId);
   };
 
+  /* ─── AG Grid Config ──────────────────────────────────── */
+
   const columnDefs: ColDef<Bounty>[] = [
-    { field: "id", headerName: "Bounty ID", maxWidth: 120 },
+    { field: "id", headerName: "Bounty ID", maxWidth: 120, cellClass: "font-mono text-blue-400" },
     { field: "title", headerName: "Task Title", flex: 1 },
     { field: "amount", headerName: "Escrow ($ USD)", maxWidth: 140 },
-    {
-      field: "status",
-      headerName: "Escrow Status",
-      maxWidth: 200,
-      cellRenderer: (params: any) => {
-        const val = params.value;
-        if (val === "RELEASED_BY_AI") {
-          return <span className="text-emerald-400 font-bold">RELEASED BY AI</span>;
-        }
-        if (val === "REJECTED_NEEDS_WORK") {
-          return <span className="text-rose-400 font-semibold">REJECTED (IN ESCROW)</span>;
-        }
-        return <span className="text-blue-400 font-semibold">FUNDED IN ESCROW</span>;
-      },
-    },
-    { field: "aiScore", headerName: "Gemini Score", maxWidth: 130 },
-    { field: "escrowOrderId", headerName: "PayPal Order ID", flex: 1 },
-    { field: "payoutBatchId", headerName: "PayPal Payout Batch ID", flex: 1 },
+    { field: "status", headerName: "Status", maxWidth: 170 },
+    { field: "aiScore", headerName: "AI Score", maxWidth: 110 },
+    { field: "escrowOrderId", headerName: "PayPal Order ID", flex: 1, cellClass: "font-mono text-slate-400" },
+    { field: "payoutBatchId", headerName: "Payout Batch ID", flex: 1, cellClass: "font-mono text-emerald-400" },
   ];
 
   const paypalClientId =
@@ -197,6 +259,8 @@ assert validate_card("4532015112830367") == False`);
       ? process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
       : "test";
 
+  /* ─── Render ──────────────────────────────────────────── */
+
   return (
     <PayPalScriptProvider
       options={{
@@ -204,85 +268,161 @@ assert validate_card("4532015112830367") == False`);
         currency: "USD",
       }}
     >
-      <div className="min-h-screen bg-slate-950 text-slate-100 p-6 md:p-10 font-sans">
-        <div className="max-w-7xl mx-auto space-y-8">
-          {/* Header */}
-          <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
-            <div>
-              <div className="flex items-center gap-2 text-blue-400 text-sm font-semibold uppercase tracking-wider">
-                <ShieldCheck className="w-5 h-5 text-blue-400" />
-                PayPal Orders v2 + Payouts v1 + Gemini 2.5 Flash
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold mt-1 tracking-tight text-white">
-                PayGuard AI: Autonomous Escrow & Bounty Agent
-              </h1>
-              <p className="text-slate-400 mt-1 max-w-2xl text-sm md:text-base">
-                Lock client funds via PayPal Checkout. Gemini 2.5 Flash autonomously audits code & deliverables, directly releasing instant funds via the PayPal Payouts API.
-              </p>
-            </div>
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs space-y-1 shadow-md">
-              <div className="font-semibold text-blue-400 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                Judge Quick-Test Mode
-              </div>
-              <div className="text-slate-300">1. Click &quot;1-Click Fill Passing Code&quot; on the right</div>
-              <div className="text-slate-300">2. Click &quot;Run Gemini Audit &amp; Trigger Autonomous PayPal Payout&quot;</div>
-            </div>
-          </header>
+      {/* ── Background Gradient Layer ── */}
+      <div className="min-h-screen bg-[#0a0a0f] text-slate-100 selection:bg-blue-500/30">
+        {/* Ambient glow orbs */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-blue-600/[0.07] blur-[160px]" />
+          <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-purple-600/[0.06] blur-[140px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-cyan-500/[0.03] blur-[200px]" />
+        </div>
 
-          {/* Main Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left Column: Create & Select Escrow Bounties */}
-            <div className="lg:col-span-5 space-y-6">
-              {/* Create & Fund New Bounty with PayPal */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold flex items-center gap-2 text-white">
-                    <Lock className="w-5 h-5 text-blue-400" />
-                    1. Client: Fund New Escrow Bounty
-                  </h2>
-                  <span className="text-[10px] bg-blue-950 text-blue-300 border border-blue-800 px-2 py-0.5 rounded font-mono">
-                    PayPal Orders v2
+        {/* ── Main Content ── */}
+        <div className="relative max-w-7xl mx-auto px-6 md:px-10 py-12 space-y-10">
+
+          {/* ═══════════════════════════════════════════
+              HEADER
+          ═══════════════════════════════════════════ */}
+          <FadeIn>
+            <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-white/[0.06]">
+              <div className="space-y-4">
+                {/* Brand badge */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold tracking-widest uppercase"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  PayPal Orders v2 → Gemini 2.5 → PayPal Payouts v1
+                </motion.div>
+
+                {/* Title */}
+                <h1 className="text-5xl md:text-6xl font-bold leading-[1.05] tracking-tight">
+                  <span className="bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                    PayGuard AI
                   </span>
+                  <span className="block text-xl md:text-2xl font-medium text-slate-400 mt-3 tracking-normal">
+                    Autonomous Escrow & Bounty Protocol
+                  </span>
+                </h1>
+
+                <p className="text-slate-500 max-w-xl leading-relaxed">
+                  Lock micro-bounty funds via PayPal Checkout. Gemini AI audits deliverables and triggers instant, trustless PayPal Payouts.
+                </p>
+              </div>
+
+              {/* Judge quick-test card */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="rounded-2xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl p-5 min-w-[260px]"
+              >
+                <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-3">
+                  <Zap className="w-3.5 h-3.5" />
+                  Judge Quick-Test
+                </div>
+                <div className="space-y-2 text-xs text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">1</span>
+                    Click &ldquo;Fill Passing Code&rdquo;
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">2</span>
+                    Click &ldquo;Run Gemini Audit&rdquo;
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">3</span>
+                    Watch PayPal Payout fire!
+                  </div>
+                </div>
+              </motion.div>
+            </header>
+          </FadeIn>
+
+          {/* ═══════════════════════════════════════════
+              STATS ROW
+          ═══════════════════════════════════════════ */}
+          <FadeIn delay={0.15}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: "Total Escrow Locked", value: `$${bounties.reduce((s, b) => s + parseFloat(b.amount), 0).toFixed(2)}`, icon: <Lock className="w-4 h-4" />, color: "text-blue-400" },
+                { label: "Active Bounties", value: bounties.filter((b) => b.status === "FUNDED_IN_ESCROW").length.toString(), icon: <TrendingUp className="w-4 h-4" />, color: "text-purple-400" },
+                { label: "Released by AI", value: bounties.filter((b) => b.status === "RELEASED_BY_AI").length.toString(), icon: <CheckCircle2 className="w-4 h-4" />, color: "text-emerald-400" },
+                { label: "Avg AI Score", value: lastResult?.audit ? `${lastResult.audit.score}/100` : "—", icon: <Sparkles className="w-4 h-4" />, color: "text-amber-400" },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 + i * 0.08 }}
+                  className="rounded-2xl bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl p-4 hover:bg-white/[0.05] transition-all duration-300"
+                >
+                  <div className={`flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${stat.color}`}>
+                    {stat.icon}
+                    {stat.label}
+                  </div>
+                  <div className="text-2xl font-bold mt-2 text-white">{stat.value}</div>
+                </motion.div>
+              ))}
+            </div>
+          </FadeIn>
+
+          {/* ═══════════════════════════════════════════
+              MAIN GRID
+          ═══════════════════════════════════════════ */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            {/* ── LEFT COLUMN ── */}
+            <div className="lg:col-span-5 space-y-6">
+
+              {/* Create & Fund New Bounty */}
+              <GlassCard delay={0.25} className="p-6 space-y-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-500/15 flex items-center justify-center">
+                    <Lock className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">Fund New Escrow</h2>
+                    <p className="text-xs text-slate-500">Client locks bounty via PayPal Checkout</p>
+                  </div>
                 </div>
 
-                <div className="space-y-3 text-sm">
+                <div className="space-y-4">
                   <div>
-                    <label className="text-slate-400 block mb-1 font-medium">Task Title</label>
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 block mb-2">
+                      Task Title
+                    </label>
                     <input
                       value={newTitle}
                       onChange={(e) => setNewTitle(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition"
-                      placeholder="e.g. Build an authentication webhook"
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/40 focus:bg-white/[0.06] transition-all duration-200"
                     />
                   </div>
                   <div>
-                    <label className="text-slate-400 block mb-1 font-medium">
-                      Strict Acceptance Criteria (Audited by Gemini)
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 block mb-2">
+                      Acceptance Criteria (Gemini will audit)
                     </label>
                     <textarea
                       rows={3}
                       value={newReqs}
                       onChange={(e) => setNewReqs(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition font-mono text-xs"
-                      placeholder="Numbered acceptance rules..."
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/40 focus:bg-white/[0.06] transition-all duration-200 resize-none"
                     />
                   </div>
                   <div>
-                    <label className="text-slate-400 block mb-1 font-medium">Escrow Reward (USD)</label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-2 text-slate-500">$</span>
-                      <input
-                        value={newAmount}
-                        onChange={(e) => setNewAmount(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-7 pr-3 py-2 text-white focus:outline-none focus:border-blue-500 transition font-mono"
-                        placeholder="25.00"
-                      />
-                    </div>
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 block mb-2">
+                      Escrow Reward (USD)
+                    </label>
+                    <input
+                      value={newAmount}
+                      onChange={(e) => setNewAmount(e.target.value)}
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/40 focus:bg-white/[0.06] transition-all duration-200 font-mono"
+                    />
                   </div>
                 </div>
 
-                {/* Official PayPal Sandbox Checkout Button */}
                 <div className="pt-2 space-y-2">
                   <PayPalButtons
                     key={paypalClientId}
@@ -323,188 +463,274 @@ assert validate_card("4532015112830367") == False`);
                     }}
                   />
 
-                  {/* Instant 1-Click Simulation Button for Testing Without PayPal Popup */}
+                  {/* Quick-lock shortcut button */}
                   <button
                     type="button"
                     onClick={handleSimulatedLock}
-                    className="w-full text-xs text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700 bg-slate-950/60 py-2 rounded-lg transition flex items-center justify-center gap-1.5"
+                    className="w-full text-xs text-slate-400 hover:text-slate-200 border border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02] py-2 rounded-xl transition flex items-center justify-center gap-1.5"
                   >
                     <Lock className="w-3.5 h-3.5 text-blue-400" />
                     Quick 1-Click Lock into Escrow (Sandbox Demo Shortcut)
                   </button>
                 </div>
-              </div>
+              </GlassCard>
 
               {/* Active Bounties List */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3 shadow-xl">
+              <GlassCard delay={0.35} className="p-6 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-white">Active Escrow Bounties</h2>
-                  <span className="text-xs text-slate-400 font-mono">{bounties.length} Loaded</span>
+                  <h2 className="text-lg font-semibold text-white">Active Bounties</h2>
+                  <span className="text-xs text-slate-500 bg-white/[0.05] px-2.5 py-1 rounded-full">
+                    {bounties.length} total
+                  </span>
                 </div>
-                <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
-                  {bounties.map((b) => (
-                    <div
+
+                <div className="space-y-2">
+                  {bounties.map((b, i) => (
+                    <motion.div
                       key={b.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.35, delay: 0.4 + i * 0.05 }}
                       onClick={() => setSelectedBountyId(b.id)}
-                      className={`p-4 rounded-xl border cursor-pointer transition text-left ${
+                      className={`p-4 rounded-2xl border cursor-pointer transition-all duration-300 group ${
                         selectedBountyId === b.id
-                          ? "bg-blue-950/40 border-blue-500 shadow-md ring-1 ring-blue-500/50"
-                          : "bg-slate-950 border-slate-800 hover:border-slate-700"
+                          ? "bg-blue-500/[0.1] border-blue-500/30 shadow-[0_0_24px_rgba(59,130,246,0.08)]"
+                          : "bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.1]"
                       }`}
                     >
-                      <div className="flex justify-between items-start">
-                        <span className="text-xs font-mono font-bold text-blue-400">{b.id}</span>
-                        <span className="text-sm font-bold text-emerald-400">${b.amount} USD</span>
+                      <div className="flex justify-between items-start mb-1.5">
+                        <span className="text-[11px] font-mono font-semibold text-blue-400/80 tracking-wider">
+                          {b.id}
+                        </span>
+                        <span className="text-sm font-bold text-emerald-400 font-mono">
+                          ${b.amount}
+                        </span>
                       </div>
-                      <div className="font-medium mt-1 text-sm text-slate-200">{b.title}</div>
-                      <div className="text-xs text-slate-400 mt-2 flex justify-between items-center">
-                        <span
-                          className={`font-semibold ${
-                            b.status === "RELEASED_BY_AI"
-                              ? "text-emerald-400"
-                              : b.status === "REJECTED_NEEDS_WORK"
-                              ? "text-rose-400"
-                              : "text-blue-300"
+                      <div className="text-sm font-medium text-white/90 leading-snug">
+                        {b.title}
+                      </div>
+                      <div className="flex items-center justify-between mt-3">
+                        <StatusPill status={b.status} />
+                        <ChevronDown
+                          className={`w-4 h-4 text-slate-600 transition-transform duration-200 ${
+                            selectedBountyId === b.id ? "rotate-180 text-blue-400" : ""
                           }`}
-                        >
-                          {b.status}
-                        </span>
-                        <span className="font-mono text-[11px] text-slate-500">
-                          {b.escrowOrderId.slice(0, 16)}...
-                        </span>
+                        />
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </GlassCard>
             </div>
 
-            {/* Right Column: Freelancer Work Submission & Gemini Verification Agent */}
+            {/* ── RIGHT COLUMN ── */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5 shadow-xl">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h2 className="text-lg font-semibold flex items-center gap-2 text-white">
-                    <Sparkles className="w-5 h-5 text-purple-400" />
-                    2. Freelancer Submission &amp; Gemini Escrow Audit
-                  </h2>
+
+              {/* Submission & AI Verification */}
+              <GlassCard delay={0.3} className="p-6 space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-purple-500/15 flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-purple-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-semibold text-white">Gemini Escrow Audit</h2>
+                      <p className="text-xs text-slate-500">Structured JSON verification → PayPal Payouts</p>
+                    </div>
+                  </div>
                   <div className="flex gap-2">
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={fillPassingDemo}
-                      className="text-xs bg-emerald-950 text-emerald-300 border border-emerald-700 px-3 py-1.5 rounded-lg hover:bg-emerald-900 transition font-medium flex items-center gap-1 shadow-sm"
+                      className="text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-4 py-2 rounded-xl hover:bg-emerald-500/20 transition-all duration-200"
                     >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                      1-Click Fill Passing Code
-                    </button>
-                    <button
+                      ✓ Passing Code
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={fillFailingDemo}
-                      className="text-xs bg-rose-950 text-rose-300 border border-rose-700 px-3 py-1.5 rounded-lg hover:bg-rose-900 transition font-medium flex items-center gap-1 shadow-sm"
+                      className="text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-2 rounded-xl hover:bg-rose-500/20 transition-all duration-200"
                     >
-                      <XCircle className="w-3.5 h-3.5 text-rose-400" />
-                      1-Click Fill Failing Code
-                    </button>
+                      ✗ Failing Code
+                    </motion.button>
                   </div>
                 </div>
 
-                {/* Selected Bounty Details */}
-                <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-blue-400 text-sm">{selectedBounty.title}</span>
-                    <span className="font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-2 py-0.5 rounded text-xs">
-                      ${selectedBounty.amount} Escrow Locked
-                    </span>
+                {/* Selected Bounty Context */}
+                <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-5 space-y-3">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <span className="text-[11px] font-mono text-blue-400/70 tracking-wider">{selectedBounty.id}</span>
+                      <div className="font-semibold text-white mt-0.5">{selectedBounty.title}</div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-2xl font-bold text-emerald-400 font-mono">${selectedBounty.amount}</div>
+                      <div className="text-[10px] text-slate-500 uppercase tracking-wider">in escrow</div>
+                    </div>
                   </div>
-                  <pre className="text-xs text-slate-300 whitespace-pre-wrap font-sans bg-slate-900/60 p-3 rounded-lg border border-slate-800/80">
+                  <div className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 pt-2 border-t border-white/[0.06]">
+                    Acceptance Criteria
+                  </div>
+                  <pre className="text-xs text-slate-300 whitespace-pre-wrap font-sans leading-relaxed">
                     {selectedBounty.requirements}
                   </pre>
                 </div>
 
-                <div className="space-y-3 text-sm">
+                {/* Email + Submission */}
+                <div className="space-y-4">
                   <div>
-                    <label className="text-slate-400 block mb-1 font-medium">
-                      Freelancer PayPal Sandbox Email (Receiver of Payouts API)
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 block mb-2">
+                      Freelancer PayPal Sandbox Email
                     </label>
                     <input
                       value={freelancerEmail}
                       onChange={(e) => setFreelancerEmail(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 font-mono text-white focus:outline-none focus:border-blue-500 transition text-xs"
-                      placeholder="freelancer-sandbox@personal.example.com"
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white font-mono focus:outline-none focus:border-purple-500/40 focus:bg-white/[0.06] transition-all duration-200"
                     />
                   </div>
                   <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <label className="text-slate-400 font-medium">Deliverable / Code / Text Submission</label>
-                      <span className="text-[11px] text-slate-500">Python / JS / Text</span>
-                    </div>
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 block mb-2">
+                      Deliverable Submission
+                    </label>
                     <textarea
-                      rows={8}
+                      rows={7}
                       value={submissionText}
                       onChange={(e) => setSubmissionText(e.target.value)}
-                      placeholder="Paste your code or deliverable here (or use 1-Click buttons above)..."
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-xs text-slate-200 focus:outline-none focus:border-blue-500 transition leading-relaxed"
+                      placeholder="Paste your code or deliverable here..."
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-xs text-white font-mono placeholder-slate-600 focus:outline-none focus:border-purple-500/40 focus:bg-white/[0.06] transition-all duration-200 resize-none leading-relaxed"
                     />
                   </div>
                 </div>
 
-                <button
+                {/* Action Button */}
+                <motion.button
+                  whileHover={{ scale: isVerifying ? 1 : 1.015 }}
+                  whileTap={{ scale: isVerifying ? 1 : 0.985 }}
                   onClick={handleVerifyAndPayout}
                   disabled={isVerifying || !submissionText.trim()}
-                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition shadow-lg shadow-blue-900/20 active:scale-[0.99] cursor-pointer disabled:cursor-not-allowed"
+                  className={`
+                    w-full rounded-2xl font-semibold py-4 px-6
+                    flex items-center justify-center gap-2.5
+                    transition-all duration-300 text-sm tracking-wide
+                    ${
+                      isVerifying
+                        ? "bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 text-white opacity-80 cursor-wait"
+                        : "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-500 text-white shadow-[0_0_32px_rgba(59,130,246,0.25)] hover:shadow-[0_0_48px_rgba(59,130,246,0.35)] disabled:opacity-30 disabled:shadow-none"
+                    }
+                  `}
                 >
                   {isVerifying ? (
-                    <span className="flex items-center gap-2">
-                      <RefreshCw className="w-4 h-4 animate-spin text-white" />
-                      Gemini 2.5 Flash is Auditing &amp; Communicating with PayPal Sandbox...
-                    </span>
+                    <>
+                      <motion.span
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                      />
+                      Gemini is auditing &amp; communicating with PayPal…
+                    </>
                   ) : (
                     <>
-                      Run Gemini Audit &amp; Trigger Autonomous PayPal Payout
+                      <Zap className="w-4 h-4" />
+                      Run Gemini Audit &amp; Trigger PayPal Payout
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
-                </button>
+                </motion.button>
+              </GlassCard>
 
-                {/* Live AI Audit + PayPal Payout Output */}
+              {/* ── AI Audit Result (Animated Appear) ── */}
+              <AnimatePresence mode="wait">
                 {lastResult?.audit && (
-                  <div
-                    className={`p-5 rounded-xl border space-y-4 transition duration-300 ${
+                  <motion.div
+                    key={lastResult.audit.approved ? "approved" : "rejected"}
+                    initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.97 }}
+                    transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    className={`rounded-3xl border p-6 space-y-5 backdrop-blur-xl ${
                       lastResult.audit.approved
-                        ? "bg-emerald-950/30 border-emerald-600 shadow-emerald-950/40 shadow-lg"
-                        : "bg-rose-950/30 border-rose-600 shadow-rose-950/40 shadow-lg"
+                        ? "bg-emerald-500/[0.06] border-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.08)]"
+                        : "bg-rose-500/[0.06] border-rose-500/20 shadow-[0_0_40px_rgba(244,63,94,0.08)]"
                     }`}
                   >
+                    {/* Verdict Header */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 font-bold text-lg">
-                        {lastResult.audit.approved ? (
-                          <>
+                      <div className="flex items-center gap-3">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.2 }}
+                          className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                            lastResult.audit.approved ? "bg-emerald-500/20" : "bg-rose-500/20"
+                          }`}
+                        >
+                          {lastResult.audit.approved ? (
                             <CheckCircle2 className="w-6 h-6 text-emerald-400" />
-                            <span className="text-emerald-300">
-                              APPROVED — PayPal Payout Dispatched!
-                            </span>
-                          </>
-                        ) : (
-                          <>
+                          ) : (
                             <XCircle className="w-6 h-6 text-rose-400" />
-                            <span className="text-rose-300">
-                              REJECTED — Funds Remain Locked in PayPal Escrow
-                            </span>
-                          </>
-                        )}
+                          )}
+                        </motion.div>
+                        <div>
+                          <h3 className={`text-lg font-bold ${lastResult.audit.approved ? "text-emerald-300" : "text-rose-300"}`}>
+                            {lastResult.audit.approved ? "Approved — Payout Dispatched" : "Rejected — Funds Locked"}
+                          </h3>
+                          <p className="text-xs text-slate-400 mt-0.5">
+                            {lastResult.audit.approved
+                              ? "PayPal Payouts API v1 automatically fired"
+                              : "Escrow remains safe; submission needs revision"}
+                          </p>
+                        </div>
                       </div>
-                      <span className="text-sm font-mono bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-slate-200">
-                        AI Score: {lastResult.audit.score}/100
-                      </span>
+
+                      {/* Score circle */}
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.3 }}
+                        className="relative w-16 h-16 shrink-0"
+                      >
+                        <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                          <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="2.5" />
+                          <motion.circle
+                            cx="18" cy="18" r="15.5" fill="none"
+                            stroke={lastResult.audit.approved ? "#34d399" : "#fb7185"}
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeDasharray={`${(lastResult.audit.score / 100) * 97.4} 97.4`}
+                            initial={{ strokeDasharray: "0 97.4" }}
+                            animate={{ strokeDasharray: `${(lastResult.audit.score / 100) * 97.4} 97.4` }}
+                            transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <span className="text-lg font-bold text-white leading-none">{lastResult.audit.score}</span>
+                          <span className="text-[8px] text-slate-500 uppercase">score</span>
+                        </div>
+                      </motion.div>
                     </div>
 
+                    {/* AI Summary */}
                     <p className="text-sm text-slate-300 leading-relaxed">{lastResult.audit.summary}</p>
 
+                    {/* Criteria Checklist */}
                     <div className="space-y-2">
-                      <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                        Verification Checklist
+                      <div className="text-[11px] font-semibold uppercase tracking-widest text-slate-500">
+                        Gemini Criteria Checklist
                       </div>
                       {lastResult.audit.criteriaChecklist?.map((c: any, idx: number) => (
-                        <div
+                        <motion.div
                           key={idx}
-                          className="text-xs bg-slate-950/80 p-3 rounded-lg flex items-start gap-2.5 border border-slate-800"
+                          initial={{ opacity: 0, x: -12 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.35, delay: 0.5 + idx * 0.12 }}
+                          className={`text-xs p-4 rounded-xl border flex items-start gap-3 transition-colors ${
+                            c.passed
+                              ? "bg-emerald-500/[0.05] border-emerald-500/10"
+                              : "bg-rose-500/[0.05] border-rose-500/10"
+                          }`}
                         >
                           {c.passed ? (
                             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -512,64 +738,96 @@ assert validate_card("4532015112830367") == False`);
                             <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                           )}
                           <div>
-                            <div className="font-semibold text-slate-200">{c.criterion}</div>
-                            <div className="text-slate-400 mt-0.5">{c.reason}</div>
+                            <div className="font-semibold text-white/80">{c.criterion}</div>
+                            <div className="text-slate-400 mt-0.5 leading-relaxed">{c.reason}</div>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
 
+                    {/* PayPal Payout Receipt */}
                     {lastResult.payout && (
-                      <div className="bg-slate-950 p-4 rounded-lg border border-slate-800 text-xs font-mono space-y-1.5 shadow-inner">
-                        <div className="text-blue-400 font-semibold flex items-center gap-1.5">
-                          <DollarSign className="w-4 h-4 text-emerald-400" />
-                          PayPal Sandbox Payouts API Response (/v1/payments/payouts):
+                      <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 1 }}
+                        className="rounded-2xl bg-white/[0.04] border border-white/[0.08] p-5 space-y-2"
+                      >
+                        <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-widest">
+                          <ShieldCheck className="w-3.5 h-3.5" />
+                          PayPal Sandbox Payouts API Receipt
                         </div>
-                        <div className="text-slate-300">
-                          Batch ID:{" "}
-                          <span className="text-emerald-400 font-bold">
-                            {lastResult.payout?.data?.batch_header?.payout_batch_id ||
-                              "SANDBOX_SIMULATED_IF_PAYOUTS_UNENABLED"}
-                          </span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                          <div className="space-y-1">
+                            <div className="text-slate-500 text-[10px] uppercase">Batch ID</div>
+                            <div className="text-blue-400 truncate">
+                              {lastResult.payout?.data?.batch_header?.payout_batch_id || "SANDBOX_SIMULATED"}
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-slate-500 text-[10px] uppercase">Batch Status</div>
+                            <div className="text-emerald-400">
+                              {lastResult.payout?.data?.batch_header?.batch_status || `HTTP ${lastResult.payout.status}`}
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-slate-500 text-[10px] uppercase">Receiver</div>
+                            <div className="text-slate-300 truncate">{freelancerEmail}</div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-slate-500 text-[10px] uppercase">Amount</div>
+                            <div className="text-white font-semibold">${selectedBounty.amount} USD</div>
+                          </div>
                         </div>
-                        <div className="text-slate-300">
-                          Batch Status:{" "}
-                          <span className="text-blue-300 font-medium">
-                            {lastResult.payout?.data?.batch_header?.batch_status ||
-                              `HTTP ${lastResult.payout.status}`}
-                          </span>
-                        </div>
-                        <div className="text-slate-400">Receiver: {freelancerEmail}</div>
-                      </div>
+                      </motion.div>
                     )}
-                  </div>
+                  </motion.div>
                 )}
-              </div>
+              </AnimatePresence>
             </div>
           </div>
 
-          {/* Sponsor Integration: AG Grid Live Escrow & Payouts Ledger */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                  Live Escrow &amp; Autonomous Payout Ledger (Powered by AG Grid)
-                </h2>
-                <p className="text-xs text-slate-400 mt-1">
-                  Real-time audit log tracking PayPal Orders v2 Escrow locks, Gemini AI verification scores, and PayPal Payouts v1 batch IDs.
-                </p>
+          {/* ═══════════════════════════════════════════
+              AG GRID LEDGER
+          ═══════════════════════════════════════════ */}
+          <FadeIn delay={0.5}>
+            <GlassCard className="p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-white">
+                    Escrow &amp; Payout Ledger
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Real-time PayPal Order IDs, Gemini scores, and Payout Batch IDs · Powered by AG Grid
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/15 font-semibold uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Real-Time Reactive
+              <div className="h-64 w-full">
+                <AgGridReact theme={gridDarkTheme} rowData={bounties} columnDefs={columnDefs} />
               </div>
-            </div>
+            </GlassCard>
+          </FadeIn>
 
-            <div className="h-64 w-full rounded-xl overflow-hidden border border-slate-800">
-              <AgGridReact theme={gridDarkTheme} rowData={bounties} columnDefs={columnDefs} />
-            </div>
-          </div>
+          {/* ═══════════════════════════════════════════
+              FOOTER
+          ═══════════════════════════════════════════ */}
+          <FadeIn delay={0.6}>
+            <footer className="pt-8 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+              <div className="flex items-center gap-4">
+                <span className="font-semibold text-slate-400">PayGuard AI</span>
+                <span>PayPal Orders v2 · Payouts v1 · Gemini 2.5 Flash</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span>AG Grid</span>
+                <span>Next.js App Router</span>
+                <span>PayPal Sandbox</span>
+              </div>
+            </footer>
+          </FadeIn>
         </div>
       </div>
     </PayPalScriptProvider>
