@@ -10,28 +10,28 @@ export function StatusChip({ status, size = "md" }: StatusChipProps) {
   const config = {
     FUNDED_IN_ESCROW: {
       label: "In Escrow",
-      color: "bg-[#007AFF]/15 text-[#007AFF] border-[#007AFF]/30",
-      dot: "bg-[#007AFF]",
+      color: "bg-[#007aff]/10 text-[#007aff] border-[#007aff]/25",
+      dot: "bg-[#007aff]",
     },
     SUBMITTED: {
       label: "Submitted",
-      color: "bg-[var(--surface-strong)] text-[var(--fg-muted)] border-[var(--border-strong)]",
+      color: "bg-[var(--surface-strong)] text-[var(--fg-muted)] border-[var(--border)]",
       dot: "bg-[var(--fg-muted)]",
     },
     VERIFYING: {
       label: "Auditing",
-      color: "dark:bg-amber-500/15 bg-amber-500/10 dark:text-amber-400 text-amber-700 dark:border-amber-500/30 border-amber-500/30",
-      dot: "dark:bg-amber-400 bg-amber-600 animate-pulse",
+      color: "bg-amber-500/10 text-amber-400 border-amber-500/25",
+      dot: "bg-amber-400 animate-pulse",
     },
     RELEASED_BY_AI: {
       label: "Released by AI",
-      color: "dark:bg-emerald-500/15 bg-emerald-500/10 dark:text-emerald-400 text-emerald-700 dark:border-emerald-500/30 border-emerald-500/30",
-      dot: "dark:bg-emerald-400 bg-emerald-600",
+      color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/25",
+      dot: "bg-emerald-400",
     },
     REJECTED_NEEDS_WORK: {
       label: "Needs Revision",
-      color: "dark:bg-red-500/15 bg-red-500/10 dark:text-red-400 text-red-700 dark:border-red-500/30 border-red-500/30",
-      dot: "dark:bg-red-400 bg-red-600",
+      color: "bg-rose-500/10 text-rose-400 border-rose-500/25",
+      dot: "bg-rose-400",
     },
   }[status] || {
     label: status,
@@ -41,14 +41,14 @@ export function StatusChip({ status, size = "md" }: StatusChipProps) {
 
   const sizeClasses =
     size === "sm"
-      ? "px-2.5 py-0.5 text-[11px] gap-1.5"
-      : "px-3 py-1 text-xs gap-2";
+      ? "px-2 py-0.5 text-[11px] gap-1.5"
+      : "px-2.5 py-1 text-xs gap-1.5";
 
   return (
     <span
-      className={`inline-flex items-center font-ui font-medium rounded-full border uppercase tracking-wider ${sizeClasses} ${config.color}`}
+      className={`inline-flex items-center font-ui font-medium rounded-md border whitespace-nowrap transition-colors ${sizeClasses} ${config.color}`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${config.dot}`} />
       <span>{config.label}</span>
     </span>
   );

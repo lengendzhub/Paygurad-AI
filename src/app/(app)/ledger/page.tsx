@@ -106,9 +106,9 @@ export default function LedgerPage() {
       {
         field: "id",
         headerName: "Bounty ID",
-        width: 130,
+        width: 120,
         cellRenderer: (params: any) => (
-          <div className="flex items-center gap-1.5 font-mono text-[#007AFF] font-bold">
+          <div className="flex items-center h-full font-mono text-xs text-[#007aff] font-bold">
             <span>{params.value}</span>
           </div>
         ),
@@ -119,25 +119,27 @@ export default function LedgerPage() {
         flex: 2,
         minWidth: 220,
         cellRenderer: (params: any) => (
-          <span className="font-ui font-medium text-[var(--fg)] truncate">{params.value}</span>
+          <div className="flex items-center h-full">
+            <span className="font-ui text-xs font-medium text-[var(--fg)] truncate">{params.value}</span>
+          </div>
         ),
       },
       {
         field: "amount",
         headerName: "Escrow ($ USD)",
-        width: 140,
+        width: 130,
         cellRenderer: (params: any) => (
-          <span className="font-mono tabular-nums dark:text-emerald-400 text-emerald-600 font-bold">
-            ${params.value}
-          </span>
+          <div className="flex items-center h-full font-mono text-xs tabular-nums text-emerald-500 font-bold">
+            <span>${params.value}</span>
+          </div>
         ),
       },
       {
         field: "status",
         headerName: "Escrow Status",
-        width: 170,
+        width: 160,
         cellRenderer: (params: any) => (
-          <div className="pt-2">
+          <div className="flex items-center h-full">
             <StatusChip status={params.value} size="sm" />
           </div>
         ),
@@ -145,20 +147,28 @@ export default function LedgerPage() {
       {
         field: "audit",
         headerName: "Gemini Score",
-        width: 130,
+        width: 120,
         valueGetter: (params) => params.data?.audit?.score ?? null,
         cellRenderer: (params: any) => {
           const val = params.value;
-          if (val === null || val === undefined) return <span className="text-[var(--fg-subtle)] font-body tabular-nums">—</span>;
+          if (val === null || val === undefined) {
+            return (
+              <div className="flex items-center h-full text-[var(--fg-subtle)] font-mono text-xs">
+                <span>—</span>
+              </div>
+            );
+          }
           const isPass = val >= 70;
           return (
-            <span
-              className={`font-body tabular-nums font-bold ${
-                isPass ? "dark:text-emerald-400 text-emerald-600" : "dark:text-red-400 text-red-600"
-              }`}
-            >
-              {val}/100
-            </span>
+            <div className="flex items-center h-full">
+              <span
+                className={`font-mono text-xs tabular-nums font-bold ${
+                  isPass ? "text-emerald-500" : "text-rose-400"
+                }`}
+              >
+                {val}/100
+              </span>
+            </div>
           );
         },
       },
@@ -168,18 +178,18 @@ export default function LedgerPage() {
         flex: 1,
         minWidth: 170,
         cellRenderer: (params: any) => (
-          <div className="flex items-center gap-2 font-mono text-xs text-[var(--fg-muted)]">
+          <div className="flex items-center gap-2 h-full font-mono text-xs text-[var(--fg-muted)]">
             <span className="truncate">{params.value}</span>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 copyText(params.value);
               }}
-              className="text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
+              className="p-1 rounded hover:bg-[var(--surface-strong)] text-[var(--fg-subtle)] hover:text-[var(--fg)] transition cursor-pointer shrink-0"
               title="Copy Order ID"
             >
               {copiedId === params.value ? (
-                <Check className="w-3 h-3 dark:text-emerald-400 text-emerald-600" />
+                <Check className="w-3 h-3 text-emerald-500" />
               ) : (
                 <Copy className="w-3 h-3" />
               )}
@@ -194,20 +204,26 @@ export default function LedgerPage() {
         minWidth: 180,
         cellRenderer: (params: any) => {
           const val = params.value;
-          if (!val) return <span className="text-[var(--fg-subtle)] font-mono text-xs">—</span>;
+          if (!val) {
+            return (
+              <div className="flex items-center h-full text-[var(--fg-subtle)] font-mono text-xs">
+                <span>—</span>
+              </div>
+            );
+          }
           return (
-            <div className="flex items-center gap-2 font-mono text-xs dark:text-emerald-400 text-emerald-600">
+            <div className="flex items-center gap-2 h-full font-mono text-xs text-emerald-500">
               <span className="truncate">{val}</span>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   copyText(val);
                 }}
-                className="text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
+                className="p-1 rounded hover:bg-[var(--surface-strong)] text-[var(--fg-subtle)] hover:text-[var(--fg)] transition cursor-pointer shrink-0"
                 title="Copy Batch ID"
               >
                 {copiedId === val ? (
-                  <Check className="w-3 h-3 dark:text-emerald-400 text-emerald-600" />
+                  <Check className="w-3 h-3 text-emerald-500" />
                 ) : (
                   <Copy className="w-3 h-3" />
                 )}
@@ -219,16 +235,18 @@ export default function LedgerPage() {
       {
         field: "createdAt",
         headerName: "Timestamp",
-        width: 150,
+        width: 140,
         cellRenderer: (params: any) => (
-          <span className="text-xs text-[var(--fg-muted)] font-mono">
-            {new Date(params.value).toLocaleDateString([], {
-              month: "short",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </span>
+          <div className="flex items-center h-full text-xs text-[var(--fg-muted)] font-mono">
+            <span>
+              {new Date(params.value).toLocaleDateString([], {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </div>
         ),
       },
     ],
@@ -314,7 +332,7 @@ export default function LedgerPage() {
             actionHref="/bounties/new"
           />
         ) : (
-          <div className="h-[520px] w-full rounded-2xl overflow-hidden border border-[var(--border)]">
+          <div className="w-full rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--surface-strong)]">
             <AgGridReact
               theme={gridTheme}
               rowData={filteredData}
@@ -322,7 +340,10 @@ export default function LedgerPage() {
               quickFilterText={searchQuery}
               onGridReady={onGridReady}
               onRowClicked={(e) => setSelectedBounty(e.data || null)}
-              rowSelection={{ mode: "singleRow" }}
+              rowSelection={{ mode: "singleRow", checkboxes: false, enableClickSelection: true }}
+              domLayout="autoHeight"
+              rowHeight={48}
+              headerHeight={40}
               pagination={true}
               paginationPageSize={10}
               paginationPageSizeSelector={[10, 20, 50]}
