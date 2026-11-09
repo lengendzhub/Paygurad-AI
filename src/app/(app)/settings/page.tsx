@@ -73,8 +73,8 @@ export default function SettingsPage() {
       </div>
 
       {clearedNotice && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 dark:text-emerald-400 text-emerald-700 text-xs flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 dark:text-emerald-400 text-emerald-600" />
           <span>All local browser data has been purged successfully. Store is now empty.</span>
         </div>
       )}
@@ -189,11 +189,11 @@ export default function SettingsPage() {
       {/* 3. Data Management: Clear Local Data */}
       <GlassCard className="p-6 space-y-4 border-red-500/25 bg-red-500/[0.03]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-red-500/15 flex items-center justify-center text-red-400">
+          <div className="w-10 h-10 rounded-2xl bg-red-500/15 flex items-center justify-center dark:text-red-400 text-red-600">
             <Trash2 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-display text-2xl text-red-400">Local Data Storage</h2>
+            <h2 className="font-display text-2xl dark:text-red-400 text-red-600">Local Data Storage</h2>
             <p className="font-body text-xs text-[var(--fg-muted)]">
               Manage persisted browser state ({bountiesCount} bounties, {activityCount} events stored)
             </p>
@@ -227,8 +227,8 @@ export default function SettingsPage() {
         maxWidth="sm"
       >
         <div className="space-y-4 pt-2 font-body">
-          <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2.5">
-            <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
+          <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 dark:text-red-400 text-red-700 text-xs flex items-center gap-2.5">
+            <AlertTriangle className="w-4 h-4 shrink-0 dark:text-red-400 text-red-600" />
             <span>All {bountiesCount} bounties and ledger entries will be permanently removed.</span>
           </div>
 

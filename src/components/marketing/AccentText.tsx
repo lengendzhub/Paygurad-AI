@@ -21,7 +21,7 @@ export function AccentText({
   const isLight = resolvedTheme === "light";
 
   const colors = isLight
-    ? ["#51A0D5", "#78C5EF", "#000000"]
+    ? ["#0284c7", "#0088cc", "#111827"]
     : ["#78C5EF", "#51A0D5", "#eeeeee"];
 
   if (preset === "hero") {

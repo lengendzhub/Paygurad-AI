@@ -134,7 +134,7 @@ function BountySubmitContent({ params }: PageProps) {
               {/* Email Input */}
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
-                  Freelancer PayPal Sandbox Email (Payout Receiver) <span className="text-red-400">*</span>
+                  Freelancer PayPal Sandbox Email (Payout Receiver) <span className="dark:text-red-400 text-red-600">*</span>
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-[var(--fg-subtle)] absolute left-4 top-1/2 -translate-y-1/2" />
@@ -150,7 +150,7 @@ function BountySubmitContent({ params }: PageProps) {
                   />
                 </div>
                 {emailError && (
-                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1 font-body">
+                  <p className="text-xs dark:text-red-400 text-red-600 mt-1 flex items-center gap-1 font-body">
                     <AlertCircle className="w-3 h-3" />
                     {emailError}
                   </p>
@@ -164,7 +164,7 @@ function BountySubmitContent({ params }: PageProps) {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block">
-                    Deliverable / Code / Content Submission <span className="text-red-400">*</span>
+                    Deliverable / Code / Content Submission <span className="dark:text-red-400 text-red-600">*</span>
                   </label>
                   <span className="text-[11px] font-mono text-[var(--fg-subtle)]">
                     Plaintext / Python / JS
@@ -216,7 +216,7 @@ function BountySubmitContent({ params }: PageProps) {
                 </h3>
               </div>
               <div className="text-right">
-                <span className="text-xl font-bold font-mono tabular-nums text-emerald-400">
+                <span className="text-xl font-bold font-mono tabular-nums dark:text-emerald-400 text-emerald-600">
                   ${bounty.amount}
                 </span>
                 <div className="text-[10px] text-[var(--fg-subtle)] uppercase font-mono">

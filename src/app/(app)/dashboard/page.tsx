@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/Button";
 import { StatusChip } from "@/components/ui/StatusChip";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-import { GradientText } from "@/components/reactbits/GradientText";
+import { AccentText } from "@/components/marketing/AccentText";
 
 export default function DashboardPage() {
   const bounties = usePayGuardStore((state) => state.bounties);
@@ -88,13 +88,9 @@ export default function DashboardPage() {
             </div>
             <h2 className="font-display text-3xl font-normal text-[var(--fg)] tracking-tight">
               Create your first{" "}
-              <GradientText
-                variant="linear"
-                colors={["#0088cc", "#eeeeee", "#979797"]}
-                className="font-normal"
-              >
+              <AccentText preset="linear" className="font-normal">
                 bounty
-              </GradientText>
+              </AccentText>
             </h2>
             <p className="font-body text-sm text-[var(--fg-muted)] leading-relaxed">
               Your system starts with zero stored records. In three steps, you can fund a live bounty via PayPal Sandbox, submit a deliverable, and watch Gemini certify the work and disburse payouts automatically.
@@ -110,7 +106,7 @@ export default function DashboardPage() {
                 <p className="text-[var(--fg-muted)]">Lock escrow securely via PayPal Orders v2.</p>
               </div>
               <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-1">
-                <span className="font-mono text-emerald-400 font-bold">3. Autonomous Payout</span>
+                <span className="font-mono dark:text-emerald-400 text-emerald-600 font-bold">3. Autonomous Payout</span>
                 <p className="text-[var(--fg-muted)]">Gemini audits work & releases PayPal Payout.</p>
               </div>
             </div>
@@ -167,7 +163,7 @@ export default function DashboardPage() {
 
         {/* Released by AI */}
         <GlassCard className="p-6 space-y-2">
-          <div className="flex items-center justify-between text-xs font-ui font-semibold uppercase tracking-wider text-emerald-400">
+          <div className="flex items-center justify-between text-xs font-ui font-semibold uppercase tracking-wider dark:text-emerald-400 text-emerald-600">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5" />
               Released by AI
@@ -183,7 +179,7 @@ export default function DashboardPage() {
 
         {/* Average AI Score */}
         <GlassCard className="p-6 space-y-2">
-          <div className="flex items-center justify-between text-xs font-ui font-semibold uppercase tracking-wider text-amber-400">
+          <div className="flex items-center justify-between text-xs font-ui font-semibold uppercase tracking-wider dark:text-amber-400 text-amber-600">
             <span className="flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
               Avg AI Score
@@ -242,7 +238,7 @@ export default function DashboardPage() {
 
                     <div className="flex items-center gap-4 self-end sm:self-center">
                       <div className="text-right">
-                        <div className="text-base font-bold font-mono text-emerald-400">
+                        <div className="text-base font-bold font-mono dark:text-emerald-400 text-emerald-600">
                           ${b.amount} USD
                         </div>
                         <div className="text-[10px] text-[var(--fg-subtle)] font-mono">
@@ -341,7 +337,7 @@ export default function DashboardPage() {
                   <tr key={b.id} className="hover:bg-[var(--surface-strong)] transition">
                     <td className="p-4 font-mono font-bold text-[#0088cc]">{b.id}</td>
                     <td className="p-4 text-[var(--fg)] font-medium truncate max-w-xs">{b.title}</td>
-                    <td className="p-4 font-mono tabular-nums text-emerald-400 font-bold">${b.amount}</td>
+                    <td className="p-4 font-mono tabular-nums dark:text-emerald-400 text-emerald-600 font-bold">${b.amount}</td>
                     <td className="p-4">
                       <StatusChip status={b.status} size="sm" />
                     </td>

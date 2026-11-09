@@ -108,7 +108,7 @@ function BountyDetailContent({ params }: PageProps) {
           </div>
 
           <div className="text-left sm:text-right shrink-0 bg-[var(--surface-strong)] sm:bg-transparent p-4 sm:p-0 rounded-2xl border sm:border-0 border-[var(--border)]">
-            <div className="text-3xl font-bold font-mono tabular-nums text-emerald-400">
+            <div className="text-3xl font-bold font-mono tabular-nums dark:text-emerald-400 text-emerald-600">
               ${bounty.amount}
             </div>
             <div className="text-[10px] uppercase font-mono text-[var(--fg-subtle)] tracking-wider">
@@ -151,9 +151,9 @@ function BountyDetailContent({ params }: PageProps) {
                   >
                     {auditItem ? (
                       auditItem.passed ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 dark:text-emerald-400 text-emerald-600 shrink-0 mt-0.5" />
                       ) : (
-                        <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <XCircle className="w-4 h-4 dark:text-red-400 text-red-600 shrink-0 mt-0.5" />
                       )
                     ) : (
                       <span className="w-4 h-4 rounded-full bg-[var(--border)] text-[10px] font-mono text-[var(--fg-muted)] flex items-center justify-center shrink-0 mt-0.5">
@@ -179,7 +179,7 @@ function BountyDetailContent({ params }: PageProps) {
           {bounty.submissionText && (
             <GlassCard className="p-6 space-y-3">
               <h2 className="font-display text-2xl text-[var(--fg)]">Freelancer Submission</h2>
-              <div className="p-4 rounded-2xl bg-black/60 border border-[var(--border)] font-mono text-xs text-[var(--fg)] max-h-60 overflow-y-auto whitespace-pre-wrap leading-relaxed">
+              <div className="p-4 rounded-2xl dark:bg-black/60 bg-black/5 border border-[var(--border)] font-mono text-xs text-[var(--fg)] max-h-60 overflow-y-auto whitespace-pre-wrap leading-relaxed">
                 {bounty.submissionText}
               </div>
             </GlassCard>
@@ -197,9 +197,9 @@ function BountyDetailContent({ params }: PageProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   {bounty.audit.approved ? (
-                    <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                    <CheckCircle2 className="w-6 h-6 dark:text-emerald-400 text-emerald-600" />
                   ) : (
-                    <XCircle className="w-6 h-6 text-red-400" />
+                    <XCircle className="w-6 h-6 dark:text-red-400 text-red-600" />
                   )}
                   <div>
                     <h3 className="font-display text-2xl text-[var(--fg)]">
@@ -247,7 +247,7 @@ function BountyDetailContent({ params }: PageProps) {
               </div>
             ) : bounty.status === "RELEASED_BY_AI" ? (
               <div className="space-y-3">
-                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-medium">
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs dark:text-emerald-400 text-emerald-700 font-medium">
                   Autonomous Payout Disbursed
                 </div>
                 <p className="font-body text-xs text-[var(--fg-muted)] leading-relaxed">
@@ -297,7 +297,7 @@ function BountyDetailContent({ params }: PageProps) {
                   <span className="text-[11px] text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
                     PayPal Payout Batch ID
                   </span>
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] font-mono text-emerald-400">
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] font-mono dark:text-emerald-400 text-emerald-600">
                     <span className="truncate">{bounty.payoutBatchId}</span>
                     <button
                       onClick={() => copyToClipboard(bounty.payoutBatchId!)}

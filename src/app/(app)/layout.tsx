@@ -47,8 +47,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         maxWidth="sm"
       >
         <div className="space-y-4 pt-2">
-          <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2.5 font-body">
-            <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
+          <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 dark:text-red-400 text-red-700 text-xs flex items-center gap-2.5 font-body">
+            <AlertTriangle className="w-4 h-4 shrink-0 dark:text-red-400 text-red-600" />
             <span>This action cannot be undone. All local records will reset to zero.</span>
           </div>
           <div className="flex items-center justify-end gap-2.5 pt-2">

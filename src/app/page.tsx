@@ -197,7 +197,7 @@ export default function LandingPage() {
                   <div className="font-ui text-[11px] uppercase tracking-wider text-[var(--fg-subtle)]">
                     Status
                   </div>
-                  <div className="font-ui text-xs font-semibold text-emerald-400">
+                  <div className="font-ui text-xs font-semibold dark:text-emerald-400 text-emerald-600">
                     Verified
                   </div>
                 </div>
@@ -214,13 +214,13 @@ export default function LandingPage() {
                     className="flex items-center gap-3 p-2.5 rounded-xl bg-[var(--surface)] border border-[var(--border)]"
                   >
                     <div className="w-5 h-5 rounded-full border border-emerald-500/50 bg-emerald-500/10 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <CheckCircle2 className="w-3.5 h-3.5 dark:text-emerald-400 text-emerald-600" />
                     </div>
                     <div className="flex-1 space-y-1.5">
                       <div className="h-2 rounded bg-[var(--fg-subtle)]/40 w-3/4" />
                       <div className="h-1.5 rounded bg-[var(--fg-subtle)]/20 w-1/2" />
                     </div>
-                    <span className="font-ui text-[10px] text-emerald-400 uppercase font-semibold">
+                    <span className="font-ui text-[10px] dark:text-emerald-400 text-emerald-600 uppercase font-semibold">
                       Pass
                     </span>
                   </div>

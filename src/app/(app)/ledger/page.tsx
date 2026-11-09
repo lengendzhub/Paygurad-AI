@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import { AgGridReact } from "ag-grid-react";
 import {
   AllCommunityModule,
@@ -9,6 +10,7 @@ import {
   ColDef,
   themeQuartz,
   colorSchemeDark,
+  colorSchemeLight,
   GridApi,
   GridReadyEvent,
 } from "ag-grid-community";
@@ -31,25 +33,43 @@ import { Bounty } from "@/types";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-// AG Grid Theme adhering to the 4A specification:
-// background var(--bg), foreground var(--fg), accent #0088cc, border var(--border), header text var(--fg-muted), cell font Arimo, header font Poppins, IDs in mono.
-const gridTheme = themeQuartz.withPart(colorSchemeDark).withParams({
-  accentColor: "#0088cc",
-  backgroundColor: "#000000",
-  foregroundColor: "#eeeeee",
-  borderColor: "rgba(238, 238, 238, 0.14)",
-  headerTextColor: "#979797",
-  headerBackgroundColor: "rgba(238, 238, 238, 0.04)",
-  rowHoverColor: "rgba(238, 238, 238, 0.05)",
-  selectedRowBackgroundColor: "rgba(0, 136, 204, 0.12)",
-  fontFamily: "var(--font-body), Arial, sans-serif",
-  headerFontFamily: "var(--font-ui), system-ui, sans-serif",
-  fontSize: 13,
-});
-
 export default function LedgerPage() {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+
   const bounties = usePayGuardStore((state) => state.bounties);
   const gridApiRef = useRef<GridApi<Bounty> | null>(null);
+
+  const gridTheme = useMemo(() => {
+    if (isLight) {
+      return themeQuartz.withPart(colorSchemeLight).withParams({
+        accentColor: "#0088cc",
+        backgroundColor: "#ffffff",
+        foregroundColor: "#111827",
+        borderColor: "rgba(0, 0, 0, 0.08)",
+        headerTextColor: "#4b5563",
+        headerBackgroundColor: "#f8fafc",
+        rowHoverColor: "rgba(0, 0, 0, 0.03)",
+        selectedRowBackgroundColor: "rgba(0, 136, 204, 0.08)",
+        fontFamily: "var(--font-body), Arial, sans-serif",
+        headerFontFamily: "var(--font-ui), system-ui, sans-serif",
+        fontSize: 13,
+      });
+    }
+    return themeQuartz.withPart(colorSchemeDark).withParams({
+      accentColor: "#0088cc",
+      backgroundColor: "#000000",
+      foregroundColor: "#eeeeee",
+      borderColor: "rgba(238, 238, 238, 0.14)",
+      headerTextColor: "#979797",
+      headerBackgroundColor: "rgba(238, 238, 238, 0.04)",
+      rowHoverColor: "rgba(238, 238, 238, 0.05)",
+      selectedRowBackgroundColor: "rgba(0, 136, 204, 0.12)",
+      fontFamily: "var(--font-body), Arial, sans-serif",
+      headerFontFamily: "var(--font-ui), system-ui, sans-serif",
+      fontSize: 13,
+    });
+  }, [isLight]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBounty, setSelectedBounty] = useState<Bounty | null>(null);
@@ -107,7 +127,7 @@ export default function LedgerPage() {
         headerName: "Escrow ($ USD)",
         width: 140,
         cellRenderer: (params: any) => (
-          <span className="font-mono tabular-nums text-emerald-400 font-bold">
+          <span className="font-mono tabular-nums dark:text-emerald-400 text-emerald-600 font-bold">
             ${params.value}
           </span>
         ),
@@ -134,7 +154,7 @@ export default function LedgerPage() {
           return (
             <span
               className={`font-body tabular-nums font-bold ${
-                isPass ? "text-emerald-400" : "text-red-400"
+                isPass ? "dark:text-emerald-400 text-emerald-600" : "dark:text-red-400 text-red-600"
               }`}
             >
               {val}/100
@@ -159,7 +179,7 @@ export default function LedgerPage() {
               title="Copy Order ID"
             >
               {copiedId === params.value ? (
-                <Check className="w-3 h-3 text-emerald-400" />
+                <Check className="w-3 h-3 dark:text-emerald-400 text-emerald-600" />
               ) : (
                 <Copy className="w-3 h-3" />
               )}
@@ -176,7 +196,7 @@ export default function LedgerPage() {
           const val = params.value;
           if (!val) return <span className="text-[var(--fg-subtle)] font-mono text-xs">—</span>;
           return (
-            <div className="flex items-center gap-2 font-mono text-xs text-emerald-400">
+            <div className="flex items-center gap-2 font-mono text-xs dark:text-emerald-400 text-emerald-600">
               <span className="truncate">{val}</span>
               <button
                 onClick={(e) => {
@@ -187,7 +207,7 @@ export default function LedgerPage() {
                 title="Copy Batch ID"
               >
                 {copiedId === val ? (
-                  <Check className="w-3 h-3 text-emerald-400" />
+                  <Check className="w-3 h-3 dark:text-emerald-400 text-emerald-600" />
                 ) : (
                   <Copy className="w-3 h-3" />
                 )}
@@ -221,7 +241,7 @@ export default function LedgerPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono text-[#0088cc] uppercase tracking-widest mb-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <ShieldCheck className="w-4 h-4 dark:text-emerald-400 text-emerald-600" />
             <span>Immutable Escrow Ledger</span>
           </div>
           <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
@@ -233,8 +253,8 @@ export default function LedgerPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-xs font-ui bg-emerald-500/10 border border-emerald-500/25 px-3 py-1.5 rounded-full text-emerald-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2 text-xs font-ui bg-emerald-500/10 border border-emerald-500/25 px-3 py-1.5 rounded-full dark:text-emerald-400 text-emerald-700">
+            <span className="w-2 h-2 rounded-full dark:bg-emerald-400 bg-emerald-600 animate-pulse" />
             <span>LIVE AUDIT</span>
           </div>
           <Button
@@ -330,7 +350,7 @@ export default function LedgerPage() {
             <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)]">
               <div>
                 <span className="text-[10px] uppercase text-[var(--fg-subtle)] block">Amount</span>
-                <span className="text-base font-bold font-mono tabular-nums text-emerald-400">
+                <span className="text-base font-bold font-mono tabular-nums dark:text-emerald-400 text-emerald-600">
                   ${selectedBounty.amount} USD
                 </span>
               </div>
@@ -344,7 +364,7 @@ export default function LedgerPage() {
               <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--fg-subtle)] block">
                 PayPal Orders v2 Capture
               </span>
-              <div className="p-3 rounded-xl bg-black/60 border border-[var(--border)] font-mono text-[#0088cc] break-all">
+              <div className="p-3 rounded-xl dark:bg-black/60 bg-black/5 border border-[var(--border)] font-mono text-[#0088cc] break-all">
                 {selectedBounty.escrowOrderId}
               </div>
             </div>
@@ -354,7 +374,7 @@ export default function LedgerPage() {
                 <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--fg-subtle)] block">
                   PayPal Payouts v1 Batch ID
                 </span>
-                <div className="p-3 rounded-xl bg-black/60 border border-[var(--border)] font-mono text-emerald-400 break-all">
+                <div className="p-3 rounded-xl dark:bg-black/60 bg-black/5 border border-[var(--border)] font-mono dark:text-emerald-400 text-emerald-600 break-all">
                   {selectedBounty.payoutBatchId}
                 </div>
               </div>

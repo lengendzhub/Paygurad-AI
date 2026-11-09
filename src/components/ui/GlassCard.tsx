@@ -25,7 +25,7 @@ export function GlassCard({
       className={`
         relative rounded-[28px] border border-[var(--border)]
         bg-[var(--surface)] backdrop-blur-2xl
-        shadow-[0_8px_32px_rgba(0,0,0,0.36)]
+        dark:shadow-[0_8px_32px_rgba(0,0,0,0.36)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]
         ${hoverEffect ? "transition-all duration-300 hover:bg-[var(--surface-strong)] hover:border-[var(--border-strong)] hover:-translate-y-0.5" : ""}
         ${className}
       `}

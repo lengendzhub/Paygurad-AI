@@ -35,15 +35,15 @@ export function ScoreRing({
   const strokeDashoffset =
     circumference - (Math.min(100, Math.max(0, score)) / 100) * circumference;
 
-  // Track: #666666 (dark) or #979797 (light)
-  const trackColor = isLight ? "#979797" : "#666666";
+  // Track: subtle ring
+  const trackColor = isLight ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.15)";
 
   // Stroke: #0088cc while animating, settling to semantic status colour
   const strokeColor = !isSettled
     ? "#0088cc"
     : approved
-    ? "#22c55e"
-    : "#ef4444";
+    ? (isLight ? "#16a34a" : "#22c55e")
+    : (isLight ? "#dc2626" : "#ef4444");
 
   return (
     <div

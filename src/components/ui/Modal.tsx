@@ -50,7 +50,7 @@ export function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 dark:bg-black/80 bg-black/40 backdrop-blur-md"
           />
 
           <motion.div
@@ -60,7 +60,7 @@ export function Modal({
             transition={{ type: "spring", damping: 25, stiffness: 350 }}
             className={`
               relative w-full ${maxStyles}
-              bg-[var(--bg)] border border-[var(--border-strong)]
+              dark:bg-[#000000] bg-[#ffffff] border border-[var(--border-strong)]
               rounded-[28px] p-6 sm:p-8 shadow-2xl z-10 overflow-hidden
             `}
           >

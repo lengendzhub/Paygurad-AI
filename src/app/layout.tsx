@@ -43,7 +43,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-body bg-[var(--bg)] text-[var(--fg)] antialiased selection:bg-[#0088cc]/30 selection:text-white">
         <ThemeProvider
-          attribute="data-theme"
+          attribute={["class", "data-theme"]}
           defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange

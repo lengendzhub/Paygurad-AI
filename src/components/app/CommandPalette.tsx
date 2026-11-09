@@ -54,12 +54,12 @@ export function CommandPalette({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/75 backdrop-blur-md"
+        className="fixed inset-0 dark:bg-black/75 bg-black/35 backdrop-blur-md"
         onClick={() => onOpenChange(false)}
       />
 
       {/* Palette Container */}
-      <div className="relative w-full max-w-xl bg-[var(--bg)] border border-[var(--border-strong)] rounded-[28px] shadow-2xl overflow-hidden z-10 font-ui">
+      <div className="relative w-full max-w-xl dark:bg-[#000000] bg-[#ffffff] border border-[var(--border-strong)] rounded-[28px] shadow-2xl overflow-hidden z-10 font-ui">
         <Command className="w-full">
           <div className="flex items-center px-4 border-b border-[var(--border)]">
             <Search className="w-4 h-4 text-[var(--fg-muted)] shrink-0 mr-3" />
@@ -93,7 +93,7 @@ export function CommandPalette({
                 onSelect={() => navigateTo("/bounties/new")}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-[var(--fg)] hover:bg-[var(--surface-strong)] rounded-xl cursor-pointer transition"
               >
-                <PlusCircle className="w-4 h-4 text-emerald-400" />
+                <PlusCircle className="w-4 h-4 dark:text-emerald-400 text-emerald-600" />
                 <span>Create New Escrow Bounty</span>
               </Command.Item>
               <Command.Item
@@ -158,7 +158,7 @@ export function CommandPalette({
                     onOpenChange(false);
                     onConfirmClearData();
                   }}
-                  className="flex items-center gap-3 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-xl cursor-pointer transition"
+                  className="flex items-center gap-3 px-3 py-2 text-sm dark:text-red-400 text-red-600 hover:bg-red-500/10 rounded-xl cursor-pointer transition"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span>Purge All Local Data</span>

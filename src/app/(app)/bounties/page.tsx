@@ -193,7 +193,7 @@ export default function BountiesListPage() {
 
                   <div className="flex items-center justify-between pt-1">
                     <div>
-                      <div className="text-lg font-bold font-mono tabular-nums text-emerald-400">
+                      <div className="text-lg font-bold font-mono tabular-nums dark:text-emerald-400 text-emerald-600">
                         ${bounty.amount} USD
                       </div>
                       <div className="text-[10px] text-[var(--fg-subtle)] uppercase font-mono">

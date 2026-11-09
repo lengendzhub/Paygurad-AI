@@ -20,18 +20,18 @@ export function StatusChip({ status, size = "md" }: StatusChipProps) {
     },
     VERIFYING: {
       label: "Auditing",
-      color: "bg-amber-500/15 text-amber-400 border-amber-500/30",
-      dot: "bg-amber-400 animate-pulse",
+      color: "dark:bg-amber-500/15 bg-amber-500/10 dark:text-amber-400 text-amber-700 dark:border-amber-500/30 border-amber-500/30",
+      dot: "dark:bg-amber-400 bg-amber-600 animate-pulse",
     },
     RELEASED_BY_AI: {
       label: "Released by AI",
-      color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-      dot: "bg-emerald-400",
+      color: "dark:bg-emerald-500/15 bg-emerald-500/10 dark:text-emerald-400 text-emerald-700 dark:border-emerald-500/30 border-emerald-500/30",
+      dot: "dark:bg-emerald-400 bg-emerald-600",
     },
     REJECTED_NEEDS_WORK: {
       label: "Needs Revision",
-      color: "bg-red-500/15 text-red-400 border-red-500/30",
-      dot: "bg-red-400",
+      color: "dark:bg-red-500/15 bg-red-500/10 dark:text-red-400 text-red-700 dark:border-red-500/30 border-red-500/30",
+      dot: "dark:bg-red-400 bg-red-600",
     },
   }[status] || {
     label: status,

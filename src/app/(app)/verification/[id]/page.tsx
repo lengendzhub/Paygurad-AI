@@ -227,7 +227,7 @@ function VerificationSignatureContent({ params }: PageProps) {
                   <div
                     className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono shrink-0 ${
                       isPast
-                        ? "bg-emerald-500/20 text-emerald-400"
+                        ? "bg-emerald-500/20 dark:text-emerald-400 text-emerald-700"
                         : isCurrent
                         ? "bg-[#0088cc]/20 text-[#0088cc] animate-pulse"
                         : "bg-[var(--surface)] text-[var(--fg-subtle)]"
@@ -246,11 +246,11 @@ function VerificationSignatureContent({ params }: PageProps) {
       {/* Error State with Retry */}
       {apiError && !isAuditing && (
         <GlassCard className="p-6 border-red-500/25 bg-red-500/10 space-y-4">
-          <div className="flex items-center gap-3 text-red-400">
+          <div className="flex items-center gap-3 dark:text-red-400 text-red-600">
             <AlertCircle className="w-5 h-5 shrink-0" />
             <h3 className="font-display text-xl text-[var(--fg)]">Verification Audit Error</h3>
           </div>
-          <p className="font-mono text-xs text-red-300 leading-relaxed">
+          <p className="font-mono text-xs dark:text-red-300 text-red-700 leading-relaxed">
             {apiError}
           </p>
           <div className="pt-2">
@@ -283,7 +283,9 @@ function VerificationSignatureContent({ params }: PageProps) {
               <div className="flex items-center gap-4">
                 <div
                   className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
-                    auditResult.approved ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"
+                    auditResult.approved
+                      ? "bg-emerald-500/20 dark:text-emerald-400 text-emerald-600"
+                      : "bg-red-500/20 dark:text-red-400 text-red-600"
                   }`}
                 >
                   {auditResult.approved ? (
@@ -297,7 +299,9 @@ function VerificationSignatureContent({ params }: PageProps) {
                   {/* Verdict Title: EB Garamond italic at 48px and up per Section 4A / 4C */}
                   <h2
                     className={`font-display italic text-3xl sm:text-5xl tracking-tight leading-tight ${
-                      auditResult.approved ? "text-emerald-400" : "text-red-400"
+                      auditResult.approved
+                        ? "dark:text-emerald-400 text-emerald-600"
+                        : "dark:text-red-400 text-red-600"
                     }`}
                   >
                     {auditResult.approved
@@ -350,9 +354,9 @@ function VerificationSignatureContent({ params }: PageProps) {
                     }`}
                   >
                     {c.passed ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 dark:text-emerald-400 text-emerald-600 shrink-0 mt-0.5" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                      <XCircle className="w-4 h-4 dark:text-red-400 text-red-600 shrink-0 mt-0.5" />
                     )}
                     <div className="space-y-0.5">
                       <div className="font-ui font-semibold text-[var(--fg)]">{c.criterion}</div>
@@ -367,8 +371,8 @@ function VerificationSignatureContent({ params }: PageProps) {
 
             {/* Official PayPal Payout Receipt (on approval) */}
             {auditResult.approved && (
-              <div className="p-5 rounded-2xl bg-black/60 border border-[var(--border)] space-y-3 font-mono text-xs">
-                <div className="flex items-center gap-2 text-emerald-400 font-bold uppercase tracking-wider font-ui">
+              <div className="p-5 rounded-2xl dark:bg-black/60 bg-black/5 border border-[var(--border)] space-y-3 font-mono text-xs">
+                <div className="flex items-center gap-2 dark:text-emerald-400 text-emerald-600 font-bold uppercase tracking-wider font-ui">
                   <ShieldCheck className="w-4 h-4" />
                   <span>PayPal Sandbox Payouts API Receipt</span>
                 </div>
@@ -391,14 +395,14 @@ function VerificationSignatureContent({ params }: PageProps) {
                         className="text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
                         title="Copy Batch ID"
                       >
-                        {copiedBatch ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                        {copiedBatch ? <Check className="w-3 h-3 dark:text-emerald-400 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                       </button>
                     </div>
                   </div>
 
                   <div className="space-y-1">
                     <span className="text-[10px] text-[var(--fg-subtle)] uppercase block font-ui">Disbursement Status</span>
-                    <span className="text-emerald-400 font-bold">
+                    <span className="dark:text-emerald-400 text-emerald-600 font-bold">
                       {payoutResult?.data?.batch_header?.batch_status || "SUCCESS"}
                     </span>
                   </div>

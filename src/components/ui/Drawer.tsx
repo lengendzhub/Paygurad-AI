@@ -36,7 +36,7 @@ export function Drawer({ isOpen, onClose, title, subtitle, children }: DrawerPro
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 dark:bg-black/70 bg-black/35 backdrop-blur-sm"
           />
 
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
@@ -45,7 +45,7 @@ export function Drawer({ isOpen, onClose, title, subtitle, children }: DrawerPro
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 350 }}
-              className="w-screen max-w-md bg-[var(--bg)] border-l border-[var(--border-strong)] shadow-2xl flex flex-col"
+              className="w-screen max-w-md dark:bg-[#000000] bg-[#ffffff] border-l border-[var(--border-strong)] shadow-2xl flex flex-col"
             >
               <div className="p-6 border-b border-[var(--border)] flex items-start justify-between">
                 <div>

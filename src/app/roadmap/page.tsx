@@ -122,7 +122,7 @@ export default function RoadmapPage() {
             const statusBadge = {
               COMPLETED: {
                 label: "Shipped & Active",
-                color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+                color: "bg-emerald-500/10 dark:text-emerald-400 text-emerald-700 border-emerald-500/30",
               },
               IN_PROGRESS: {
                 label: "In Active Development",

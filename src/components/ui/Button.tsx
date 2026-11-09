@@ -40,10 +40,10 @@ export function Button({
       "bg-transparent text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--surface)] active:scale-[0.98]",
     // Danger: status red
     danger:
-      "bg-red-500/15 border border-red-500/25 text-red-400 hover:bg-red-500/25 active:scale-[0.98]",
+      "bg-red-500/15 border border-red-500/25 dark:text-red-400 text-red-600 hover:bg-red-500/25 active:scale-[0.98]",
     // Emerald: status green
     emerald:
-      "bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 hover:bg-emerald-500/25 active:scale-[0.98]",
+      "bg-emerald-500/15 border border-emerald-500/25 dark:text-emerald-400 text-emerald-600 hover:bg-emerald-500/25 active:scale-[0.98]",
   }[variant];
 
   const buttonElement = (

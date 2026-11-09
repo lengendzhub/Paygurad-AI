@@ -143,7 +143,7 @@ export default function NewBountyWizardPage() {
             <div className="space-y-4">
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
-                  Task Title <span className="text-red-400">*</span>
+                  Task Title <span className="dark:text-red-400 text-red-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -153,7 +153,7 @@ export default function NewBountyWizardPage() {
                   className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
                 />
                 {errors.title && (
-                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1 font-body">
+                  <p className="text-xs dark:text-red-400 text-red-600 mt-1 flex items-center gap-1 font-body">
                     <AlertCircle className="w-3 h-3" />
                     {errors.title}
                   </p>
@@ -175,7 +175,7 @@ export default function NewBountyWizardPage() {
 
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
-                  Escrow Bounty Amount (USD) <span className="text-red-400">*</span>
+                  Escrow Bounty Amount (USD) <span className="dark:text-red-400 text-red-600">*</span>
                 </label>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--fg-muted)] font-mono text-sm">
@@ -190,7 +190,7 @@ export default function NewBountyWizardPage() {
                   />
                 </div>
                 {errors.amount && (
-                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1 font-body">
+                  <p className="text-xs dark:text-red-400 text-red-600 mt-1 flex items-center gap-1 font-body">
                     <AlertCircle className="w-3 h-3" />
                     {errors.amount}
                   </p>
@@ -259,7 +259,7 @@ export default function NewBountyWizardPage() {
                       <button
                         type="button"
                         onClick={() => removeCriterion(index)}
-                        className="p-1.5 text-[var(--fg-muted)] hover:text-red-400 transition cursor-pointer"
+                        className="p-1.5 text-[var(--fg-muted)] hover:text-red-500 transition cursor-pointer"
                         title="Remove criterion"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -270,7 +270,7 @@ export default function NewBountyWizardPage() {
               ))}
 
               {errors.criteria && (
-                <p className="text-xs text-red-400 flex items-center gap-1">
+                <p className="text-xs dark:text-red-400 text-red-600 flex items-center gap-1">
                   <AlertCircle className="w-3 h-3" />
                   {errors.criteria}
                 </p>
@@ -326,7 +326,7 @@ export default function NewBountyWizardPage() {
                   )}
                 </div>
                 <div className="text-right">
-                  <span className="text-2xl font-bold font-mono tabular-nums text-emerald-400">
+                  <span className="text-2xl font-bold font-mono tabular-nums dark:text-emerald-400 text-emerald-600">
                     ${parseFloat(amount || "0").toFixed(2)}
                   </span>
                   <div className="text-[10px] text-[var(--fg-subtle)] font-mono uppercase">
@@ -378,8 +378,8 @@ export default function NewBountyWizardPage() {
             </div>
 
             {fundError && (
-              <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-start gap-2.5 font-body">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
+              <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 dark:text-red-400 text-red-600 text-xs flex items-start gap-2.5 font-body">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 dark:text-red-400 text-red-600" />
                 <div>
                   <div className="font-semibold">PayPal Escrow Error</div>
                   <div>{fundError}</div>
@@ -389,14 +389,14 @@ export default function NewBountyWizardPage() {
 
             {fundSuccess ? (
               <div className="p-6 rounded-[28px] bg-emerald-500/10 border border-emerald-500/25 text-center space-y-4">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/20 dark:text-emerald-400 text-emerald-600 flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <div className="space-y-1">
                   <h3 className="font-display text-2xl text-[var(--fg)]">Escrow Successfully Locked!</h3>
                   <p className="font-body text-xs text-[var(--fg-muted)]">
                     Bounty ID: <span className="font-mono text-[#0088cc]">{fundSuccess.id}</span> · Order:{" "}
-                    <span className="font-mono text-emerald-400">{fundSuccess.escrowOrderId}</span>
+                    <span className="font-mono dark:text-emerald-400 text-emerald-600">{fundSuccess.escrowOrderId}</span>
                   </p>
                 </div>
                 <div className="pt-2 flex justify-center gap-3">

@@ -215,9 +215,9 @@ export default function HowItWorksPage() {
                       0{index + 1}
                     </span>
                     {isSimFailed ? (
-                      <XCircle className="w-4 h-4 text-red-400" />
+                      <XCircle className="w-4 h-4 dark:text-red-400 text-red-600" />
                     ) : isSimPassed ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      <CheckCircle2 className="w-4 h-4 dark:text-emerald-400 text-emerald-600" />
                     ) : (
                       <div className="w-2 h-2 rounded-full bg-[#0088cc]/60" />
                     )}
@@ -298,7 +298,7 @@ export default function HowItWorksPage() {
 
                 <div>
                   <h4 className="font-ui text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2 flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <Code2 className="w-3.5 h-3.5 dark:text-emerald-400 text-emerald-600" />
                     Response / Handshake
                   </h4>
                   <div className="space-y-1.5 font-mono text-xs text-[var(--fg-muted)] bg-[var(--surface-strong)] p-3.5 rounded-2xl border border-[var(--border)]">

@@ -74,7 +74,7 @@ export default function SecurityPage() {
         <div className="p-8 rounded-[28px] bg-[var(--surface)] border border-[var(--border)] shadow-2xl space-y-8">
           <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
             <div className="flex items-center gap-2 text-sm font-ui font-semibold text-[var(--fg)]">
-              <ShieldCheck className="w-5 h-5 text-emerald-400" />
+              <ShieldCheck className="w-5 h-5 dark:text-emerald-400 text-emerald-600" />
               <span>Escrow Security Boundary</span>
             </div>
             <span className="text-xs font-mono text-[var(--fg-muted)] bg-[var(--surface-strong)] px-3 py-1 rounded-full border border-[var(--border)]">
@@ -84,7 +84,7 @@ export default function SecurityPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center font-ui">
             <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-2">
-              <div className="text-[11px] font-mono text-red-400 uppercase">Input</div>
+              <div className="text-[11px] font-mono dark:text-red-400 text-red-600 uppercase">Input</div>
               <div className="text-xs font-semibold text-[var(--fg)]">Untrusted Submission</div>
               <div className="text-[10px] text-[var(--fg-muted)]">Plaintext / Code string</div>
             </div>
@@ -99,9 +99,9 @@ export default function SecurityPage() {
               <div className="text-[10px] text-[var(--fg-muted)]">Type.BOOLEAN outputs</div>
             </div>
             <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-2">
-              <div className="text-[11px] font-mono text-emerald-400 uppercase">Rail</div>
+              <div className="text-[11px] font-mono dark:text-emerald-400 text-emerald-600 uppercase">Rail</div>
               <div className="text-xs font-semibold text-[var(--fg)]">PayPal Payout Gate</div>
-              <div className="text-[10px] text-emerald-400">Server verified trigger</div>
+              <div className="text-[10px] dark:text-emerald-400 text-emerald-600">Server verified trigger</div>
             </div>
           </div>
         </div>
