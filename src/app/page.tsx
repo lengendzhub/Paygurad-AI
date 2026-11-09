@@ -163,16 +163,8 @@ export default function LandingPage() {
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <div
               ref={cardRef}
-              className="w-full max-w-md rounded-[28px] border border-[var(--border)] bg-[var(--surface)] backdrop-blur-2xl p-6 sm:p-7 shadow-[0_20px_60px_rgba(81,160,213,0.14)] relative overflow-hidden transition-all duration-300"
+              className="w-full max-w-md rounded-[28px] border border-[var(--border)] bg-[var(--surface)] backdrop-blur-2xl p-6 sm:p-7 relative overflow-hidden transition-all duration-300"
             >
-              {/* Top-edge ambient highlight in #78C5EF and #51A0D5 */}
-              <div
-                className="absolute top-0 inset-x-0 h-[2px] opacity-80 pointer-events-none"
-                style={{
-                  background:
-                    "linear-gradient(90deg, transparent 0%, #78C5EF 40%, #51A0D5 70%, transparent 100%)",
-                }}
-              />
               {/* Header with abstract indicator */}
               <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
                 <div className="flex items-center gap-2">
@@ -294,7 +286,7 @@ export default function LandingPage() {
             </div>
 
             {/* Protocol Arbiter Middle */}
-            <div className="rounded-[28px] border border-[#0088cc]/40 bg-[#0088cc]/5 p-8 flex flex-col justify-between relative shadow-[0_0_36px_rgba(0,136,204,0.15)]">
+            <div className="rounded-[28px] border border-[#0088cc]/40 bg-[#0088cc]/5 p-8 flex flex-col justify-between relative">
               <div>
                 <span className="font-ui text-xs uppercase tracking-wider text-[#0088cc] font-semibold block mb-3">
                   PayGuard Protocol
@@ -573,11 +565,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── 8. ACTION (FINAL CTA WITH RADIAL GLOW) ── */}
+      {/* ── 8. ACTION (FINAL CTA) ── */}
       <section className="py-32 px-6 lg:px-12 relative overflow-hidden bg-[var(--bg)] text-center">
-        {/* Soft radial CSS glow behind CTA (no WebGL) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-[#0088cc]/10 blur-[120px] pointer-events-none" />
-
         <div className="max-w-3xl mx-auto space-y-8 relative z-10">
           <RevealStatement preset="enter">
             Ready for autonomous, dispute-free bounties?

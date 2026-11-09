@@ -38,9 +38,9 @@ export function Stepper({ steps, currentStep, className = "" }: StepperProps) {
                   transition-all duration-300
                   ${
                     isCompleted
-                      ? "bg-emerald-500 text-black shadow-[0_0_16px_rgba(34,197,94,0.4)]"
+                      ? "bg-emerald-500 text-black"
                       : isCurrent
-                      ? "bg-[#0088cc] text-black ring-4 ring-[#0088cc]/20 shadow-[0_0_20px_rgba(0,136,204,0.4)]"
+                      ? "bg-[#0088cc] text-black ring-4 ring-[#0088cc]/20"
                       : "bg-[var(--surface-strong)] border border-[var(--border)] text-[var(--fg-subtle)]"
                   }
                 `}

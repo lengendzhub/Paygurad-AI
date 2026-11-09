@@ -273,8 +273,8 @@ function VerificationSignatureContent({ params }: PageProps) {
               rounded-[28px] border p-6 sm:p-8 backdrop-blur-2xl space-y-6 shadow-2xl
               ${
                 auditResult.approved
-                  ? "bg-emerald-500/[0.05] border-emerald-500/25 shadow-[0_0_50px_rgba(34,197,94,0.1)]"
-                  : "bg-red-500/[0.05] border-red-500/25 shadow-[0_0_50px_rgba(239,68,68,0.1)]"
+                  ? "bg-emerald-500/[0.05] border-emerald-500/25"
+                  : "bg-red-500/[0.05] border-red-500/25"
               }
             `}
           >

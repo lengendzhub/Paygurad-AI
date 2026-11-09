@@ -29,9 +29,9 @@ export function Button({
   }[size];
 
   const variantStyles = {
-    // Primary: #0088cc fill, #000000 label, animated glow rgba(0,136,204,0.45)
+    // Primary: #0088cc fill, #000000 label (clean, no glow)
     primary:
-      "bg-[#0088cc] text-[#000000] font-semibold shadow-[0_0_24px_rgba(0,136,204,0.45)] hover:shadow-[0_0_36px_rgba(0,136,204,0.65)] hover:brightness-105 active:scale-[0.98]",
+      "bg-[#0088cc] text-[#000000] font-semibold hover:brightness-105 active:scale-[0.98]",
     // Secondary: transparent, 1px var(--border-strong)
     secondary:
       "bg-transparent border border-[var(--border-strong)] text-[var(--fg)] hover:bg-[var(--surface-strong)] hover:border-[var(--fg-muted)] active:scale-[0.98]",

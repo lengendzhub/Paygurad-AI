@@ -143,9 +143,9 @@ export default function RoadmapPage() {
                     flex items-center justify-center transition-all duration-300
                     ${
                       item.status === "COMPLETED"
-                        ? "border-emerald-500 bg-emerald-500 text-black shadow-[0_0_12px_rgba(34,197,94,0.5)]"
+                        ? "border-emerald-500 bg-emerald-500 text-black"
                         : item.status === "IN_PROGRESS"
-                        ? "border-[#0088cc] bg-[#0088cc] text-black shadow-[0_0_16px_rgba(0,136,204,0.6)] animate-pulse"
+                        ? "border-[#0088cc] bg-[#0088cc] text-black"
                         : "border-[var(--border-strong)] bg-[var(--bg)] text-[var(--fg-subtle)]"
                     }
                   `}

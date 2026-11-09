@@ -200,12 +200,12 @@ export default function HowItWorksPage() {
                     relative z-10 w-44 rounded-[28px] border p-5 cursor-pointer backdrop-blur-xl transition-all duration-300
                     ${
                       isSelected
-                        ? "border-[#0088cc] bg-[var(--surface-strong)] shadow-[0_0_28px_rgba(0,136,204,0.3)] -translate-y-1"
+                        ? "border-[#0088cc] bg-[var(--surface-strong)] -translate-y-1"
                         : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
                     }
                     ${
                       isSimActive
-                        ? "ring-2 ring-[#0088cc] shadow-[0_0_32px_rgba(0,136,204,0.5)] scale-105"
+                        ? "ring-2 ring-[#0088cc] scale-105"
                         : ""
                     }
                   `}

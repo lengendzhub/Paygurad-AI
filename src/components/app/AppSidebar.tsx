@@ -39,7 +39,7 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
           {/* Brand */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-[#0088cc] flex items-center justify-center text-[#000000] shadow-[0_0_20px_rgba(0,136,204,0.35)] group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 rounded-xl bg-[#0088cc] flex items-center justify-center text-[#000000] group-hover:scale-105 transition-transform">
                 <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
               </div>
               <div>
@@ -76,7 +76,7 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
                     flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all
                     ${
                       isActive
-                        ? "bg-[#0088cc]/15 text-[#0088cc] border border-[#0088cc]/30 shadow-[0_0_16px_rgba(0,136,204,0.15)] font-semibold"
+                        ? "bg-[#0088cc]/15 text-[#0088cc] border border-[#0088cc]/30 font-semibold"
                         : "text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--surface)]"
                     }
                   `}

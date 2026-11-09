@@ -64,9 +64,6 @@ export function GradientText({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`relative inline-block ${className}`}
-      style={{
-        filter: glow > 0 ? `drop-shadow(0 0 ${glow * 16}px ${colors[0]})` : undefined,
-      }}
     >
       <style jsx>{`
         @keyframes gradientFlow {

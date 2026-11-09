@@ -29,7 +29,7 @@ export function AccentText({
       <GradientText
         colors={colors}
         variant="flow"
-        glow={0.35}
+        glow={0}
         animationSpeed={10}
         followPointer={true}
         className={className}

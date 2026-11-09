@@ -93,7 +93,7 @@ export default function SettingsPage() {
               flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-ui font-semibold transition cursor-pointer border
               ${
                 resolvedTheme === "dark"
-                  ? "bg-[#0088cc] text-black border-[#0088cc] shadow-[0_0_16px_rgba(0,136,204,0.4)]"
+                  ? "bg-[#0088cc] text-black border-[#0088cc]"
                   : "bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-strong)] hover:text-[var(--fg)]"
               }
             `}
@@ -108,7 +108,7 @@ export default function SettingsPage() {
               flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-ui font-semibold transition cursor-pointer border
               ${
                 resolvedTheme === "light"
-                  ? "bg-[#0088cc] text-black border-[#0088cc] shadow-[0_0_16px_rgba(0,136,204,0.4)]"
+                  ? "bg-[#0088cc] text-black border-[#0088cc]"
                   : "bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-strong)] hover:text-[var(--fg)]"
               }
             `}
