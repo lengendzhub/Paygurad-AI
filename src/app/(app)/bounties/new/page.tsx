@@ -22,6 +22,8 @@ import { ErrorBanner, FormFieldError } from "@/components/ui/ErrorMessage";
 
 export default function NewBountyWizardPage() {
   const router = useRouter();
+  const userRole = usePayGuardStore((state) => state.userRole);
+  const setUserRole = usePayGuardStore((state) => state.setUserRole);
   const addBounty = usePayGuardStore((state) => state.addBounty);
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -124,6 +126,21 @@ export default function NewBountyWizardPage() {
             Define requirements and commit escrow funds via PayPal Orders v2.
           </p>
         </div>
+
+        {userRole === "freelancer" && (
+          <div className="p-3.5 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-ui">
+            <span className="text-[var(--fg-muted)]">
+              Logged in as <span className="font-semibold text-emerald-400">Freelancer</span>. Authorizing escrow automatically switches your active presentation persona to <span className="font-semibold text-[#007aff]">Client</span>.
+            </span>
+            <button
+              type="button"
+              onClick={() => setUserRole("client")}
+              className="px-3 py-1 rounded-lg bg-[#007aff] text-white font-medium hover:bg-[#007aff]/90 transition cursor-pointer shrink-0"
+            >
+              Switch to Client
+            </button>
+          </div>
+        )}
 
         <div className="pt-4 pb-2">
           <Stepper steps={steps} currentStep={currentStep} />

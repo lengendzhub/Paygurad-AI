@@ -56,7 +56,13 @@ export const INITIAL_ACTIVITY: ActivityItem[] = [
   },
 ];
 
+export type UserRole = "client" | "freelancer";
+
 interface PayGuardStore {
+  userRole: UserRole;
+  userEmail: string;
+  setUserRole: (role: UserRole, email?: string) => void;
+  logout: () => void;
   bounties: Bounty[];
   activity: ActivityItem[];
   hasDismissedTour: boolean;
@@ -86,6 +92,18 @@ interface PayGuardStore {
 export const usePayGuardStore = create<PayGuardStore>()(
   persist(
     (set, get) => ({
+      userRole: "client",
+      userEmail: "client@payguard.ai",
+      setUserRole: (role, email) =>
+        set({
+          userRole: role,
+          userEmail: email || (role === "client" ? "client@payguard.ai" : "freelancer@payguard.ai"),
+        }),
+      logout: () =>
+        set({
+          userRole: "client",
+          userEmail: "client@payguard.ai",
+        }),
       bounties: INITIAL_BOUNTIES,
       activity: INITIAL_ACTIVITY,
       hasDismissedTour: false,

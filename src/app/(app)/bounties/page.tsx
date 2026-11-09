@@ -17,6 +17,7 @@ import { StatusChip } from "@/components/ui/StatusChip";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function BountiesListPage() {
+  const userRole = usePayGuardStore((state) => state.userRole);
   const bounties = usePayGuardStore((state) => state.bounties);
   const fetchBountiesFromServer = usePayGuardStore((state) => state.fetchBountiesFromServer);
 
@@ -81,20 +82,41 @@ export default function BountiesListPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
-            Escrow Bounties
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
+              {userRole === "freelancer" ? "Available Bounties" : "Escrow Bounties"}
+            </h1>
+            <span
+              className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                userRole === "freelancer"
+                  ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                  : "bg-[#007aff]/15 text-[#007aff] border border-[#007aff]/30"
+              }`}
+            >
+              {userRole === "freelancer" ? "Freelancer Portal" : "Client Portal"}
+            </span>
+          </div>
           <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
-            Browse and manage all authorized micro-bounties and deliverables.
+            {userRole === "freelancer"
+              ? "Browse bounties with guaranteed escrow locked in PayPal Orders v2 buffer. Submit deliverables to claim automated payouts."
+              : "Browse and manage all authorized micro-bounties and deliverables."}
           </p>
         </div>
 
-        <Link href="/bounties/new">
-          <Button variant="primary" size="md">
-            <PlusCircle className="w-4 h-4 mr-1.5" />
-            Create Bounty
-          </Button>
-        </Link>
+        {userRole === "client" ? (
+          <Link href="/bounties/new">
+            <Button variant="primary" size="md">
+              <PlusCircle className="w-4 h-4 mr-1.5" />
+              Create Bounty
+            </Button>
+          </Link>
+        ) : (
+          <Link href="/login?role=client">
+            <Button variant="secondary" size="md" className="text-xs">
+              Switch to Client to Fund
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Filters and Search Bar */}
@@ -166,7 +188,10 @@ export default function BountiesListPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBounties.map((bounty) => (
-            <Link key={bounty.id} href={`/bounties/${bounty.id}`}>
+            <Link
+              key={bounty.id}
+              href={`/bounties/${bounty.id}${userRole === "freelancer" ? "?role=freelancer" : "?role=client"}`}
+            >
               <GlassCard className="p-6 h-full flex flex-col justify-between hover:border-[var(--border-strong)] transition group space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">

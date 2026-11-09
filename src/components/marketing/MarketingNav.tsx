@@ -64,13 +64,13 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
         </nav>
 
         {/* Right Action */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
 
           {onOpenCommand && (
             <button
               onClick={onOpenCommand}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-ui text-[var(--fg-muted)] bg-[var(--surface)] border border-[var(--border)] rounded-xl hover:text-[var(--fg)] hover:bg-[var(--surface-strong)] transition cursor-pointer"
+              className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-xs font-ui text-[var(--fg-muted)] bg-[var(--surface)] border border-[var(--border)] rounded-xl hover:text-[var(--fg)] hover:bg-[var(--surface-strong)] transition cursor-pointer"
               title="Command Palette (Cmd+K)"
             >
               <Command className="w-3.5 h-3.5" />
@@ -78,10 +78,22 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
             </button>
           )}
 
-          <Link href="/dashboard">
+          <Link href="/login?role=client" className="hidden xl:inline-flex">
+            <span className="text-xs font-ui font-medium text-[var(--fg-muted)] hover:text-[#007aff] px-2.5 py-1 transition">
+              Client Portal
+            </span>
+          </Link>
+
+          <Link href="/login?role=freelancer" className="hidden xl:inline-flex">
+            <span className="text-xs font-ui font-medium text-[var(--fg-muted)] hover:text-emerald-400 px-2.5 py-1 transition">
+              Freelancer Portal
+            </span>
+          </Link>
+
+          <Link href="/login">
             <Button variant="primary" size="sm" className="hidden sm:inline-flex">
-              Launch App
-              <ArrowRight className="w-3.5 h-3.5" />
+              Sign In
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </Link>
 
@@ -109,10 +121,15 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
               {link.label}
             </Link>
           ))}
-          <div className="pt-2 border-t border-[var(--border)] flex items-center justify-between">
-            <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="primary" size="sm" className="w-full">
-                Launch App
+          <div className="pt-3 border-t border-[var(--border)] space-y-2">
+            <Link href="/login?role=client" onClick={() => setMobileMenuOpen(false)} className="block">
+              <Button variant="primary" size="sm" className="w-full justify-center">
+                Client Portal
+              </Button>
+            </Link>
+            <Link href="/login?role=freelancer" onClick={() => setMobileMenuOpen(false)} className="block">
+              <Button variant="secondary" size="sm" className="w-full justify-center border-emerald-500/40 text-emerald-400">
+                Freelancer Portal
               </Button>
             </Link>
           </div>

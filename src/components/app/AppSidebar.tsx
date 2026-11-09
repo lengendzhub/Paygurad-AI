@@ -11,8 +11,13 @@ import {
   ShieldCheck,
   Command,
   ExternalLink,
+  UserCheck,
+  Building2,
+  Laptop,
+  LogOut,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { usePayGuardStore } from "@/lib/store";
 
 interface AppSidebarProps {
   onOpenCommand?: () => void;
@@ -20,19 +25,33 @@ interface AppSidebarProps {
 
 export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
   const pathname = usePathname();
+  const userRole = usePayGuardStore((state) => state.userRole);
+  const userEmail = usePayGuardStore((state) => state.userEmail);
+  const setUserRole = usePayGuardStore((state) => state.setUserRole);
 
-  const navItems = [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Bounties", href: "/bounties", icon: Coins },
-    { label: "Create Bounty", href: "/bounties/new", icon: PlusCircle },
-    { label: "Ledger", href: "/ledger", icon: TableProperties },
-  ];
+  const navItems =
+    userRole === "client"
+      ? [
+          { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+          { label: "Bounties", href: "/bounties", icon: Coins },
+          { label: "Create Bounty", href: "/bounties/new", icon: PlusCircle },
+          { label: "Ledger", href: "/ledger", icon: TableProperties },
+        ]
+      : [
+          { label: "Available Bounties", href: "/bounties", icon: Coins },
+          { label: "My Workspace", href: "/dashboard", icon: LayoutDashboard },
+          { label: "Ledger", href: "/ledger", icon: TableProperties },
+        ];
+
+  const toggleRole = () => {
+    setUserRole(userRole === "client" ? "freelancer" : "client");
+  };
 
   return (
     <>
       {/* Desktop Left Sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 flex-col justify-between border-r border-[var(--border)] bg-[var(--bg)] p-6 min-h-screen sticky top-0 font-ui">
-        <div className="space-y-8">
+        <div className="space-y-6">
           {/* Brand */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
@@ -49,6 +68,56 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
               </div>
             </Link>
             <ThemeToggle />
+          </div>
+
+          {/* Persona Card with 1-click Switcher */}
+          <div className="p-3.5 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--fg-muted)]">
+                Active Persona
+              </span>
+              <Link
+                href="/login"
+                className="text-[10px] text-[#007aff] hover:underline font-medium"
+              >
+                Change
+              </Link>
+            </div>
+
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                    userRole === "client"
+                      ? "bg-[#007aff]/15 text-[#007aff]"
+                      : "bg-emerald-500/15 text-emerald-400"
+                  }`}
+                >
+                  {userRole === "client" ? (
+                    <Building2 className="w-4 h-4 stroke-[2]" />
+                  ) : (
+                    <Laptop className="w-4 h-4 stroke-[2]" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-semibold text-[var(--fg)] truncate leading-none">
+                    {userRole === "client" ? "Client (Funder)" : "Freelancer"}
+                  </div>
+                  <div className="text-[10px] font-mono text-[var(--fg-muted)] truncate mt-0.5">
+                    {userEmail || (userRole === "client" ? "client@payguard.ai" : "freelancer@payguard.ai")}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={toggleRole}
+                className="text-[10px] font-medium px-2 py-1 rounded-lg border border-[var(--border)] hover:bg-[var(--surface)] text-[var(--fg-muted)] hover:text-[var(--fg)] transition cursor-pointer shrink-0"
+                title={`Switch to ${userRole === "client" ? "Freelancer" : "Client"}`}
+              >
+                Switch
+              </button>
+            </div>
           </div>
 
           {/* Navigation Links */}
@@ -99,6 +168,17 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
           )}
 
           <Link
+            href="/login"
+            className="flex items-center justify-between px-3.5 py-2 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition"
+          >
+            <span className="flex items-center gap-2">
+              <LogOut className="w-3.5 h-3.5" />
+              Change Persona
+            </span>
+            <span className="text-[10px] font-mono text-[var(--fg-subtle)]">Portal</span>
+          </Link>
+
+          <Link
             href="/"
             className="flex items-center justify-between px-3.5 py-2 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition"
           >
@@ -131,6 +211,13 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
             </Link>
           );
         })}
+        <Link
+          href="/login"
+          className="flex flex-col items-center gap-1 p-2 rounded-xl transition text-[11px] font-medium text-[var(--fg-muted)] hover:text-[var(--fg)]"
+        >
+          <UserCheck className="w-5 h-5" />
+          <span>Role</span>
+        </Link>
       </div>
     </>
   );

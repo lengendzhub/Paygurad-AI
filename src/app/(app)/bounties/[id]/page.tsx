@@ -41,8 +41,12 @@ export default function BountyDetailPage(props: PageProps) {
 function BountyDetailContent({ params }: PageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const role = searchParams.get("role");
-  const isFreelancer = role === "freelancer";
+  const roleParam = searchParams.get("role");
+  const userRole = usePayGuardStore((state) => state.userRole);
+  const setUserRole = usePayGuardStore((state) => state.setUserRole);
+
+  const isFreelancer =
+    roleParam === "freelancer" || (roleParam !== "client" && userRole === "freelancer");
   const { id } = use(params);
 
   const localBounty = usePayGuardStore((state) => state.getBounty(id));
@@ -131,13 +135,25 @@ function BountyDetailContent({ params }: PageProps) {
         {/* Role Separation Controls */}
         <div className="flex items-center gap-2.5">
           {isFreelancer ? (
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-[#007aff]/10 text-[#007aff] border border-[#007aff]/25">
-              <UserCheck className="w-3.5 h-3.5" />
-              <span>Freelancer View (Invite Link)</span>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+                <UserCheck className="w-3.5 h-3.5" />
+                <span>Freelancer View</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setUserRole("client");
+                  router.push(`/bounties/${bounty.id}?role=client`);
+                }}
+                className="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] underline underline-offset-4 cursor-pointer"
+              >
+                Switch to Client View
+              </button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="text-xs px-2.5 py-1 rounded-md bg-[var(--surface-strong)] text-[var(--fg-muted)] border border-[var(--border)] font-medium">
+              <span className="text-xs px-2.5 py-1 rounded-md bg-[#007aff]/10 text-[#007aff] border border-[#007aff]/30 font-medium">
                 Client View
               </span>
               <button
@@ -148,6 +164,16 @@ function BountyDetailContent({ params }: PageProps) {
               >
                 {copiedLink ? <Check className="w-3.5 h-3.5 stroke-[2.5]" /> : <Share2 className="w-3.5 h-3.5" />}
                 <span>{copiedLink ? "Invite Link Copied!" : "Copy Freelancer Invite Link"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUserRole("freelancer");
+                  router.push(`/bounties/${bounty.id}?role=freelancer`);
+                }}
+                className="text-xs text-[var(--fg-muted)] hover:text-emerald-400 underline underline-offset-4 cursor-pointer ml-1"
+              >
+                Preview as Freelancer
               </button>
             </div>
           )}
