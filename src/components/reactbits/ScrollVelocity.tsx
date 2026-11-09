@@ -28,7 +28,7 @@ export function ScrollVelocity({
   outlineAlternate = true,
   fadeEdges = true,
   draggable = true,
-  pauseOnHover = true,
+  pauseOnHover = false,
   className = "font-display",
   fontSize = "clamp(48px, 9vw, 120px)",
   fontWeight = 500,

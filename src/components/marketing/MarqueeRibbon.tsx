@@ -19,7 +19,7 @@ export function MarqueeRibbon() {
         scaleWithVelocity={0.08}
         outlineAlternate={true}
         fadeEdges={true}
-        pauseOnHover={true}
+        pauseOnHover={false}
         fontSize="clamp(44px, 8vw, 110px)"
         fontWeight={500}
         color="var(--fg)"
