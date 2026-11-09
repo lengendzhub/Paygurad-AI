@@ -174,7 +174,7 @@ export default function LandingPage() {
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
-              <Link href="/login" className="w-full sm:w-auto">
+              <Link href="/dashboard" className="w-full sm:w-auto">
                 <Button variant="primary" size="lg" className="w-full sm:w-auto">
                   <span>Login</span>
                   <ArrowRight className="w-4 h-4 ml-1" />
@@ -652,7 +652,7 @@ export default function LandingPage() {
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/login" className="w-full sm:w-auto">
+            <Link href="/dashboard" className="w-full sm:w-auto">
               <Button variant="primary" size="lg" className="w-full sm:w-auto">
                 <span>Login</span>
                 <ArrowRight className="w-4 h-4 ml-1" />

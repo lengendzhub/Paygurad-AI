@@ -78,7 +78,7 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
             </button>
           )}
 
-          <Link href="/login">
+          <Link href="/dashboard">
             <Button variant="primary" size="sm" className="hidden sm:inline-flex text-xs font-semibold">
               Login
               <ArrowRight className="w-3.5 h-3.5 ml-1" />
@@ -110,7 +110,7 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
             </Link>
           ))}
           <div className="pt-3 border-t border-[var(--border)]">
-            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="block">
+            <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block">
               <Button variant="primary" size="sm" className="w-full justify-center">
                 Login
                 <ArrowRight className="w-3.5 h-3.5 ml-1" />

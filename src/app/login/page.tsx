@@ -43,10 +43,11 @@ function LoginContent() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
-    if (initialRoleParam === "freelancer" || initialRoleParam === "client") {
-      setSelectedRole(initialRoleParam);
+    const destination = redirectTarget || (initialRoleParam === "freelancer" ? "/bounties?role=freelancer" : "/dashboard");
+    if (typeof window !== "undefined") {
+      window.location.replace(destination);
     }
-  }, [initialRoleParam]);
+  }, [initialRoleParam, redirectTarget]);
 
   const handleLogin = (role: UserRole) => {
     if (isLoggingIn) return;
