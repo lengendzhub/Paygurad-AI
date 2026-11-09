@@ -78,21 +78,15 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
             </button>
           )}
 
-          <Link href="/login?role=client" className="hidden xl:inline-flex">
-            <span className="text-xs font-ui font-medium text-[var(--fg-muted)] hover:text-[#007aff] px-2.5 py-1 transition">
+          <Link href="/login?role=client">
+            <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-xs font-medium">
               Client Portal
-            </span>
+            </Button>
           </Link>
 
-          <Link href="/login?role=freelancer" className="hidden xl:inline-flex">
-            <span className="text-xs font-ui font-medium text-[var(--fg-muted)] hover:text-emerald-400 px-2.5 py-1 transition">
+          <Link href="/login?role=freelancer">
+            <Button variant="primary" size="sm" className="hidden sm:inline-flex text-xs font-medium">
               Freelancer Portal
-            </span>
-          </Link>
-
-          <Link href="/login">
-            <Button variant="primary" size="sm" className="hidden sm:inline-flex">
-              Sign In
               <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </Link>
@@ -122,19 +116,15 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
             </Link>
           ))}
           <div className="pt-3 border-t border-[var(--border)] space-y-2">
-            <div className="text-[11px] font-mono text-[var(--fg-muted)] flex items-center justify-between pb-1">
-              <span>Presentation Demo Accounts:</span>
-            </div>
             <Link href="/login?role=client" onClick={() => setMobileMenuOpen(false)} className="block">
-              <Button variant="primary" size="sm" className="w-full justify-between">
-                <span>Client Portal</span>
-                <span className="font-mono text-[10px] opacity-80">client@payguard.ai</span>
+              <Button variant="ghost" size="sm" className="w-full justify-center">
+                Client Portal
               </Button>
             </Link>
             <Link href="/login?role=freelancer" onClick={() => setMobileMenuOpen(false)} className="block">
-              <Button variant="secondary" size="sm" className="w-full justify-between border-emerald-500/40 text-emerald-400">
-                <span>Freelancer Portal</span>
-                <span className="font-mono text-[10px] opacity-80">freelancer@payguard.ai</span>
+              <Button variant="primary" size="sm" className="w-full justify-center">
+                Freelancer Portal
+                <ArrowRight className="w-3.5 h-3.5 ml-1" />
               </Button>
             </Link>
           </div>
