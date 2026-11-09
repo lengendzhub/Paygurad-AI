@@ -50,3 +50,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message || "Failed to create bounty" }, { status: 500 });
   }
 }
+

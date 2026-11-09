@@ -8,7 +8,6 @@ import {
   Lock,
   Coins,
   CheckCircle2,
-  Sparkles,
   ExternalLink,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
@@ -41,15 +40,6 @@ export default function DashboardPage() {
 
   const releasedCount = bounties.filter((b) => b.status === "RELEASED_BY_AI").length;
   const revisionCount = bounties.filter((b) => b.status === "REJECTED_NEEDS_WORK").length;
-
-  const auditedBounties = bounties.filter((b) => b.audit && typeof b.audit.score === "number");
-  const avgScore =
-    auditedBounties.length > 0
-      ? Math.round(
-          auditedBounties.reduce((sum, b) => sum + (b.audit?.score || 0), 0) /
-            auditedBounties.length
-        )
-      : null;
 
   // Filter Bounties by Selected Status
   const filteredBounties = useMemo(() => {
@@ -95,8 +85,8 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* 4 Interactive Metric Cards (Click to filter) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      {/* 3 Interactive Metric Cards (Click to filter) */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         {/* Total Escrow */}
         <button
           type="button"
@@ -154,26 +144,6 @@ export default function DashboardPage() {
           </div>
           <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-emerald-500 mt-1">
             <AnimatedCounter value={releasedCount} />
-          </div>
-        </button>
-
-        {/* Avg AI Score */}
-        <button
-          type="button"
-          onClick={() => setStatusFilter("ALL")}
-          className={`p-4 sm:p-5 rounded-2xl border text-left transition-all cursor-pointer ${
-            statusFilter === "ALL"
-              ? "border-[var(--border)] bg-[var(--surface-strong)]"
-              : "border-[var(--border)] bg-[var(--surface-strong)] hover:border-[var(--border-strong)]"
-          }`}
-          title="Show all bounties"
-        >
-          <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-[var(--fg-muted)]">
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            <span>Avg AI Score</span>
-          </div>
-          <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-[var(--fg)] mt-1">
-            {avgScore !== null ? `${avgScore}/100` : "—"}
           </div>
         </button>
       </div>

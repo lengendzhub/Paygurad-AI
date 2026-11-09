@@ -124,3 +124,4 @@ export function isBountyAlreadyPaid(id: string): boolean {
   const bounty = getServerBounty(id);
   return bounty?.status === "RELEASED_BY_AI";
 }
+
