@@ -212,26 +212,66 @@ export default function LandingPage() {
                 </span>
               </div>
 
-              {/* Abstract Score Ring Skeleton */}
-              <div className="my-6 flex items-center justify-between gap-6 p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)]">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full border-4 border-[var(--border)] border-t-[#007AFF] flex items-center justify-center">
-                    <span className="w-2 h-2 rounded-full bg-[#007AFF]" />
+              {/* Abstract Score Ring Skeleton with Radar & Orbit Animations */}
+              <div className="relative my-6 flex items-center justify-between gap-6 p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] overflow-hidden shadow-sm">
+                {/* Subtle Ambient Sweep */}
+                <motion.div
+                  className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
+                />
+
+                <div className="flex items-center gap-4 relative z-10">
+                  {/* Animated Radar Scanner Ring */}
+                  <div className="relative w-14 h-14 flex items-center justify-center shrink-0">
+                    {/* Ambient Glow */}
+                    <div className="absolute inset-0 rounded-full bg-[#007aff]/15 blur-sm animate-pulse" />
+
+                    {/* Outer Dashed Orbit Ring */}
+                    <motion.div
+                      className="absolute -inset-1 rounded-full border border-dashed border-[#007aff]/30"
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                    />
+
+                    {/* Base Circle Track */}
+                    <div className="absolute inset-0 rounded-full border-2 border-[var(--border)]" />
+
+                    {/* Rotating Radar Arc */}
+                    <motion.div
+                      className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#007aff] border-r-[#007aff]/70"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 3.2, repeat: Infinity, ease: "linear" }}
+                    />
+
+                    {/* Central Pulsing Beacon Dot */}
+                    <div className="relative flex items-center justify-center">
+                      <span className="absolute w-4 h-4 rounded-full bg-[#007aff]/40 animate-ping" />
+                      <span className="relative w-2.5 h-2.5 rounded-full bg-[#007aff] shadow-[0_0_10px_#007aff]" />
+                    </div>
                   </div>
+
                   <div>
-                    <div className="font-ui text-xs uppercase tracking-wider text-[var(--fg-muted)]">
-                      Confidence Score
+                    <div className="flex items-center gap-2">
+                      <span className="font-ui text-xs uppercase tracking-wider text-[var(--fg-muted)]">
+                        Confidence Score
+                      </span>
+                      <span className="font-mono text-[10px] font-semibold text-[#007aff] bg-[#007aff]/10 px-1.5 py-0.5 rounded border border-[#007aff]/25 tabular-nums">
+                        99.8%
+                      </span>
                     </div>
                     <div className="font-display text-xl text-[var(--fg)] mt-0.5">
                       Gemini Arbiter
                     </div>
                   </div>
                 </div>
-                <div className="text-right">
+
+                <div className="text-right relative z-10">
                   <div className="font-ui text-[11px] uppercase tracking-wider text-[var(--fg-subtle)]">
                     Status
                   </div>
-                  <div className="font-ui text-xs font-semibold dark:text-emerald-400 text-emerald-600">
+                  <div className="flex items-center gap-1.5 justify-end font-ui text-xs font-semibold dark:text-emerald-400 text-emerald-600 mt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     Verified
                   </div>
                 </div>
