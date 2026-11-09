@@ -16,6 +16,9 @@ import {
   CheckCircle2,
   ChevronDown,
   Sparkles,
+  Building2,
+  Laptop,
+  UserCheck,
 } from "lucide-react";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
@@ -192,6 +195,69 @@ export default function LandingPage() {
                 </Button>
               </Link>
             </div>
+
+            {/* Quick Demo Credentials for Reviewers & Judges */}
+            <div className="pt-2">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-xl p-3 sm:p-3.5 space-y-2 text-left max-w-xl mx-auto lg:mx-0">
+                <div className="flex items-center justify-between">
+                  <span className="font-ui text-[11px] uppercase tracking-wider text-[var(--fg-muted)] font-semibold flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    Presentation Demo Accounts
+                  </span>
+                  <Link href="/login" className="text-[11px] font-ui text-[#007aff] hover:underline font-medium">
+                    Portal Details →
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
+                  {/* Client Demo */}
+                  <Link
+                    href="/login?role=client"
+                    className="p-2 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] hover:border-[#007aff]/60 hover:bg-[#007aff]/5 transition group flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="w-6 h-6 rounded-lg bg-[#007aff]/15 flex items-center justify-center text-[#007aff] shrink-0">
+                        <Building2 className="w-3.5 h-3.5 stroke-[2]" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-[10px] uppercase font-ui font-semibold text-[#007aff] leading-none">
+                          Client
+                        </div>
+                        <div className="text-xs font-semibold text-[var(--fg)] group-hover:text-[#007aff] truncate mt-0.5">
+                          client@payguard.ai
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-ui font-medium text-[var(--fg-muted)] group-hover:text-[var(--fg)] shrink-0 ml-1">
+                      Sign in →
+                    </span>
+                  </Link>
+
+                  {/* Freelancer Demo */}
+                  <Link
+                    href="/login?role=freelancer"
+                    className="p-2 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] hover:border-emerald-500/60 hover:bg-emerald-500/5 transition group flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="w-6 h-6 rounded-lg bg-emerald-500/15 flex items-center justify-center dark:text-emerald-400 text-emerald-600 shrink-0">
+                        <Laptop className="w-3.5 h-3.5 stroke-[2]" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-[10px] uppercase font-ui font-semibold text-emerald-400 leading-none">
+                          Freelancer
+                        </div>
+                        <div className="text-xs font-semibold text-[var(--fg)] group-hover:text-emerald-400 truncate mt-0.5">
+                          freelancer@payguard.ai
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-ui font-medium text-[var(--fg-muted)] group-hover:text-[var(--fg)] shrink-0 ml-1">
+                      Sign in →
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           {/* Right Verification Card Mockup (Abstract Skeleton Only, NO Fake Data) */}
@@ -361,8 +427,14 @@ export default function LandingPage() {
                   Funds are authorized in PayPal escrow upfront. If the freelancer fails to meet the formal acceptance criteria, funds are never released.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs text-[#007AFF]">
-                PayPal Orders API v2
+              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs flex items-center justify-between">
+                <span className="text-[#007AFF] font-mono">PayPal Orders API v2</span>
+                <Link
+                  href="/login?role=client"
+                  className="font-mono text-xs font-semibold text-[#007aff] hover:underline"
+                >
+                  client@payguard.ai →
+                </Link>
               </div>
             </div>
 
@@ -397,8 +469,14 @@ export default function LandingPage() {
                   Freelancers inspect funded escrow before writing a single line of code. Deliver code that passes criteria, and payouts hit your PayPal instantly.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs text-[#007AFF]">
-                PayPal Payouts API v1
+              <div className="mt-6 pt-4 border-t border-[var(--border)] font-ui text-xs flex items-center justify-between">
+                <span className="text-emerald-500 font-mono">PayPal Payouts API v1</span>
+                <Link
+                  href="/login?role=freelancer"
+                  className="font-mono text-xs font-semibold text-emerald-400 hover:underline"
+                >
+                  freelancer@payguard.ai →
+                </Link>
               </div>
             </div>
           </div>
@@ -674,6 +752,17 @@ export default function LandingPage() {
               <Button variant="ghost" size="lg" className="w-full sm:w-auto">
                 Protocol Architecture
               </Button>
+            </Link>
+          </div>
+
+          <div className="pt-2 text-xs font-mono text-[var(--fg-muted)] flex flex-wrap items-center justify-center gap-3">
+            <span>Demo Access:</span>
+            <Link href="/login?role=client" className="text-[#007aff] hover:underline">
+              client@payguard.ai
+            </Link>
+            <span className="text-[var(--border-strong)]">·</span>
+            <Link href="/login?role=freelancer" className="text-emerald-400 hover:underline">
+              freelancer@payguard.ai
             </Link>
           </div>
         </div>

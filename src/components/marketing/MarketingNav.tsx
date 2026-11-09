@@ -122,14 +122,19 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
             </Link>
           ))}
           <div className="pt-3 border-t border-[var(--border)] space-y-2">
+            <div className="text-[11px] font-mono text-[var(--fg-muted)] flex items-center justify-between pb-1">
+              <span>Presentation Demo Accounts:</span>
+            </div>
             <Link href="/login?role=client" onClick={() => setMobileMenuOpen(false)} className="block">
-              <Button variant="primary" size="sm" className="w-full justify-center">
-                Client Portal
+              <Button variant="primary" size="sm" className="w-full justify-between">
+                <span>Client Portal</span>
+                <span className="font-mono text-[10px] opacity-80">client@payguard.ai</span>
               </Button>
             </Link>
             <Link href="/login?role=freelancer" onClick={() => setMobileMenuOpen(false)} className="block">
-              <Button variant="secondary" size="sm" className="w-full justify-center border-emerald-500/40 text-emerald-400">
-                Freelancer Portal
+              <Button variant="secondary" size="sm" className="w-full justify-between border-emerald-500/40 text-emerald-400">
+                <span>Freelancer Portal</span>
+                <span className="font-mono text-[10px] opacity-80">freelancer@payguard.ai</span>
               </Button>
             </Link>
           </div>
