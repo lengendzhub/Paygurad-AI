@@ -3,10 +3,9 @@
 import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   ShieldCheck,
-  Sparkles,
   CheckCircle2,
   XCircle,
   ArrowRight,
@@ -15,9 +14,7 @@ import {
   Copy,
   DollarSign,
   AlertCircle,
-  FileCheck,
   Check,
-  ExternalLink,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -39,7 +36,7 @@ const STAGES = [
 
 export default function VerificationSignaturePage(props: PageProps) {
   return (
-    <React.Suspense fallback={<div className="p-8 text-xs text-slate-500 font-mono">Loading verification screen...</div>}>
+    <React.Suspense fallback={<div className="p-8 text-xs text-[var(--fg-muted)] font-mono">Loading verification screen...</div>}>
       <VerificationSignatureContent {...props} />
     </React.Suspense>
   );
@@ -57,7 +54,7 @@ function VerificationSignatureContent({ params }: PageProps) {
   const [apiError, setApiError] = useState<string | null>(null);
   const [copiedBatch, setCopiedBatch] = useState(false);
 
-  // If already audited, show stored audit immediately; otherwise run verification!
+  // If already audited, show stored audit immediately; otherwise run verification
   const [auditResult, setAuditResult] = useState<VerificationResult | null>(
     bounty?.audit || null
   );
@@ -85,7 +82,6 @@ function VerificationSignatureContent({ params }: PageProps) {
     setApiError(null);
     setCurrentStageIndex(0);
 
-    // Simulate animated stage progression while API communicates
     const stageTimer1 = setTimeout(() => setCurrentStageIndex(1), 800);
     const stageTimer2 = setTimeout(() => setCurrentStageIndex(2), 1600);
     const stageTimer3 = setTimeout(() => setCurrentStageIndex(3), 2400);
@@ -140,7 +136,6 @@ function VerificationSignatureContent({ params }: PageProps) {
   };
 
   useEffect(() => {
-    // If not yet audited, trigger automatically on mount
     if (bounty && !bounty.audit && bounty.submissionText && !isAuditing) {
       runAudit();
     }
@@ -167,53 +162,53 @@ function VerificationSignatureContent({ params }: PageProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 py-4">
+    <div className="max-w-4xl mx-auto space-y-8 py-4 font-ui">
       {/* Top Header */}
       <div className="flex items-center justify-between">
         <Link
           href={`/bounties/${bounty.id}`}
-          className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-white transition"
+          className="inline-flex items-center gap-2 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to bounty</span>
         </Link>
 
-        <span className="text-xs font-mono text-slate-500">
+        <span className="text-xs font-mono text-[var(--fg-subtle)]">
           Order ID: {bounty.escrowOrderId.slice(0, 14)}...
         </span>
       </div>
 
       <div>
-        <div className="flex items-center gap-2 font-mono text-xs text-blue-400 uppercase tracking-widest mb-1">
-          <Sparkles className="w-4 h-4 text-purple-400" />
+        <div className="flex items-center gap-2 font-mono text-xs text-[#0088cc] uppercase tracking-widest mb-1">
+          <span className="w-2 h-2 rounded-full bg-[#0088cc] animate-pulse" />
           <span>Gemini Autonomous Verification</span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-white">
+        <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
           {bounty.title}
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
           Escrow Value: ${bounty.amount} USD · Recipient: {bounty.freelancerEmail || "Not specified"}
         </p>
       </div>
 
       {/* Live Auditing Stage Indicator */}
       {isAuditing && (
-        <GlassCard className="p-8 border-purple-500/20 bg-gradient-to-r from-purple-900/10 via-blue-900/10 to-transparent space-y-6">
+        <GlassCard className="p-8 border-[#0088cc]/30 bg-[#0088cc]/5 space-y-6">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 animate-pulse">
-              <Sparkles className="w-5 h-5 animate-spin" />
+            <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/30 flex items-center justify-center text-[#0088cc]">
+              <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">
+              <h2 className="font-display text-2xl text-[var(--fg)]">
                 Live Escrow Verification in Progress
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="font-body text-xs text-[var(--fg-muted)]">
                 Communicating with Gemini Flash &amp; PayPal Sandbox rails...
               </p>
             </div>
           </div>
 
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-2 font-body">
             {STAGES.map((stg, i) => {
               const isPast = currentStageIndex > i;
               const isCurrent = currentStageIndex === i;
@@ -222,7 +217,11 @@ function VerificationSignatureContent({ params }: PageProps) {
                 <div
                   key={i}
                   className={`flex items-center gap-3 text-xs transition-opacity duration-300 ${
-                    isCurrent ? "text-white font-medium opacity-100" : isPast ? "text-slate-400 opacity-60" : "text-slate-600 opacity-30"
+                    isCurrent
+                      ? "text-[var(--fg)] font-medium opacity-100"
+                      : isPast
+                      ? "text-[var(--fg-muted)] opacity-60"
+                      : "text-[var(--fg-subtle)] opacity-30"
                   }`}
                 >
                   <div
@@ -230,8 +229,8 @@ function VerificationSignatureContent({ params }: PageProps) {
                       isPast
                         ? "bg-emerald-500/20 text-emerald-400"
                         : isCurrent
-                        ? "bg-purple-500/20 text-purple-300 animate-pulse"
-                        : "bg-white/[0.04] text-slate-600"
+                        ? "bg-[#0088cc]/20 text-[#0088cc] animate-pulse"
+                        : "bg-[var(--surface)] text-[var(--fg-subtle)]"
                     }`}
                   >
                     {isPast ? <Check className="w-3 h-3" /> : i + 1}
@@ -246,17 +245,17 @@ function VerificationSignatureContent({ params }: PageProps) {
 
       {/* Error State with Retry */}
       {apiError && !isAuditing && (
-        <GlassCard className="p-6 border-rose-500/20 bg-rose-500/[0.05] space-y-4">
-          <div className="flex items-center gap-3 text-rose-400">
+        <GlassCard className="p-6 border-red-500/25 bg-red-500/10 space-y-4">
+          <div className="flex items-center gap-3 text-red-400">
             <AlertCircle className="w-5 h-5 shrink-0" />
-            <h3 className="text-base font-semibold">Verification Audit Error</h3>
+            <h3 className="font-display text-xl text-[var(--fg)]">Verification Audit Error</h3>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed font-mono">
+          <p className="font-mono text-xs text-red-300 leading-relaxed">
             {apiError}
           </p>
           <div className="pt-2">
             <Button variant="secondary" size="md" onClick={runAudit}>
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 mr-1" />
               Retry Verification
             </Button>
           </div>
@@ -271,20 +270,20 @@ function VerificationSignatureContent({ params }: PageProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className={`
-              rounded-3xl border p-6 sm:p-8 backdrop-blur-2xl space-y-6 shadow-2xl
+              rounded-[28px] border p-6 sm:p-8 backdrop-blur-2xl space-y-6 shadow-2xl
               ${
                 auditResult.approved
-                  ? "bg-emerald-500/[0.05] border-emerald-500/25 shadow-[0_0_50px_rgba(16,185,129,0.1)]"
-                  : "bg-rose-500/[0.05] border-rose-500/25 shadow-[0_0_50px_rgba(244,63,94,0.1)]"
+                  ? "bg-emerald-500/[0.05] border-emerald-500/25 shadow-[0_0_50px_rgba(34,197,94,0.1)]"
+                  : "bg-red-500/[0.05] border-red-500/25 shadow-[0_0_50px_rgba(239,68,68,0.1)]"
               }
             `}
           >
             {/* Header / Score Ring */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-white/[0.08] pb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-[var(--border)] pb-6">
               <div className="flex items-center gap-4">
                 <div
                   className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
-                    auditResult.approved ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"
+                    auditResult.approved ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"
                   }`}
                 >
                   {auditResult.approved ? (
@@ -295,14 +294,17 @@ function VerificationSignatureContent({ params }: PageProps) {
                 </div>
 
                 <div>
+                  {/* Verdict Title: EB Garamond italic at 48px and up per Section 4A / 4C */}
                   <h2
-                    className={`text-xl sm:text-2xl font-bold tracking-tight ${
-                      auditResult.approved ? "text-emerald-300" : "text-rose-300"
+                    className={`font-display italic text-3xl sm:text-5xl tracking-tight leading-tight ${
+                      auditResult.approved ? "text-emerald-400" : "text-red-400"
                     }`}
                   >
-                    {auditResult.approved ? "Approved — PayPal Payout Dispatched" : "Rejected — Funds Remain in Escrow"}
+                    {auditResult.approved
+                      ? "Approved — Payout Dispatched"
+                      : "Rejected — Revision Needed"}
                   </h2>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="font-body text-xs text-[var(--fg-muted)] mt-1">
                     {auditResult.approved
                       ? "All criteria verified. Funds disbursed to freelancer PayPal address."
                       : "Submission does not fulfill 100% of acceptance criteria."}
@@ -321,17 +323,17 @@ function VerificationSignatureContent({ params }: PageProps) {
 
             {/* AI Summary */}
             <div className="space-y-1.5">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">
+              <span className="font-ui text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-muted)] block">
                 Gemini Arbiter Verdict
               </span>
-              <p className="text-sm text-slate-200 leading-relaxed font-sans">
+              <p className="font-body text-sm text-[var(--fg)] leading-relaxed">
                 {auditResult.summary}
               </p>
             </div>
 
             {/* Criteria Staggered Breakdown */}
             <div className="space-y-2.5">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">
+              <span className="font-ui text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-muted)] block">
                 Criteria Checklist ({auditResult.criteriaChecklist?.length || 0})
               </span>
               <div className="space-y-2">
@@ -344,17 +346,17 @@ function VerificationSignatureContent({ params }: PageProps) {
                     className={`p-4 rounded-2xl border flex items-start gap-3 text-xs ${
                       c.passed
                         ? "bg-emerald-500/[0.04] border-emerald-500/15"
-                        : "bg-rose-500/[0.04] border-rose-500/15"
+                        : "bg-red-500/[0.04] border-red-500/15"
                     }`}
                   >
                     {c.passed ? (
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                      <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                     )}
                     <div className="space-y-0.5">
-                      <div className="font-semibold text-white">{c.criterion}</div>
-                      <div className="text-slate-400 leading-relaxed font-mono text-[11px]">
+                      <div className="font-ui font-semibold text-[var(--fg)]">{c.criterion}</div>
+                      <div className="font-body text-[var(--fg-muted)] leading-relaxed text-[11px]">
                         {c.reason}
                       </div>
                     </div>
@@ -365,17 +367,17 @@ function VerificationSignatureContent({ params }: PageProps) {
 
             {/* Official PayPal Payout Receipt (on approval) */}
             {auditResult.approved && (
-              <div className="p-5 rounded-2xl bg-black/40 border border-white/[0.08] space-y-3 font-mono text-xs">
-                <div className="flex items-center gap-2 text-emerald-400 font-bold uppercase tracking-wider">
+              <div className="p-5 rounded-2xl bg-black/60 border border-[var(--border)] space-y-3 font-mono text-xs">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold uppercase tracking-wider font-ui">
                   <ShieldCheck className="w-4 h-4" />
                   <span>PayPal Sandbox Payouts API Receipt</span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-300">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[var(--fg)]">
                   <div className="space-y-1">
-                    <span className="text-[10px] text-slate-500 uppercase block">Payout Batch ID</span>
+                    <span className="text-[10px] text-[var(--fg-subtle)] uppercase block font-ui">Payout Batch ID</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-blue-400 truncate max-w-[200px]">
+                      <span className="text-[#0088cc] truncate max-w-[200px]">
                         {payoutResult?.data?.batch_header?.payout_batch_id || bounty.payoutBatchId || "SANDBOX_SIMULATED"}
                       </span>
                       <button
@@ -386,7 +388,7 @@ function VerificationSignatureContent({ params }: PageProps) {
                               ""
                           )
                         }
-                        className="text-slate-500 hover:text-white"
+                        className="text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
                         title="Copy Batch ID"
                       >
                         {copiedBatch ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
@@ -395,22 +397,22 @@ function VerificationSignatureContent({ params }: PageProps) {
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] text-slate-500 uppercase block">Disbursement Status</span>
+                    <span className="text-[10px] text-[var(--fg-subtle)] uppercase block font-ui">Disbursement Status</span>
                     <span className="text-emerald-400 font-bold">
                       {payoutResult?.data?.batch_header?.batch_status || "SUCCESS"}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] text-slate-500 uppercase block">Recipient Email</span>
-                    <span className="text-slate-300 truncate max-w-[200px]">
+                    <span className="text-[10px] text-[var(--fg-subtle)] uppercase block font-ui">Recipient Email</span>
+                    <span className="text-[var(--fg)] truncate max-w-[200px]">
                       {bounty.freelancerEmail || "Not specified"}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] text-slate-500 uppercase block">Disbursed Amount</span>
-                    <span className="text-white font-bold">${bounty.amount} USD</span>
+                    <span className="text-[10px] text-[var(--fg-subtle)] uppercase block font-ui">Disbursed Amount</span>
+                    <span className="text-[var(--fg)] font-bold tabular-nums">${bounty.amount} USD</span>
                   </div>
                 </div>
               </div>
@@ -419,12 +421,12 @@ function VerificationSignatureContent({ params }: PageProps) {
             {/* Rejection Resubmit Action */}
             {!auditResult.approved && (
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-xs text-slate-400">
+                <p className="font-body text-xs text-[var(--fg-muted)]">
                   Revise your deliverable according to Gemini feedback and resubmit.
                 </p>
                 <Link href={`/bounties/${bounty.id}/submit`}>
                   <Button variant="primary" size="md">
-                    <RotateCcw className="w-3.5 h-3.5" />
+                    <RotateCcw className="w-3.5 h-3.5 mr-1" />
                     Revise &amp; Resubmit Work
                   </Button>
                 </Link>
@@ -442,7 +444,7 @@ function VerificationSignatureContent({ params }: PageProps) {
             <Link href="/ledger">
               <Button variant="secondary" size="sm">
                 Open AG Grid Ledger
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>
           </div>
@@ -451,4 +453,3 @@ function VerificationSignatureContent({ params }: PageProps) {
     </div>
   );
 }
-

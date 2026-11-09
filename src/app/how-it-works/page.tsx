@@ -2,9 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
-  ShieldCheck,
   Lock,
   FileCheck,
   Cpu,
@@ -20,6 +19,8 @@ import {
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { Button } from "@/components/ui/Button";
+import { RevealStatement } from "@/components/marketing/RevealStatement";
+import { useScrollRefresh } from "@/hooks/useScrollRefresh";
 
 interface NodeDetail {
   id: string;
@@ -58,7 +59,7 @@ const FLOW_NODES: NodeDetail[] = [
     role: "Deliverable Submission",
     api: "Internal Verification Gateway (/api/verify-and-payout)",
     explanation:
-      "The freelancer reviews pinned acceptance rules and uploads raw code, files, or text along with their verified PayPal email to receive funds.",
+      "The freelancer reviews pinned acceptance rules and uploads raw code or deliverables along with their verified sandbox PayPal email to receive funds.",
     requestFields: ["bountyId", "title", "requirements", "amount", "freelancerEmail", "submission"],
     responseFields: ["audit.approved", "audit.score", "payout.data.batch_header"],
   },
@@ -68,7 +69,7 @@ const FLOW_NODES: NodeDetail[] = [
     role: "Autonomous Acceptance Verification",
     api: "Google Gemini Flash API (models.generateContent)",
     explanation:
-      "Evaluates deliverables with structured JSON schema output. Validates functional logic, criteria compliance, and lack of placeholders with mathematical rigor.",
+      "Evaluates deliverables with structured JSON schema output. Validates functional logic and criteria compliance in an isolated security envelope.",
     requestFields: ["model", "contents", "config.responseMimeType: application/json", "config.responseSchema"],
     responseFields: ["approved: boolean", "score: integer", "summary: string", "criteriaChecklist[]"],
   },
@@ -88,6 +89,8 @@ export default function HowItWorksPage() {
   const [selectedNode, setSelectedNode] = useState<NodeDetail | null>(FLOW_NODES[0]);
   const [simState, setSimState] = useState<"idle" | "running_pass" | "running_fail">("idle");
   const [activeSimIndex, setActiveSimIndex] = useState<number>(-1);
+
+  useScrollRefresh();
 
   const runSimulation = (mode: "pass" | "fail") => {
     setSimState(mode === "pass" ? "running_pass" : "running_fail");
@@ -110,191 +113,215 @@ export default function HowItWorksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0B0F] text-[#F4F4F7] flex flex-col selection:bg-blue-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#0088cc]/30 selection:text-white">
       <MarketingNav />
 
-      <main className="flex-1 max-w-7xl mx-auto px-6 py-20 w-full space-y-16">
-        {/* Title */}
-        <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-wider">
-            Protocol Mechanics
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-16 md:py-24">
+        {/* Title Header with ScrollReveal enter */}
+        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
+          <span className="font-ui text-xs font-semibold uppercase tracking-wider text-[#0088cc]">
+            Protocol Architecture
+          </span>
+          <div>
+            <RevealStatement preset="enter">
+              Interactive Protocol Flow
+            </RevealStatement>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
-            How PayGuard Automates Escrow
-          </h1>
-          <p className="text-base text-slate-400 leading-relaxed">
-            Click on any node in the protocol diagram to inspect the underlying PayPal and Gemini API contracts. Run the interactive simulation engine to observe state transitions.
+          <p className="font-body text-base text-[var(--fg-muted)] leading-relaxed">
+            Click any component node in the pipeline to inspect technical payloads and API specifications.
           </p>
-        </div>
 
-        {/* Simulation Controls */}
-        <div className="flex flex-wrap items-center gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-          <span className="text-xs text-slate-400 font-medium">Protocol Simulator:</span>
-          <Button
-            variant="emerald"
-            size="sm"
-            onClick={() => runSimulation("pass")}
-            disabled={simState !== "idle"}
-          >
-            <Play className="w-3.5 h-3.5" />
-            Simulate 100% Pass Flow
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => runSimulation("fail")}
-            disabled={simState !== "idle"}
-          >
-            <Play className="w-3.5 h-3.5" />
-            Simulate Rejection Flow
-          </Button>
-          {simState !== "idle" && (
-            <Button variant="ghost" size="sm" onClick={resetSimulation}>
-              <RotateCcw className="w-3.5 h-3.5" />
-              Reset
+          {/* Simulation Controls */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-4 font-ui">
+            <Button
+              variant={simState === "running_pass" ? "emerald" : "secondary"}
+              size="sm"
+              onClick={() => runSimulation("pass")}
+            >
+              <Play className="w-3.5 h-3.5 mr-1" />
+              Simulate 100% Pass Flow
             </Button>
-          )}
+            <Button
+              variant={simState === "running_fail" ? "danger" : "secondary"}
+              size="sm"
+              onClick={() => runSimulation("fail")}
+            >
+              <Play className="w-3.5 h-3.5 mr-1" />
+              Simulate Revision Flow
+            </Button>
+            {simState !== "idle" && (
+              <Button variant="ghost" size="sm" onClick={resetSimulation}>
+                <RotateCcw className="w-3.5 h-3.5 mr-1" />
+                Reset
+              </Button>
+            )}
+          </div>
         </div>
 
-        {/* Diagram & Inspector Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Diagram */}
-          <div className="lg:col-span-7 space-y-4">
-            {FLOW_NODES.map((node, idx) => {
+        {/* Interactive Diagram Pipeline */}
+        <div className="relative mb-20 overflow-x-auto pb-8 pt-4">
+          <div className="min-w-[900px] flex items-center justify-between relative px-4">
+            {/* Animated Dash Connector SVG */}
+            <svg className="absolute left-16 right-16 top-1/2 -translate-y-1/2 w-[calc(100%-128px)] h-4 pointer-events-none -z-0">
+              <line
+                x1="0%"
+                y1="50%"
+                x2="100%"
+                y2="50%"
+                stroke="#0088cc"
+                strokeWidth="2"
+                strokeDasharray="6 6"
+                className="animate-[dash_1s_linear_infinite]"
+              />
+              <style jsx>{`
+                @keyframes dash {
+                  to {
+                    stroke-dashoffset: -12;
+                  }
+                }
+              `}</style>
+            </svg>
+
+            {FLOW_NODES.map((node, index) => {
               const isSelected = selectedNode?.id === node.id;
-              const isSimActive = activeSimIndex === idx;
-              const isSimPassed = activeSimIndex > idx;
-              const isSimFailedEnd = simState === "running_fail" && activeSimIndex >= 3 && idx === 4;
+              const isSimActive = activeSimIndex === index;
+              const isSimPassed = simState === "running_pass" && activeSimIndex >= index;
+              const isSimFailed =
+                simState === "running_fail" && index === 3 && activeSimIndex >= 3;
+
+              const icons = [Lock, Lock, FileCheck, Cpu, DollarSign];
+              const Icon = icons[index];
 
               return (
-                <div key={node.id} className="relative">
-                  <div
-                    onClick={() => setSelectedNode(node)}
-                    className={`
-                      p-5 rounded-2xl border cursor-pointer transition-all flex items-center justify-between gap-4
-                      ${
-                        isSelected
-                          ? "bg-blue-600/15 border-blue-500 shadow-[0_0_24px_rgba(59,130,246,0.15)]"
-                          : "bg-white/[0.025] border-white/[0.07] hover:bg-white/[0.045] hover:border-white/[0.12]"
-                      }
-                      ${isSimActive ? "ring-2 ring-purple-500 bg-purple-500/20" : ""}
-                    `}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center font-mono text-xs font-bold ${
-                          isSimActive
-                            ? "bg-purple-600 text-white animate-pulse"
-                            : isSelected
-                            ? "bg-blue-600 text-white"
-                            : "bg-white/[0.06] text-slate-400"
-                        }`}
-                      >
-                        0{idx + 1}
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-semibold text-white">{node.title}</h3>
-                        <p className="text-xs text-slate-400">{node.role}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      {isSimActive && (
-                        <span className="text-[10px] font-mono uppercase bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-full">
-                          Processing
-                        </span>
-                      )}
-                      {isSimFailedEnd && (
-                        <span className="text-[10px] font-mono uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
-                          <XCircle className="w-3 h-3" />
-                          Halted (Locked)
-                        </span>
-                      )}
-                      {simState === "running_pass" && isSimPassed && (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                      )}
-                      <span className="text-xs font-mono text-slate-500 hidden sm:inline">
-                        {node.api.split(" ")[0]}
-                      </span>
-                    </div>
+                <div
+                  key={node.id}
+                  onClick={() => setSelectedNode(node)}
+                  className={`
+                    relative z-10 w-44 rounded-[28px] border p-5 cursor-pointer backdrop-blur-xl transition-all duration-300
+                    ${
+                      isSelected
+                        ? "border-[#0088cc] bg-[var(--surface-strong)] shadow-[0_0_28px_rgba(0,136,204,0.3)] -translate-y-1"
+                        : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
+                    }
+                    ${
+                      isSimActive
+                        ? "ring-2 ring-[#0088cc] shadow-[0_0_32px_rgba(0,136,204,0.5)] scale-105"
+                        : ""
+                    }
+                  `}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-ui text-[10px] font-mono tracking-widest text-[var(--fg-subtle)]">
+                      0{index + 1}
+                    </span>
+                    {isSimFailed ? (
+                      <XCircle className="w-4 h-4 text-red-400" />
+                    ) : isSimPassed ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    ) : (
+                      <div className="w-2 h-2 rounded-full bg-[#0088cc]/60" />
+                    )}
                   </div>
 
-                  {idx < FLOW_NODES.length - 1 && (
-                    <div className="w-[2px] h-4 bg-white/[0.1] mx-auto my-1" />
-                  )}
+                  <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/25 flex items-center justify-center text-[#0088cc] mb-3">
+                    <Icon className="w-5 h-5 stroke-[1.75]" />
+                  </div>
+
+                  <h3 className="font-display text-lg text-[var(--fg)] leading-snug">
+                    {node.title}
+                  </h3>
+                  <p className="font-ui text-[11px] text-[var(--fg-muted)] mt-1 truncate">
+                    {node.role}
+                  </p>
                 </div>
               );
             })}
           </div>
+        </div>
 
-          {/* Right Inspector Panel */}
-          <div className="lg:col-span-5 sticky top-24">
-            {selectedNode ? (
-              <div className="rounded-3xl border border-white/[0.1] bg-[#101018] p-6 space-y-6 shadow-2xl">
-                <div className="flex items-start justify-between border-b border-white/[0.08] pb-4">
-                  <div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-blue-400">
-                      API Inspector
+        {/* Selected Node Technical Inspector Panel */}
+        <AnimatePresence mode="wait">
+          {selectedNode && (
+            <motion.div
+              key={selectedNode.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.3 }}
+              className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-8 shadow-2xl relative overflow-hidden"
+            >
+              <div className="flex items-start justify-between pb-6 border-b border-[var(--border)]">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-ui text-xs font-semibold uppercase tracking-wider text-[#0088cc]">
+                      Technical Specification
                     </span>
-                    <h3 className="text-lg font-bold text-white mt-0.5">
-                      {selectedNode.title}
-                    </h3>
+                    <span className="text-xs font-mono text-[var(--fg-subtle)] bg-[var(--surface-strong)] px-2.5 py-0.5 rounded-full border border-[var(--border)]">
+                      {selectedNode.api}
+                    </span>
                   </div>
-                  <span className="text-xs font-mono bg-white/[0.05] border border-white/[0.1] px-2 py-1 rounded-lg text-slate-400">
-                    Node {FLOW_NODES.findIndex((n) => n.id === selectedNode.id) + 1}/5
-                  </span>
+                  <h3 className="font-display text-3xl text-[var(--fg)] mt-1">
+                    {selectedNode.title}
+                  </h3>
                 </div>
+                <button
+                  onClick={() => setSelectedNode(null)}
+                  className="w-8 h-8 rounded-full bg-[var(--surface-strong)] hover:bg-[var(--surface)] text-[var(--fg-muted)] hover:text-[var(--fg)] flex items-center justify-center transition cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
 
-                <div className="space-y-2">
-                  <div className="text-[11px] uppercase font-mono tracking-wider text-slate-400">
-                    Endpoint Rail
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] font-mono text-xs text-purple-300 break-all">
-                    {selectedNode.api}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="text-[11px] uppercase font-mono tracking-wider text-slate-400">
-                    Functionality
-                  </div>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
+                <div>
+                  <h4 className="font-ui text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">
+                    Plain-Language Architecture
+                  </h4>
+                  <p className="font-body text-sm text-[var(--fg-muted)] leading-relaxed">
                     {selectedNode.explanation}
                   </p>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="text-[11px] uppercase font-mono tracking-wider text-slate-400">
-                    Request Schema Properties
-                  </div>
-                  <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] font-mono text-xs text-slate-300 space-y-1">
+                <div>
+                  <h4 className="font-ui text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2 flex items-center gap-1.5">
+                    <Code2 className="w-3.5 h-3.5 text-[#0088cc]" />
+                    Sent Payload Keys
+                  </h4>
+                  <div className="space-y-1.5 font-mono text-xs text-[var(--fg-muted)] bg-[var(--surface-strong)] p-3.5 rounded-2xl border border-[var(--border)]">
                     {selectedNode.requestFields.map((f, i) => (
-                      <div key={i} className="text-blue-300">
+                      <div key={i} className="truncate">
                         → {f}
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="text-[11px] uppercase font-mono tracking-wider text-slate-400">
-                    Response Schema Properties
-                  </div>
-                  <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] font-mono text-xs text-slate-300 space-y-1">
+                <div>
+                  <h4 className="font-ui text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2 flex items-center gap-1.5">
+                    <Code2 className="w-3.5 h-3.5 text-emerald-400" />
+                    Response / Handshake
+                  </h4>
+                  <div className="space-y-1.5 font-mono text-xs text-[var(--fg-muted)] bg-[var(--surface-strong)] p-3.5 rounded-2xl border border-[var(--border)]">
                     {selectedNode.responseFields.map((f, i) => (
-                      <div key={i} className="text-emerald-300">
+                      <div key={i} className="truncate">
                         ← {f}
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="rounded-3xl border border-dashed border-white/[0.1] p-10 text-center text-sm text-slate-500">
-                Select a node to inspect schema details
-              </div>
-            )}
-          </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Next Step CTA */}
+        <div className="mt-16 text-center">
+          <Link href="/security">
+            <Button variant="secondary" size="md">
+              <span>Inspect Prompt Injection Defense Architecture</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </Link>
         </div>
       </main>
 
@@ -302,4 +329,3 @@ export default function HowItWorksPage() {
     </div>
   );
 }
-

@@ -1,26 +1,49 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import { useTheme } from "next-themes";
 
 interface ScoreRingProps {
   score: number;
   size?: number;
   strokeWidth?: number;
   approved?: boolean;
+  settled?: boolean;
 }
 
 export function ScoreRing({
   score,
   size = 72,
-  strokeWidth = 3,
+  strokeWidth = 3.5,
   approved = true,
+  settled = true,
 }: ScoreRingProps) {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const [isSettled, setIsSettled] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsSettled(true);
+    }, 1100);
+    return () => clearTimeout(timer);
+  }, [score]);
+
   const radius = (size - strokeWidth * 2) / 2;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (Math.min(100, Math.max(0, score)) / 100) * circumference;
+  const strokeDashoffset =
+    circumference - (Math.min(100, Math.max(0, score)) / 100) * circumference;
 
-  const strokeColor = approved ? "#34D399" : "#F43F5E";
+  // Track: #666666 (dark) or #979797 (light)
+  const trackColor = isLight ? "#979797" : "#666666";
+
+  // Stroke: #0088cc while animating, settling to semantic status colour
+  const strokeColor = !isSettled
+    ? "#0088cc"
+    : approved
+    ? "#22c55e"
+    : "#ef4444";
 
   return (
     <div
@@ -32,8 +55,9 @@ export function ScoreRing({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="rgba(255, 255, 255, 0.08)"
+          stroke={trackColor}
           strokeWidth={strokeWidth}
+          strokeOpacity={0.25}
           fill="none"
         />
         <motion.circle
@@ -51,14 +75,13 @@ export function ScoreRing({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-base font-bold text-white tracking-tight leading-none">
+        <span className="text-base font-semibold font-body tabular-nums text-[var(--fg)] tracking-tight leading-none">
           {score}
         </span>
-        <span className="text-[9px] text-slate-400 uppercase tracking-widest mt-0.5">
+        <span className="text-[10px] font-ui text-[var(--fg-muted)] uppercase tracking-wider mt-0.5">
           Score
         </span>
       </div>
     </div>
   );
 }
-

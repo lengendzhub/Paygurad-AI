@@ -18,12 +18,8 @@ import {
   Download,
   Copy,
   Check,
-  CheckCircle2,
-  XCircle,
-  ExternalLink,
-  Coins,
   ShieldCheck,
-  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -34,7 +30,22 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Bounty } from "@/types";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-const gridDarkTheme = themeQuartz.withPart(colorSchemeDark);
+
+// AG Grid Theme adhering to the 4A specification:
+// background var(--bg), foreground var(--fg), accent #0088cc, border var(--border), header text var(--fg-muted), cell font Arimo, header font Poppins, IDs in mono.
+const gridTheme = themeQuartz.withPart(colorSchemeDark).withParams({
+  accentColor: "#0088cc",
+  backgroundColor: "#000000",
+  foregroundColor: "#eeeeee",
+  borderColor: "rgba(238, 238, 238, 0.14)",
+  headerTextColor: "#979797",
+  headerBackgroundColor: "rgba(238, 238, 238, 0.04)",
+  rowHoverColor: "rgba(238, 238, 238, 0.05)",
+  selectedRowBackgroundColor: "rgba(0, 136, 204, 0.12)",
+  fontFamily: "var(--font-body), Arial, sans-serif",
+  headerFontFamily: "var(--font-ui), system-ui, sans-serif",
+  fontSize: 13,
+});
 
 export default function LedgerPage() {
   const bounties = usePayGuardStore((state) => state.bounties);
@@ -77,7 +88,7 @@ export default function LedgerPage() {
         headerName: "Bounty ID",
         width: 130,
         cellRenderer: (params: any) => (
-          <div className="flex items-center gap-1.5 font-mono text-blue-400 font-bold">
+          <div className="flex items-center gap-1.5 font-mono text-[#0088cc] font-bold">
             <span>{params.value}</span>
           </div>
         ),
@@ -88,7 +99,7 @@ export default function LedgerPage() {
         flex: 2,
         minWidth: 220,
         cellRenderer: (params: any) => (
-          <span className="font-medium text-white truncate">{params.value}</span>
+          <span className="font-ui font-medium text-[var(--fg)] truncate">{params.value}</span>
         ),
       },
       {
@@ -96,7 +107,7 @@ export default function LedgerPage() {
         headerName: "Escrow ($ USD)",
         width: 140,
         cellRenderer: (params: any) => (
-          <span className="font-mono text-emerald-400 font-bold">
+          <span className="font-mono tabular-nums text-emerald-400 font-bold">
             ${params.value}
           </span>
         ),
@@ -118,12 +129,12 @@ export default function LedgerPage() {
         valueGetter: (params) => params.data?.audit?.score ?? null,
         cellRenderer: (params: any) => {
           const val = params.value;
-          if (val === null || val === undefined) return <span className="text-slate-500">—</span>;
+          if (val === null || val === undefined) return <span className="text-[var(--fg-subtle)] font-body tabular-nums">—</span>;
           const isPass = val >= 70;
           return (
             <span
-              className={`font-mono font-bold ${
-                isPass ? "text-emerald-400" : "text-rose-400"
+              className={`font-body tabular-nums font-bold ${
+                isPass ? "text-emerald-400" : "text-red-400"
               }`}
             >
               {val}/100
@@ -137,14 +148,14 @@ export default function LedgerPage() {
         flex: 1,
         minWidth: 170,
         cellRenderer: (params: any) => (
-          <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
+          <div className="flex items-center gap-2 font-mono text-xs text-[var(--fg-muted)]">
             <span className="truncate">{params.value}</span>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 copyText(params.value);
               }}
-              className="text-slate-500 hover:text-white"
+              className="text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
               title="Copy Order ID"
             >
               {copiedId === params.value ? (
@@ -163,7 +174,7 @@ export default function LedgerPage() {
         minWidth: 180,
         cellRenderer: (params: any) => {
           const val = params.value;
-          if (!val) return <span className="text-slate-500 font-mono text-xs">—</span>;
+          if (!val) return <span className="text-[var(--fg-subtle)] font-mono text-xs">—</span>;
           return (
             <div className="flex items-center gap-2 font-mono text-xs text-emerald-400">
               <span className="truncate">{val}</span>
@@ -172,7 +183,7 @@ export default function LedgerPage() {
                   e.stopPropagation();
                   copyText(val);
                 }}
-                className="text-slate-500 hover:text-white"
+                className="text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
                 title="Copy Batch ID"
               >
                 {copiedId === val ? (
@@ -190,7 +201,7 @@ export default function LedgerPage() {
         headerName: "Timestamp",
         width: 150,
         cellRenderer: (params: any) => (
-          <span className="text-xs text-slate-400 font-mono">
+          <span className="text-xs text-[var(--fg-muted)] font-mono">
             {new Date(params.value).toLocaleDateString([], {
               month: "short",
               day: "numeric",
@@ -205,24 +216,24 @@ export default function LedgerPage() {
   );
 
   return (
-    <div className="space-y-6 py-4">
+    <div className="space-y-6 py-4 font-ui">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-blue-400 uppercase tracking-widest mb-1">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#0088cc] uppercase tracking-widest mb-1">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>Immutable Escrow Ledger</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">
+          <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
             Live Settlement Ledger
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
             Real-time audit log tracking PayPal Orders v2 escrow locks, Gemini verification scores, and PayPal Payouts v1 batch IDs.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-xs font-mono bg-emerald-500/10 border border-emerald-500/25 px-3 py-1.5 rounded-full text-emerald-300">
+          <div className="flex items-center gap-2 text-xs font-ui bg-emerald-500/10 border border-emerald-500/25 px-3 py-1.5 rounded-full text-emerald-400">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>LIVE AUDIT</span>
           </div>
@@ -233,7 +244,7 @@ export default function LedgerPage() {
             disabled={bounties.length === 0}
             disabledReason="No ledger data to export"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5 mr-1" />
             Export CSV
           </Button>
         </div>
@@ -242,13 +253,13 @@ export default function LedgerPage() {
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[var(--fg-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Quick filter ledger..."
-            className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500/40"
+            className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-10 pr-4 py-2 text-xs font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc]"
           />
         </div>
 
@@ -258,11 +269,11 @@ export default function LedgerPage() {
               key={tab}
               onClick={() => setStatusFilter(tab)}
               className={`
-                px-3 py-1 rounded-xl text-xs font-medium whitespace-nowrap transition cursor-pointer
+                px-3 py-1 rounded-xl text-xs font-ui font-medium whitespace-nowrap transition cursor-pointer
                 ${
                   statusFilter === tab
-                    ? "bg-white/[0.1] text-white border border-white/[0.15]"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[var(--surface-strong)] text-[var(--fg)] border border-[var(--border-strong)]"
+                    : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
                 }
               `}
             >
@@ -283,9 +294,9 @@ export default function LedgerPage() {
             actionHref="/bounties/new"
           />
         ) : (
-          <div className="h-[520px] w-full rounded-2xl overflow-hidden border border-white/[0.08]">
+          <div className="h-[520px] w-full rounded-2xl overflow-hidden border border-[var(--border)]">
             <AgGridReact
-              theme={gridDarkTheme}
+              theme={gridTheme}
               rowData={filteredData}
               columnDefs={columnDefs}
               quickFilterText={searchQuery}
@@ -308,68 +319,68 @@ export default function LedgerPage() {
         subtitle="Full transaction and verification report"
       >
         {selectedBounty && (
-          <div className="space-y-6 text-xs">
+          <div className="space-y-6 text-xs font-body">
             <div className="space-y-1">
-              <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500">
+              <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--fg-subtle)]">
                 Task Title
               </span>
-              <h4 className="text-sm font-bold text-white">{selectedBounty.title}</h4>
+              <h4 className="font-ui text-sm font-bold text-[var(--fg)]">{selectedBounty.title}</h4>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)]">
               <div>
-                <span className="text-[10px] uppercase text-slate-500 block">Amount</span>
-                <span className="text-base font-bold font-mono text-emerald-400">
+                <span className="text-[10px] uppercase text-[var(--fg-subtle)] block">Amount</span>
+                <span className="text-base font-bold font-mono tabular-nums text-emerald-400">
                   ${selectedBounty.amount} USD
                 </span>
               </div>
               <div>
-                <span className="text-[10px] uppercase text-slate-500 block">Status</span>
+                <span className="text-[10px] uppercase text-[var(--fg-subtle)] block">Status</span>
                 <StatusChip status={selectedBounty.status} size="sm" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">
+              <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--fg-subtle)] block">
                 PayPal Orders v2 Capture
               </span>
-              <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] font-mono text-blue-400 break-all">
+              <div className="p-3 rounded-xl bg-black/60 border border-[var(--border)] font-mono text-[#0088cc] break-all">
                 {selectedBounty.escrowOrderId}
               </div>
             </div>
 
             {selectedBounty.payoutBatchId && (
               <div className="space-y-2">
-                <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500 block">
+                <span className="text-[10px] uppercase font-mono tracking-wider text-[var(--fg-subtle)] block">
                   PayPal Payouts v1 Batch ID
                 </span>
-                <div className="p-3 rounded-xl bg-black/40 border border-white/[0.06] font-mono text-emerald-400 break-all">
+                <div className="p-3 rounded-xl bg-black/60 border border-[var(--border)] font-mono text-emerald-400 break-all">
                   {selectedBounty.payoutBatchId}
                 </div>
               </div>
             )}
 
             {selectedBounty.audit && (
-              <div className="space-y-3 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+              <div className="space-y-3 p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)]">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-purple-400">
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-[#0088cc]">
                     Gemini Audit Result
                   </span>
-                  <span className="font-mono font-bold text-white">
+                  <span className="font-body tabular-nums font-bold text-[var(--fg)]">
                     Score: {selectedBounty.audit.score}/100
                   </span>
                 </div>
-                <p className="text-slate-300 leading-relaxed font-sans">
+                <p className="text-[var(--fg-muted)] leading-relaxed font-body">
                   {selectedBounty.audit.summary}
                 </p>
               </div>
             )}
 
-            <div className="pt-4 flex flex-col gap-2">
+            <div className="pt-4 flex flex-col gap-2 font-ui">
               <Link href={`/bounties/${selectedBounty.id}`}>
                 <Button variant="secondary" size="sm" className="w-full justify-center">
                   View Full Bounty Page
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3.5 h-3.5 ml-1" />
                 </Button>
               </Link>
               {selectedBounty.audit && (
@@ -386,4 +397,3 @@ export default function LedgerPage() {
     </div>
   );
 }
-

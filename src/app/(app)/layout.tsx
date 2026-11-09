@@ -19,14 +19,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0B0F] text-[#F4F4F7] flex flex-col lg:flex-row">
-      <Suspense fallback={<div className="w-64 shrink-0 bg-[#0A0A0E] hidden lg:block" />}>
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col lg:flex-row">
+      <Suspense fallback={<div className="w-64 shrink-0 bg-[var(--bg)] hidden lg:block" />}>
         <AppSidebar onOpenCommand={() => setCommandOpen(true)} />
       </Suspense>
 
       <main className="flex-1 flex flex-col min-w-0 pb-20 lg:pb-12">
         <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8">
-          <Suspense fallback={<div className="p-8 text-xs text-slate-500">Loading...</div>}>
+          <Suspense fallback={<div className="p-8 text-xs text-[var(--fg-muted)]">Loading...</div>}>
             {children}
           </Suspense>
         </div>
@@ -47,8 +47,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         maxWidth="sm"
       >
         <div className="space-y-4 pt-2">
-          <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2.5">
-            <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400" />
+          <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2.5 font-body">
+            <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
             <span>This action cannot be undone. All local records will reset to zero.</span>
           </div>
           <div className="flex items-center justify-end gap-2.5 pt-2">
@@ -72,4 +72,3 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-

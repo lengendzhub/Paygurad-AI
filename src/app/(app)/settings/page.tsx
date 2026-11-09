@@ -2,23 +2,22 @@
 
 import React, { useState } from "react";
 import {
-  Settings,
-  ShieldCheck,
   Key,
-  Bell,
   BookOpen,
   Trash2,
   CheckCircle2,
   AlertTriangle,
-  Info,
-  ExternalLink,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 
 export default function SettingsPage() {
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const clearAllData = usePayGuardStore((state) => state.clearAllData);
   const bountiesCount = usePayGuardStore((state) => state.bounties.length);
   const activityCount = usePayGuardStore((state) => state.activity.length);
@@ -62,60 +61,102 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 py-4">
+    <div className="max-w-4xl mx-auto space-y-8 py-4 font-ui">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white">Settings</h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Sandbox API configuration status, protocol reference glossary, and local data management.
+        <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
+          Settings
+        </h1>
+        <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
+          Theme preferences, sandbox API configuration status, protocol reference glossary, and local data management.
         </p>
       </div>
 
       {clearedNotice && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-center gap-2">
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>All local browser data has been purged successfully. Store is now empty.</span>
         </div>
       )}
 
+      {/* Theme Preference */}
+      <GlassCard className="p-6 space-y-4">
+        <div>
+          <h2 className="font-display text-2xl text-[var(--fg)]">Appearance & Theme</h2>
+          <p className="font-body text-xs text-[var(--fg-muted)]">Select active interface theme mode</p>
+        </div>
+
+        <div className="flex items-center gap-3 pt-2">
+          <button
+            onClick={() => setTheme("dark")}
+            className={`
+              flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-ui font-semibold transition cursor-pointer border
+              ${
+                resolvedTheme === "dark"
+                  ? "bg-[#0088cc] text-black border-[#0088cc] shadow-[0_0_16px_rgba(0,136,204,0.4)]"
+                  : "bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-strong)] hover:text-[var(--fg)]"
+              }
+            `}
+          >
+            <Moon className="w-4 h-4" />
+            <span>Dark Mode (Default)</span>
+          </button>
+
+          <button
+            onClick={() => setTheme("light")}
+            className={`
+              flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-ui font-semibold transition cursor-pointer border
+              ${
+                resolvedTheme === "light"
+                  ? "bg-[#0088cc] text-black border-[#0088cc] shadow-[0_0_16px_rgba(0,136,204,0.4)]"
+                  : "bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)] hover:bg-[var(--surface-strong)] hover:text-[var(--fg)]"
+              }
+            `}
+          >
+            <Sun className="w-4 h-4" />
+            <span>Light Mode</span>
+          </button>
+        </div>
+      </GlassCard>
+
       {/* 1. Sandbox Credential Status (Never expose raw secrets) */}
       <GlassCard className="p-6 space-y-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-blue-500/15 flex items-center justify-center text-blue-400">
+          <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/20 flex items-center justify-center text-[#0088cc]">
             <Key className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-white">Sandbox API Status</h2>
-            <p className="text-xs text-slate-400">Environment connectivity across PayPal and Google AI Studio</p>
+            <h2 className="font-display text-2xl text-[var(--fg)]">Sandbox API Status</h2>
+            <p className="font-body text-xs text-[var(--fg-muted)]">Environment connectivity across PayPal and Google AI Studio</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
-          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+          <div className="p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-slate-400">PayPal Client ID</span>
+              <span className="text-[var(--fg-muted)]">PayPal Client ID</span>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
-            <div className="text-white font-bold truncate">Configured in .env.local</div>
-            <div className="text-[10px] text-slate-500">Public Client ID active</div>
+            <div className="text-[var(--fg)] font-bold truncate">Configured in .env.local</div>
+            <div className="text-[10px] text-[var(--fg-subtle)]">Public Client ID active</div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+          <div className="p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-slate-400">PayPal Secret</span>
+              <span className="text-[var(--fg-muted)]">PayPal Secret</span>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
-            <div className="text-white font-bold truncate">Hidden Server-Side</div>
-            <div className="text-[10px] text-slate-500">Protected in backend routes</div>
+            <div className="text-[var(--fg)] font-bold truncate">Hidden Server-Side</div>
+            <div className="text-[10px] text-[var(--fg-subtle)]">Protected in backend routes</div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+          <div className="p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-slate-400">Gemini Flash API</span>
+              <span className="text-[var(--fg-muted)]">Gemini Flash API</span>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
-            <div className="text-white font-bold truncate">Active &amp; Verified</div>
-            <div className="text-[10px] text-slate-500">Free Tier quota available</div>
+            <div className="text-[var(--fg)] font-bold truncate">Active &amp; Verified</div>
+            <div className="text-[10px] text-[var(--fg-subtle)]">Free Tier quota available</div>
           </div>
         </div>
       </GlassCard>
@@ -123,43 +164,43 @@ export default function SettingsPage() {
       {/* 2. Protocol Glossary */}
       <GlassCard className="p-6 space-y-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-purple-500/15 flex items-center justify-center text-purple-400">
+          <div className="w-10 h-10 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/20 flex items-center justify-center text-[#0088cc]">
             <BookOpen className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-white">Protocol Glossary</h2>
-            <p className="text-xs text-slate-400">Plain-language explanations of technical escrow and API concepts</p>
+            <h2 className="font-display text-2xl text-[var(--fg)]">Protocol Glossary</h2>
+            <p className="font-body text-xs text-[var(--fg-muted)]">Plain-language explanations of technical escrow and API concepts</p>
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 font-body">
           {glossary.map((g, idx) => (
             <div
               key={idx}
-              className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] space-y-1 text-xs"
+              className="p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] space-y-1 text-xs"
             >
-              <span className="font-semibold text-white">{g.term}</span>
-              <p className="text-slate-400 leading-relaxed font-sans">{g.definition}</p>
+              <span className="font-ui font-semibold text-[var(--fg)]">{g.term}</span>
+              <p className="text-[var(--fg-muted)] leading-relaxed">{g.definition}</p>
             </div>
           ))}
         </div>
       </GlassCard>
 
       {/* 3. Data Management: Clear Local Data */}
-      <GlassCard className="p-6 space-y-4 border-rose-500/20 bg-rose-500/[0.02]">
+      <GlassCard className="p-6 space-y-4 border-red-500/25 bg-red-500/[0.03]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-rose-500/15 flex items-center justify-center text-rose-400">
+          <div className="w-10 h-10 rounded-2xl bg-red-500/15 flex items-center justify-center text-red-400">
             <Trash2 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-rose-300">Local Data Storage</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="font-display text-2xl text-red-400">Local Data Storage</h2>
+            <p className="font-body text-xs text-[var(--fg-muted)]">
               Manage persisted browser state ({bountiesCount} bounties, {activityCount} events stored)
             </p>
           </div>
         </div>
 
-        <p className="text-xs text-slate-300 leading-relaxed">
+        <p className="font-body text-xs text-[var(--fg-muted)] leading-relaxed">
           PayGuard stores created bounties and audit records inside your browser’s localStorage. Purging will reset the app completely to its initial zero-data state.
         </p>
 
@@ -171,7 +212,7 @@ export default function SettingsPage() {
             disabled={bountiesCount === 0 && activityCount === 0}
             disabledReason="Store is already empty"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-4 h-4 mr-1.5" />
             Clear All Local Data
           </Button>
         </div>
@@ -185,13 +226,13 @@ export default function SettingsPage() {
         description="Are you sure you want to permanently erase all locally stored bounties and verification logs?"
         maxWidth="sm"
       >
-        <div className="space-y-4 pt-2">
-          <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2.5">
-            <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400" />
+        <div className="space-y-4 pt-2 font-body">
+          <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2.5">
+            <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
             <span>All {bountiesCount} bounties and ledger entries will be permanently removed.</span>
           </div>
 
-          <div className="flex items-center justify-end gap-2.5 pt-2">
+          <div className="flex items-center justify-end gap-2.5 pt-2 font-ui">
             <Button variant="secondary" size="sm" onClick={() => setConfirmModalOpen(false)}>
               Cancel
             </Button>
@@ -204,4 +245,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-

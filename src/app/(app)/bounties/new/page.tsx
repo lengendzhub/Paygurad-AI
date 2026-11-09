@@ -11,8 +11,9 @@ import {
   Lock,
   CheckCircle2,
   AlertCircle,
-  HelpCircle,
   ShieldCheck,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -35,7 +36,6 @@ export default function NewBountyWizardPage() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   // Funding State
-  const [isFunding, setIsFunding] = useState(false);
   const [fundSuccess, setFundSuccess] = useState<any>(null);
   const [fundError, setFundError] = useState<string | null>(null);
 
@@ -59,6 +59,14 @@ export default function NewBountyWizardPage() {
   const updateCriterion = (index: number, val: string) => {
     const updated = [...criteria];
     updated[index] = val;
+    setCriteria(updated);
+  };
+
+  const moveCriterion = (from: number, to: number) => {
+    if (to < 0 || to >= criteria.length) return;
+    const updated = [...criteria];
+    const [moved] = updated.splice(from, 1);
+    updated.splice(to, 0, moved);
     setCriteria(updated);
   };
 
@@ -99,18 +107,20 @@ export default function NewBountyWizardPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 py-4">
       {/* Stepper Header */}
-      <div className="space-y-4">
+      <div className="space-y-4 font-ui">
         <button
           onClick={() => (currentStep === 0 ? router.push("/bounties") : handleBack())}
-          className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-white transition cursor-pointer"
+          className="inline-flex items-center gap-2 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>{currentStep === 0 ? "Back to bounties" : "Previous step"}</span>
         </button>
 
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Create Escrow Bounty</h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
+            Create Escrow Bounty
+          </h1>
+          <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
             Define requirements and commit escrow funds via PayPal Orders v2.
           </p>
         </div>
@@ -124,26 +134,26 @@ export default function NewBountyWizardPage() {
       <GlassCard className="p-6 sm:p-8 space-y-6">
         {/* STEP 1: DETAILS */}
         {currentStep === 0 && (
-          <div className="space-y-5">
+          <div className="space-y-5 font-ui">
             <div>
-              <h2 className="text-lg font-semibold text-white">Bounty Details</h2>
-              <p className="text-xs text-slate-400">Basic identification and escrow value</p>
+              <h2 className="font-display text-2xl text-[var(--fg)]">Bounty Details</h2>
+              <p className="font-body text-xs text-[var(--fg-muted)]">Basic identification and escrow value</p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1.5">
-                  Task Title <span className="text-rose-400">*</span>
+                <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
+                  Task Title <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Task title"
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/40 transition"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
                 />
                 {errors.title && (
-                  <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1 font-body">
                     <AlertCircle className="w-3 h-3" />
                     {errors.title}
                   </p>
@@ -151,7 +161,7 @@ export default function NewBountyWizardPage() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1.5">
+                <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
                   Task Summary & Context (Optional)
                 </label>
                 <textarea
@@ -159,16 +169,16 @@ export default function NewBountyWizardPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Brief description of the expected deliverable..."
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/40 transition resize-none"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition resize-none"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1.5">
-                  Escrow Bounty Amount (USD) <span className="text-rose-400">*</span>
+                <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
+                  Escrow Bounty Amount (USD) <span className="text-red-400">*</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-sm">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--fg-muted)] font-mono text-sm">
                     $
                   </span>
                   <input
@@ -176,11 +186,11 @@ export default function NewBountyWizardPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-8 pr-4 py-3 text-sm text-white font-mono placeholder-slate-600 focus:outline-none focus:border-blue-500/40 transition"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-8 pr-4 py-3 text-sm font-body tabular-nums text-[var(--fg)] font-mono placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
                   />
                 </div>
                 {errors.amount && (
-                  <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1 font-body">
                     <AlertCircle className="w-3 h-3" />
                     {errors.amount}
                   </p>
@@ -188,7 +198,7 @@ export default function NewBountyWizardPage() {
               </div>
             </div>
 
-            <div className="flex justify-end pt-4 border-t border-white/[0.06]">
+            <div className="flex justify-end pt-4 border-t border-[var(--border)]">
               <Button
                 variant="primary"
                 size="md"
@@ -197,7 +207,7 @@ export default function NewBountyWizardPage() {
                 disabledReason="Enter a title and reward amount to continue"
               >
                 Continue to Criteria
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
           </div>
@@ -205,42 +215,62 @@ export default function NewBountyWizardPage() {
 
         {/* STEP 2: CRITERIA BUILDER */}
         {currentStep === 1 && (
-          <div className="space-y-5">
+          <div className="space-y-5 font-ui">
             <div>
-              <h2 className="text-lg font-semibold text-white">Acceptance Criteria Builder</h2>
-              <p className="text-xs text-slate-400">
+              <h2 className="font-display text-2xl text-[var(--fg)]">Acceptance Criteria Builder</h2>
+              <p className="font-body text-xs text-[var(--fg-muted)]">
                 Gemini AI will rigorously audit freelancer deliverables against every item defined below.
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 font-body">
               {criteria.map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full bg-white/[0.05] border border-white/[0.08] text-[11px] font-mono text-slate-400 flex items-center justify-center shrink-0">
+                  <span className="w-6 h-6 rounded-full bg-[var(--surface-strong)] border border-[var(--border)] text-[11px] font-mono text-[var(--fg-muted)] flex items-center justify-center shrink-0">
                     {index + 1}
                   </span>
                   <input
                     type="text"
                     value={item}
                     onChange={(e) => updateCriterion(index, e.target.value)}
-                    placeholder="Measurable requirement (e.g. Include at least 2 unit tests)..."
-                    className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/40 transition"
+                    placeholder="Measurable requirement..."
+                    className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-sm text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#0088cc] transition"
                   />
-                  {criteria.length > 1 && (
+                  <div className="flex items-center gap-1 shrink-0">
                     <button
                       type="button"
-                      onClick={() => removeCriterion(index)}
-                      className="p-2 text-slate-500 hover:text-rose-400 transition cursor-pointer"
-                      title="Remove criterion"
+                      onClick={() => moveCriterion(index, index - 1)}
+                      disabled={index === 0}
+                      className="p-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-20 transition cursor-pointer"
+                      title="Move up"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <ChevronUp className="w-3.5 h-3.5" />
                     </button>
-                  )}
+                    <button
+                      type="button"
+                      onClick={() => moveCriterion(index, index + 1)}
+                      disabled={index === criteria.length - 1}
+                      className="p-1.5 text-[var(--fg-muted)] hover:text-[var(--fg)] disabled:opacity-20 transition cursor-pointer"
+                      title="Move down"
+                    >
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    </button>
+                    {criteria.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeCriterion(index)}
+                        className="p-1.5 text-[var(--fg-muted)] hover:text-red-400 transition cursor-pointer"
+                        title="Remove criterion"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
 
               {errors.criteria && (
-                <p className="text-xs text-rose-400 flex items-center gap-1">
+                <p className="text-xs text-red-400 flex items-center gap-1">
                   <AlertCircle className="w-3 h-3" />
                   {errors.criteria}
                 </p>
@@ -249,14 +279,14 @@ export default function NewBountyWizardPage() {
               <button
                 type="button"
                 onClick={addCriterion}
-                className="inline-flex items-center gap-2 text-xs font-semibold text-blue-400 hover:text-blue-300 py-2 transition cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-ui font-semibold text-[#0088cc] hover:underline py-2 transition cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Another Criterion
               </button>
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
+            <div className="flex items-center justify-between pt-4 border-t border-[var(--border)]">
               <Button variant="ghost" size="md" onClick={handleBack}>
                 Back
               </Button>
@@ -268,7 +298,7 @@ export default function NewBountyWizardPage() {
                 disabledReason="Add at least one non-empty criterion to continue"
               >
                 Review Summary
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
           </div>
@@ -276,48 +306,48 @@ export default function NewBountyWizardPage() {
 
         {/* STEP 3: REVIEW */}
         {currentStep === 2 && (
-          <div className="space-y-6">
+          <div className="space-y-6 font-ui">
             <div>
-              <h2 className="text-lg font-semibold text-white">Review Escrow Commitment</h2>
-              <p className="text-xs text-slate-400">
+              <h2 className="font-display text-2xl text-[var(--fg)]">Review Escrow Commitment</h2>
+              <p className="font-body text-xs text-[var(--fg-muted)]">
                 Confirm your task details before proceeding to PayPal Checkout.
               </p>
             </div>
 
-            <div className="rounded-2xl bg-white/[0.025] border border-white/[0.08] p-5 space-y-4">
-              <div className="flex items-start justify-between border-b border-white/[0.06] pb-4">
+            <div className="rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] p-5 space-y-4">
+              <div className="flex items-start justify-between border-b border-[var(--border)] pb-4">
                 <div>
-                  <span className="text-[10px] uppercase font-mono tracking-widest text-blue-400">
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#0088cc]">
                     Bounty Overview
                   </span>
-                  <h3 className="text-base font-bold text-white mt-0.5">{title}</h3>
+                  <h3 className="font-display text-xl font-normal text-[var(--fg)] mt-0.5">{title}</h3>
                   {description && (
-                    <p className="text-xs text-slate-400 mt-1">{description}</p>
+                    <p className="font-body text-xs text-[var(--fg-muted)] mt-1">{description}</p>
                   )}
                 </div>
                 <div className="text-right">
-                  <span className="text-2xl font-bold font-mono text-emerald-400">
+                  <span className="text-2xl font-bold font-mono tabular-nums text-emerald-400">
                     ${parseFloat(amount || "0").toFixed(2)}
                   </span>
-                  <div className="text-[10px] text-slate-500 font-mono uppercase">
+                  <div className="text-[10px] text-[var(--fg-subtle)] font-mono uppercase">
                     USD Escrow
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-muted)] block">
                   Acceptance Criteria ({criteria.filter((c) => c.trim().length > 0).length})
                 </span>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 font-body">
                   {criteria
                     .filter((c) => c.trim().length > 0)
                     .map((c, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-2 text-xs text-slate-300 bg-white/[0.02] p-2.5 rounded-lg border border-white/[0.04]"
+                        className="flex items-start gap-2 text-xs text-[var(--fg)] bg-[var(--surface)] p-2.5 rounded-xl border border-[var(--border)]"
                       >
-                        <span className="font-mono text-blue-400">{i + 1}.</span>
+                        <span className="font-mono text-[#0088cc]">{i + 1}.</span>
                         <span>{c}</span>
                       </div>
                     ))}
@@ -325,13 +355,13 @@ export default function NewBountyWizardPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
+            <div className="flex items-center justify-between pt-4 border-t border-[var(--border)]">
               <Button variant="ghost" size="md" onClick={handleBack}>
                 Back
               </Button>
               <Button variant="primary" size="md" onClick={handleNext}>
                 Proceed to PayPal Escrow
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
           </div>
@@ -339,17 +369,17 @@ export default function NewBountyWizardPage() {
 
         {/* STEP 4: FUND VIA PAYPAL CHECKOUT (HARD RULE #0: REAL PAYPAL FLOW ONLY) */}
         {currentStep === 3 && (
-          <div className="space-y-6">
+          <div className="space-y-6 font-ui">
             <div>
-              <h2 className="text-lg font-semibold text-white">Authorize Escrow via PayPal</h2>
-              <p className="text-xs text-slate-400">
+              <h2 className="font-display text-2xl text-[var(--fg)]">Authorize Escrow via PayPal</h2>
+              <p className="font-body text-xs text-[var(--fg-muted)]">
                 Authorize ${parseFloat(amount || "0").toFixed(2)} USD via the official PayPal Sandbox Checkout.
               </p>
             </div>
 
             {fundError && (
-              <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
+              <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-start gap-2.5 font-body">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
                 <div>
                   <div className="font-semibold">PayPal Escrow Error</div>
                   <div>{fundError}</div>
@@ -358,14 +388,14 @@ export default function NewBountyWizardPage() {
             )}
 
             {fundSuccess ? (
-              <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4">
+              <div className="p-6 rounded-[28px] bg-emerald-500/10 border border-emerald-500/25 text-center space-y-4">
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-white">Escrow Successfully Locked!</h3>
-                  <p className="text-xs text-slate-300">
-                    Bounty ID: <span className="font-mono text-blue-400">{fundSuccess.id}</span> · Order:{" "}
+                  <h3 className="font-display text-2xl text-[var(--fg)]">Escrow Successfully Locked!</h3>
+                  <p className="font-body text-xs text-[var(--fg-muted)]">
+                    Bounty ID: <span className="font-mono text-[#0088cc]">{fundSuccess.id}</span> · Order:{" "}
                     <span className="font-mono text-emerald-400">{fundSuccess.escrowOrderId}</span>
                   </p>
                 </div>
@@ -376,7 +406,7 @@ export default function NewBountyWizardPage() {
                     onClick={() => router.push(`/bounties/${fundSuccess.id}`)}
                   >
                     View Bounty Details
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                   <Button
                     variant="secondary"
@@ -389,8 +419,8 @@ export default function NewBountyWizardPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-slate-300 space-y-1">
-                  <div className="font-semibold text-blue-300 flex items-center gap-1.5">
+                <div className="p-4 rounded-xl bg-[#0088cc]/10 border border-[#0088cc]/20 text-xs text-[var(--fg-muted)] space-y-1 font-body">
+                  <div className="font-semibold text-[#0088cc] flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4" />
                     PayPal Orders v2 Non-Custodial Lock
                   </div>
@@ -447,7 +477,7 @@ export default function NewBountyWizardPage() {
                         setFundError(err.message);
                       }
                     }}
-                    onError={(err) => {
+                    onError={() => {
                       setFundError("PayPal popup interrupted or canceled.");
                     }}
                   />
@@ -466,4 +496,3 @@ export default function NewBountyWizardPage() {
     </div>
   );
 }
-

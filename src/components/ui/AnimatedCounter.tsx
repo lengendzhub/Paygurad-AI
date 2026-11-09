@@ -8,6 +8,7 @@ interface AnimatedCounterProps {
   suffix?: string;
   decimals?: number;
   emptyDisplay?: string;
+  className?: string;
 }
 
 export function AnimatedCounter({
@@ -16,6 +17,7 @@ export function AnimatedCounter({
   suffix = "",
   decimals = 0,
   emptyDisplay,
+  className = "",
 }: AnimatedCounterProps) {
   const [displayValue, setDisplayValue] = useState(value);
 
@@ -44,11 +46,11 @@ export function AnimatedCounter({
   }, [value]);
 
   if (value === 0 && emptyDisplay) {
-    return <span>{emptyDisplay}</span>;
+    return <span className={`font-body tabular-nums ${className}`}>{emptyDisplay}</span>;
   }
 
   return (
-    <span>
+    <span className={`font-body tabular-nums ${className}`}>
       {prefix}
       {displayValue.toLocaleString("en-US", {
         minimumFractionDigits: decimals,
@@ -58,4 +60,3 @@ export function AnimatedCounter({
     </span>
   );
 }
-

@@ -10,13 +10,13 @@ export function StatusChip({ status, size = "md" }: StatusChipProps) {
   const config = {
     FUNDED_IN_ESCROW: {
       label: "In Escrow",
-      color: "bg-blue-500/15 text-blue-400 border-blue-500/30",
-      dot: "bg-blue-400",
+      color: "bg-[#0088cc]/15 text-[#0088cc] border-[#0088cc]/30",
+      dot: "bg-[#0088cc]",
     },
     SUBMITTED: {
       label: "Submitted",
-      color: "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
-      dot: "bg-indigo-400",
+      color: "bg-[var(--surface-strong)] text-[var(--fg-muted)] border-[var(--border-strong)]",
+      dot: "bg-[var(--fg-muted)]",
     },
     VERIFYING: {
       label: "Auditing",
@@ -30,13 +30,13 @@ export function StatusChip({ status, size = "md" }: StatusChipProps) {
     },
     REJECTED_NEEDS_WORK: {
       label: "Needs Revision",
-      color: "bg-rose-500/15 text-rose-400 border-rose-500/30",
-      dot: "bg-rose-400",
+      color: "bg-red-500/15 text-red-400 border-red-500/30",
+      dot: "bg-red-400",
     },
   }[status] || {
     label: status,
-    color: "bg-slate-500/15 text-slate-400 border-slate-500/30",
-    dot: "bg-slate-400",
+    color: "bg-[var(--surface)] text-[var(--fg-muted)] border-[var(--border)]",
+    dot: "bg-[var(--fg-muted)]",
   };
 
   const sizeClasses =
@@ -46,11 +46,10 @@ export function StatusChip({ status, size = "md" }: StatusChipProps) {
 
   return (
     <span
-      className={`inline-flex items-center font-medium rounded-full border uppercase tracking-wider ${sizeClasses} ${config.color}`}
+      className={`inline-flex items-center font-ui font-medium rounded-full border uppercase tracking-wider ${sizeClasses} ${config.color}`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
       <span>{config.label}</span>
     </span>
   );
 }
-

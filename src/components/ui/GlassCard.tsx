@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion, HTMLMotionProps } from "motion/react";
 
 interface GlassCardProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
@@ -19,14 +19,14 @@ export function GlassCard({
 }: GlassCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] }}
       className={`
-        relative rounded-3xl border border-white/[0.08]
-        bg-white/[0.035] backdrop-blur-2xl
+        relative rounded-[28px] border border-[var(--border)]
+        bg-[var(--surface)] backdrop-blur-2xl
         shadow-[0_8px_32px_rgba(0,0,0,0.36)]
-        ${hoverEffect ? "transition-all duration-300 hover:bg-white/[0.055] hover:border-white/[0.12]" : ""}
+        ${hoverEffect ? "transition-all duration-300 hover:bg-[var(--surface-strong)] hover:border-[var(--border-strong)] hover:-translate-y-0.5" : ""}
         ${className}
       `}
       {...props}
@@ -35,4 +35,3 @@ export function GlassCard({
     </motion.div>
   );
 }
-

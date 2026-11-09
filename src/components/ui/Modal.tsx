@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 
 interface ModalProps {
@@ -50,7 +50,7 @@ export function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md"
           />
 
           <motion.div
@@ -60,20 +60,26 @@ export function Modal({
             transition={{ type: "spring", damping: 25, stiffness: 350 }}
             className={`
               relative w-full ${maxStyles}
-              bg-[#12121A] border border-white/[0.1]
-              rounded-3xl p-6 shadow-2xl z-10 overflow-hidden
+              bg-[var(--bg)] border border-[var(--border-strong)]
+              rounded-[28px] p-6 sm:p-8 shadow-2xl z-10 overflow-hidden
             `}
           >
             <div className="flex items-start justify-between mb-4">
               <div>
-                {title && <h3 className="text-lg font-bold text-white">{title}</h3>}
+                {title && (
+                  <h3 className="font-display text-2xl font-normal text-[var(--fg)]">
+                    {title}
+                  </h3>
+                )}
                 {description && (
-                  <p className="text-xs text-slate-400 mt-1">{description}</p>
+                  <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
+                    {description}
+                  </p>
                 )}
               </div>
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[var(--surface-strong)] hover:bg-[var(--surface)] text-[var(--fg-muted)] hover:text-[var(--fg)] flex items-center justify-center transition cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -86,4 +92,3 @@ export function Modal({
     </AnimatePresence>
   );
 }
-

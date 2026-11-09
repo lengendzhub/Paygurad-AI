@@ -8,14 +8,10 @@ import {
   Lock,
   ArrowRight,
   ShieldCheck,
-  FileCheck,
-  Sparkles,
-  DollarSign,
-  AlertCircle,
   CheckCircle2,
   XCircle,
   Copy,
-  ExternalLink,
+  AlertCircle,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -31,7 +27,7 @@ interface PageProps {
 
 export default function BountyDetailPage(props: PageProps) {
   return (
-    <React.Suspense fallback={<div className="p-8 text-xs text-slate-500 font-mono">Loading bounty details...</div>}>
+    <React.Suspense fallback={<div className="p-8 text-xs text-[var(--fg-muted)] font-mono">Loading bounty details...</div>}>
       <BountyDetailContent {...props} />
     </React.Suspense>
   );
@@ -77,16 +73,16 @@ function BountyDetailContent({ params }: PageProps) {
   return (
     <div className="max-w-5xl mx-auto space-y-8 py-4">
       {/* Top Navigation */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between font-ui">
         <Link
           href="/bounties"
-          className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-white transition"
+          className="inline-flex items-center gap-2 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to bounties</span>
         </Link>
 
-        <span className="text-xs font-mono text-slate-500">
+        <span className="text-xs font-mono text-[var(--fg-subtle)]">
           Created: {new Date(bounty.createdAt).toLocaleDateString()}
         </span>
       </div>
@@ -96,33 +92,33 @@ function BountyDetailContent({ params }: PageProps) {
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-sm font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-xl">
+              <span className="font-mono text-sm font-bold text-[#0088cc] bg-[#0088cc]/10 border border-[#0088cc]/20 px-3 py-1 rounded-xl">
                 {bounty.id}
               </span>
               <StatusChip status={bounty.status} />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+            <h1 className="font-display text-3xl sm:text-4xl font-normal tracking-tight text-[var(--fg)]">
               {bounty.title}
             </h1>
             {bounty.description && (
-              <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
+              <p className="font-body text-sm text-[var(--fg-muted)] max-w-2xl leading-relaxed">
                 {bounty.description}
               </p>
             )}
           </div>
 
-          <div className="text-left sm:text-right shrink-0 bg-white/[0.02] sm:bg-transparent p-4 sm:p-0 rounded-2xl border sm:border-0 border-white/[0.06]">
-            <div className="text-3xl font-bold font-mono text-emerald-400">
+          <div className="text-left sm:text-right shrink-0 bg-[var(--surface-strong)] sm:bg-transparent p-4 sm:p-0 rounded-2xl border sm:border-0 border-[var(--border)]">
+            <div className="text-3xl font-bold font-mono tabular-nums text-emerald-400">
               ${bounty.amount}
             </div>
-            <div className="text-[10px] uppercase font-mono text-slate-400 tracking-wider">
+            <div className="text-[10px] uppercase font-mono text-[var(--fg-subtle)] tracking-wider">
               USD in Escrow
             </div>
           </div>
         </div>
 
         {/* Stepper */}
-        <div className="pt-4 border-t border-white/[0.06]">
+        <div className="pt-4 border-t border-[var(--border)]">
           <Stepper steps={steps} currentStep={activeStep} />
         </div>
       </GlassCard>
@@ -133,16 +129,16 @@ function BountyDetailContent({ params }: PageProps) {
         <div className="lg:col-span-7 space-y-6">
           {/* Criteria Checklist */}
           <GlassCard className="p-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-              <h2 className="text-base font-semibold text-white">
+            <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <h2 className="font-display text-2xl text-[var(--fg)]">
                 Acceptance Criteria ({bounty.requirements.length})
               </h2>
-              <span className="text-[11px] font-mono text-slate-400">
+              <span className="text-[11px] font-mono text-[var(--fg-muted)]">
                 Audited by Gemini
               </span>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-2.5 font-body">
               {bounty.requirements.map((req, idx) => {
                 const auditItem = bounty.audit?.criteriaChecklist?.find(
                   (c) => c.criterion === req
@@ -151,24 +147,24 @@ function BountyDetailContent({ params }: PageProps) {
                 return (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-start gap-3 text-xs"
+                    className="p-3.5 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] flex items-start gap-3 text-xs"
                   >
                     {auditItem ? (
                       auditItem.passed ? (
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                       ) : (
-                        <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                        <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                       )
                     ) : (
-                      <span className="w-4 h-4 rounded-full bg-white/[0.08] text-[10px] font-mono text-slate-400 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-4 h-4 rounded-full bg-[var(--border)] text-[10px] font-mono text-[var(--fg-muted)] flex items-center justify-center shrink-0 mt-0.5">
                         {idx + 1}
                       </span>
                     )}
 
                     <div className="space-y-1 min-w-0">
-                      <div className="text-slate-200 leading-relaxed">{req}</div>
+                      <div className="text-[var(--fg)] leading-relaxed">{req}</div>
                       {auditItem && (
-                        <div className="text-[11px] text-slate-400 leading-relaxed font-mono">
+                        <div className="text-[11px] text-[var(--fg-muted)] leading-relaxed font-mono">
                           {auditItem.reason}
                         </div>
                       )}
@@ -182,8 +178,8 @@ function BountyDetailContent({ params }: PageProps) {
           {/* Submission Preview if exists */}
           {bounty.submissionText && (
             <GlassCard className="p-6 space-y-3">
-              <h2 className="text-base font-semibold text-white">Freelancer Submission</h2>
-              <div className="p-4 rounded-2xl bg-black/50 border border-white/[0.06] font-mono text-xs text-slate-300 max-h-60 overflow-y-auto whitespace-pre-wrap leading-relaxed">
+              <h2 className="font-display text-2xl text-[var(--fg)]">Freelancer Submission</h2>
+              <div className="p-4 rounded-2xl bg-black/60 border border-[var(--border)] font-mono text-xs text-[var(--fg)] max-h-60 overflow-y-auto whitespace-pre-wrap leading-relaxed">
                 {bounty.submissionText}
               </div>
             </GlassCard>
@@ -195,7 +191,7 @@ function BountyDetailContent({ params }: PageProps) {
               className={`p-6 space-y-4 border ${
                 bounty.audit.approved
                   ? "bg-emerald-500/[0.04] border-emerald-500/20"
-                  : "bg-rose-500/[0.04] border-rose-500/20"
+                  : "bg-red-500/[0.04] border-red-500/20"
               }`}
             >
               <div className="flex items-center justify-between">
@@ -203,13 +199,13 @@ function BountyDetailContent({ params }: PageProps) {
                   {bounty.audit.approved ? (
                     <CheckCircle2 className="w-6 h-6 text-emerald-400" />
                   ) : (
-                    <XCircle className="w-6 h-6 text-rose-400" />
+                    <XCircle className="w-6 h-6 text-red-400" />
                   )}
                   <div>
-                    <h3 className="text-base font-bold text-white">
+                    <h3 className="font-display text-2xl text-[var(--fg)]">
                       {bounty.audit.approved ? "Verification Certified" : "Revision Required"}
                     </h3>
-                    <p className="text-xs text-slate-400">
+                    <p className="font-body text-xs text-[var(--fg-muted)]">
                       Gemini structured criteria evaluation
                     </p>
                   </div>
@@ -222,7 +218,7 @@ function BountyDetailContent({ params }: PageProps) {
                 />
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="font-body text-xs text-[var(--fg-muted)] leading-relaxed">
                 {bounty.audit.summary}
               </p>
             </GlassCard>
@@ -230,14 +226,14 @@ function BountyDetailContent({ params }: PageProps) {
         </div>
 
         {/* Right Column: Escrow Financial Details & Action */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-5 space-y-6 font-ui">
           {/* Action Callout */}
-          <GlassCard className="p-6 space-y-4 border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent">
-            <h2 className="text-base font-semibold text-white">Deliverable Action</h2>
+          <GlassCard className="p-6 space-y-4 border-[#0088cc]/30 bg-[#0088cc]/5">
+            <h2 className="font-display text-2xl text-[var(--fg)]">Deliverable Action</h2>
 
             {bounty.status === "FUNDED_IN_ESCROW" || bounty.status === "REJECTED_NEEDS_WORK" ? (
               <div className="space-y-3">
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="font-body text-xs text-[var(--fg-muted)] leading-relaxed">
                   {bounty.status === "REJECTED_NEEDS_WORK"
                     ? "The deliverable was rejected by Gemini. Revise the code or text and submit again for autonomous audit."
                     : "The escrow funds are locked and waiting. Submit deliverable code to trigger Gemini AI verification."}
@@ -245,82 +241,83 @@ function BountyDetailContent({ params }: PageProps) {
                 <Link href={`/bounties/${bounty.id}/submit`}>
                   <Button variant="primary" size="lg" className="w-full justify-center">
                     Submit Work for Audit
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
               </div>
             ) : bounty.status === "RELEASED_BY_AI" ? (
               <div className="space-y-3">
-                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Escrow disbursed! Payout executed via PayPal Payouts v1.</span>
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-medium">
+                  Autonomous Payout Disbursed
                 </div>
-                <Link href={`/verification/${bounty.id}`}>
-                  <Button variant="secondary" size="md" className="w-full justify-center">
-                    View Verification Receipt
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </Button>
-                </Link>
+                <p className="font-body text-xs text-[var(--fg-muted)] leading-relaxed">
+                  This bounty passed 100% of acceptance criteria and payout was disbursed via PayPal Payouts API v1.
+                </p>
+                {bounty.audit && (
+                  <Link href={`/verification/${bounty.id}`}>
+                    <Button variant="secondary" size="md" className="w-full justify-center">
+                      View Verification Audit
+                      <ArrowRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </Link>
+                )}
               </div>
             ) : (
-              <div className="space-y-3">
-                <p className="text-xs text-slate-300">Deliverable is pending or under audit.</p>
-                <Link href={`/verification/${bounty.id}`}>
-                  <Button variant="primary" size="md" className="w-full justify-center">
-                    Check Verification Screen
-                  </Button>
-                </Link>
+              <div className="space-y-2">
+                <p className="font-body text-xs text-[var(--fg-muted)]">
+                  Verification audit currently in progress.
+                </p>
               </div>
             )}
           </GlassCard>
 
-          {/* Escrow Details */}
+          {/* PayPal Escrow Metadata */}
           <GlassCard className="p-6 space-y-4">
-            <h2 className="text-base font-semibold text-white">PayPal Escrow Ledger</h2>
+            <h2 className="font-display text-2xl text-[var(--fg)]">Escrow Container</h2>
 
             <div className="space-y-3 text-xs">
-              <div className="flex items-center justify-between py-1.5 border-b border-white/[0.04]">
-                <span className="text-slate-400">Escrow Value</span>
-                <span className="font-mono font-bold text-white">${bounty.amount} USD</span>
-              </div>
-              <div className="flex items-center justify-between py-1.5 border-b border-white/[0.04]">
-                <span className="text-slate-400">Order ID</span>
-                <div className="flex items-center gap-2 font-mono text-blue-400">
-                  <span className="truncate max-w-[140px]">{bounty.escrowOrderId}</span>
+              <div>
+                <span className="text-[11px] text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
+                  PayPal Order ID
+                </span>
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] font-mono text-[var(--fg)]">
+                  <span className="truncate">{bounty.escrowOrderId}</span>
                   <button
                     onClick={() => copyToClipboard(bounty.escrowOrderId)}
-                    className="text-slate-500 hover:text-white transition"
+                    className="p-1 text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
                     title="Copy Order ID"
                   >
-                    <Copy className="w-3 h-3" />
+                    <Copy className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
-              <div className="flex items-center justify-between py-1.5 border-b border-white/[0.04]">
-                <span className="text-slate-400">Escrow Status</span>
-                <StatusChip status={bounty.status} size="sm" />
-              </div>
+
               {bounty.payoutBatchId && (
-                <div className="flex items-center justify-between py-1.5 border-b border-white/[0.04]">
-                  <span className="text-slate-400">Payout Batch ID</span>
-                  <div className="flex items-center gap-2 font-mono text-emerald-400">
-                    <span className="truncate max-w-[140px]">{bounty.payoutBatchId}</span>
+                <div>
+                  <span className="text-[11px] text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
+                    PayPal Payout Batch ID
+                  </span>
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] font-mono text-emerald-400">
+                    <span className="truncate">{bounty.payoutBatchId}</span>
                     <button
-                      onClick={() => copyToClipboard(bounty.payoutBatchId || "")}
-                      className="text-slate-500 hover:text-white transition"
+                      onClick={() => copyToClipboard(bounty.payoutBatchId!)}
+                      className="p-1 text-[var(--fg-muted)] hover:text-[var(--fg)] cursor-pointer"
                       title="Copy Payout Batch ID"
                     >
-                      <Copy className="w-3 h-3" />
+                      <Copy className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
               )}
+
               {bounty.freelancerEmail && (
-                <div className="flex items-center justify-between py-1.5">
-                  <span className="text-slate-400">Recipient Email</span>
-                  <span className="font-mono text-slate-300 truncate max-w-[160px]">
-                    {bounty.freelancerEmail}
+                <div>
+                  <span className="text-[11px] text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
+                    Recipient PayPal Sandbox Email
                   </span>
+                  <div className="p-2.5 rounded-xl bg-[var(--surface-strong)] border border-[var(--border)] font-mono text-[var(--fg)] truncate">
+                    {bounty.freelancerEmail}
+                  </div>
                 </div>
               )}
             </div>
@@ -330,4 +327,3 @@ function BountyDetailContent({ params }: PageProps) {
     </div>
   );
 }
-

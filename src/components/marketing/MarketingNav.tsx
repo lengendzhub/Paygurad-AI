@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShieldCheck, Command, ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 interface MarketingNavProps {
   onOpenCommand?: () => void;
@@ -22,25 +23,25 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl bg-[#0B0B0F]/80 border-b border-white/[0.06] transition-all">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-2xl bg-[var(--bg)]/85 border-b border-[var(--border)] transition-all">
       <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white shadow-[0_0_20px_rgba(37,99,235,0.35)] group-hover:scale-105 transition-transform">
-            <ShieldCheck className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-xl bg-[#0088cc] flex items-center justify-center text-[#000000] shadow-[0_0_20px_rgba(0,136,204,0.4)] group-hover:scale-105 transition-transform">
+            <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
           </div>
           <div>
-            <span className="font-bold text-base tracking-tight text-white block leading-none">
+            <span className="font-ui font-semibold text-base tracking-tight text-[var(--fg)] block leading-none">
               PayGuard
             </span>
-            <span className="text-[10px] uppercase font-mono tracking-widest text-slate-400 leading-none">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--fg-muted)] leading-none mt-0.5 block">
               AI Escrow
             </span>
           </div>
         </Link>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-full">
+        <nav className="hidden md:flex items-center gap-1 bg-[var(--surface)] border border-[var(--border)] px-3 py-1.5 rounded-full">
           {links.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -48,11 +49,11 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
                 key={link.href}
                 href={link.href}
                 className={`
-                  px-4 py-1.5 text-xs font-medium rounded-full transition-all
+                  px-4 py-1.5 text-xs font-ui font-medium rounded-full transition-all
                   ${
                     isActive
-                      ? "bg-white/[0.1] text-white"
-                      : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
+                      ? "bg-[var(--surface-strong)] text-[var(--fg)] border border-[var(--border-strong)]"
+                      : "text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--surface-strong)]"
                   }
                 `}
               >
@@ -64,10 +65,12 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
 
         {/* Right Action */}
         <div className="flex items-center gap-3">
+          <ThemeToggle />
+
           {onOpenCommand && (
             <button
               onClick={onOpenCommand}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs text-slate-400 bg-white/[0.04] border border-white/[0.08] rounded-xl hover:text-white hover:bg-white/[0.08] transition"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-ui text-[var(--fg-muted)] bg-[var(--surface)] border border-[var(--border)] rounded-xl hover:text-[var(--fg)] hover:bg-[var(--surface-strong)] transition cursor-pointer"
               title="Command Palette (Cmd+K)"
             >
               <Command className="w-3.5 h-3.5" />
@@ -85,7 +88,7 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-slate-400 hover:text-white"
+            className="md:hidden p-2 text-[var(--fg-muted)] hover:text-[var(--fg)]"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -95,20 +98,20 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0B0B0F] border-b border-white/[0.08] px-6 py-4 space-y-3">
+        <div className="md:hidden bg-[var(--bg)] border-b border-[var(--border)] px-6 py-4 space-y-3 font-ui">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-sm font-medium text-slate-300 hover:text-white py-1.5"
+              className="block text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] py-1.5"
             >
               {link.label}
             </Link>
           ))}
-          <div className="pt-2">
+          <div className="pt-2 border-t border-[var(--border)] flex items-center justify-between">
             <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="primary" size="md" className="w-full justify-center">
+              <Button variant="primary" size="sm" className="w-full">
                 Launch App
               </Button>
             </Link>
@@ -118,4 +121,3 @@ export function MarketingNav({ onOpenCommand }: MarketingNavProps) {
     </header>
   );
 }
-

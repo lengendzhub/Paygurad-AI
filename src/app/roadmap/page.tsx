@@ -3,18 +3,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Milestone,
   CheckCircle2,
   Clock,
-  Sparkles,
   GitPullRequest,
   Receipt,
   Layers,
   ChevronDown,
+  ArrowRight,
 } from "lucide-react";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { Button } from "@/components/ui/Button";
+import { RevealStatement } from "@/components/marketing/RevealStatement";
+import { useScrollRefresh } from "@/hooks/useScrollRefresh";
 
 interface RoadmapItem {
   id: string;
@@ -32,7 +33,8 @@ const ROADMAP: RoadmapItem[] = [
     quarter: "Phase 1 · Current Architecture",
     status: "COMPLETED",
     title: "Dual PayPal API Core & Gemini Arbiter",
-    description: "Foundational integration connecting PayPal Orders v2 for escrow locks, Google Gemini for structured criteria evaluation, and PayPal Payouts v1 for instant disbursals.",
+    description:
+      "Foundational integration connecting PayPal Orders v2 for escrow locks, Google Gemini for structured criteria evaluation, and PayPal Payouts v1 for instant disbursals.",
     details: [
       "PayPal Orders API v2 OAuth2 client checkout",
       "PayPal Payouts API v1 autonomous server-side disbursal",
@@ -46,7 +48,8 @@ const ROADMAP: RoadmapItem[] = [
     quarter: "Phase 2 · Q2 2027",
     status: "IN_PROGRESS",
     title: "Multi-Milestone Escrow Schedules (25 / 50 / 25)",
-    description: "Allowing enterprise clients and contractors to establish staggered delivery milestones with independent verification gates for each stage.",
+    description:
+      "Allowing enterprise clients and contractors to establish staggered delivery milestones with independent verification gates for each stage.",
     details: [
       "Staggered milestone funding into segregated sub-escrow buffers",
       "Milestone 1: Prototype / Architecture Signoff (25%)",
@@ -60,7 +63,8 @@ const ROADMAP: RoadmapItem[] = [
     quarter: "Phase 3 · Q3 2027",
     status: "PLANNED",
     title: "GitHub Webhook & CI/CD Pipeline Automation",
-    description: "Automatic verification directly from git events. Opening or merging pull requests triggers Gemini code audits and releases escrow without leaving GitHub.",
+    description:
+      "Automatic verification directly from git events. Opening or merging pull requests triggers Gemini code audits and releases escrow without leaving GitHub.",
     details: [
       "GitHub App webhook for pull_request events",
       "Automated unit test assertion execution in sandboxed runners",
@@ -74,7 +78,8 @@ const ROADMAP: RoadmapItem[] = [
     quarter: "Phase 4 · Q4 2027",
     status: "PLANNED",
     title: "PayPal Disputes & Invoicing Protocol",
-    description: "Native synchronization with PayPal Invoicing API v2 and automated dispute resolution with comprehensive Gemini audit evidence packages.",
+    description:
+      "Native synchronization with PayPal Invoicing API v2 and automated dispute resolution with comprehensive Gemini audit evidence packages.",
     details: [
       "Automated PDF escrow invoice generation via PayPal Invoicing API",
       "Dispute packet generation for PayPal Resolution Center",
@@ -87,103 +92,120 @@ const ROADMAP: RoadmapItem[] = [
 export default function RoadmapPage() {
   const [expandedId, setExpandedId] = useState<string>("phase-1");
 
+  useScrollRefresh();
+
   return (
-    <div className="min-h-screen bg-[#0B0B0F] text-[#F4F4F7] flex flex-col selection:bg-blue-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#0088cc]/30 selection:text-white overflow-x-hidden">
       <MarketingNav />
 
       <main className="flex-1 max-w-4xl mx-auto px-6 py-20 w-full space-y-16">
         <div className="space-y-4 text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0088cc]/10 border border-[#0088cc]/20 text-[#0088cc] text-xs font-ui uppercase tracking-wider">
             Protocol Evolution
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
-            Product Roadmap
-          </h1>
-          <p className="text-base text-slate-400 leading-relaxed">
-            The strategic milestones advancing PayGuard from single micro-bounties to autonomous multi-stage enterprise escrow contracts.
+          <div>
+            <RevealStatement preset="enter">
+              Product Roadmap Timeline
+            </RevealStatement>
+          </div>
+          <p className="font-body text-base text-[var(--fg-muted)] leading-relaxed">
+            From single-bounty automated escrow to multi-milestone enterprise contracts, PayPal dispute synchronization, and GitHub CI/CD automation.
           </p>
         </div>
 
-        {/* Vertical Timeline */}
-        <div className="space-y-6 relative">
-          <div className="absolute left-6 top-8 bottom-8 w-[2px] bg-white/[0.08] -z-0 hidden sm:block" />
-
+        {/* Timeline with #0088cc spine */}
+        <div className="relative pl-6 sm:pl-8 border-l-2 border-[#0088cc]/40 space-y-10">
           {ROADMAP.map((item) => {
-            const Icon = item.icon;
             const isExpanded = expandedId === item.id;
+            const Icon = item.icon;
+
+            const statusBadge = {
+              COMPLETED: {
+                label: "Shipped & Active",
+                color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+              },
+              IN_PROGRESS: {
+                label: "In Active Development",
+                color: "bg-[#0088cc]/10 text-[#0088cc] border-[#0088cc]/30",
+              },
+              PLANNED: {
+                label: "Planned Architecture",
+                color: "bg-[var(--surface-strong)] text-[var(--fg-muted)] border-[var(--border)]",
+              },
+            }[item.status];
 
             return (
-              <div
-                key={item.id}
-                className="relative pl-0 sm:pl-16 transition-all"
-              >
-                {/* Node Dot */}
+              <div key={item.id} className="relative group">
+                {/* Node on spine */}
                 <div
                   className={`
-                    absolute left-4 top-6 -translate-x-1/2 w-5 h-5 rounded-full border-2 hidden sm:flex items-center justify-center
+                    absolute -left-[31px] sm:-left-[39px] top-6 w-5 h-5 rounded-full border-2
+                    flex items-center justify-center transition-all duration-300
                     ${
                       item.status === "COMPLETED"
-                        ? "bg-emerald-500 border-emerald-400"
+                        ? "border-emerald-500 bg-emerald-500 text-black shadow-[0_0_12px_rgba(34,197,94,0.5)]"
                         : item.status === "IN_PROGRESS"
-                        ? "bg-blue-500 border-blue-400 animate-pulse"
-                        : "bg-[#101018] border-slate-600"
+                        ? "border-[#0088cc] bg-[#0088cc] text-black shadow-[0_0_16px_rgba(0,136,204,0.6)] animate-pulse"
+                        : "border-[var(--border-strong)] bg-[var(--bg)] text-[var(--fg-subtle)]"
                     }
                   `}
-                />
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                </div>
 
-                <div className="rounded-3xl border border-white/[0.08] bg-white/[0.025] hover:bg-white/[0.04] transition p-6 sm:p-8 space-y-4">
-                  <div
+                {/* Card */}
+                <div
+                  className={`
+                    rounded-[28px] border bg-[var(--surface)] backdrop-blur-xl transition-all duration-300 overflow-hidden
+                    ${
+                      isExpanded
+                        ? "border-[#0088cc]/40 bg-[var(--surface-strong)] shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+                        : "border-[var(--border)] hover:border-[var(--border-strong)]"
+                    }
+                  `}
+                >
+                  <button
                     onClick={() => setExpandedId(isExpanded ? "" : item.id)}
-                    className="flex items-start justify-between cursor-pointer select-none"
+                    className="w-full p-6 sm:p-7 text-left flex items-start justify-between gap-4 cursor-pointer font-ui"
                   >
-                    <div>
-                      <div className="flex items-center gap-2.5">
-                        <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="text-xs font-mono tracking-wider text-[var(--fg-muted)]">
                           {item.quarter}
                         </span>
                         <span
-                          className={`
-                            text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border
-                            ${
-                              item.status === "COMPLETED"
-                                ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
-                                : item.status === "IN_PROGRESS"
-                                ? "bg-blue-500/15 text-blue-300 border-blue-500/30"
-                                : "bg-slate-500/15 text-slate-400 border-slate-500/30"
-                            }
-                          `}
+                          className={`text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${statusBadge.color}`}
                         >
-                          {item.status.replace("_", " ")}
+                          {statusBadge.label}
                         </span>
                       </div>
-                      <h3 className="text-xl font-semibold text-white mt-1">
+                      <h3 className="font-display text-2xl text-[var(--fg)] leading-snug">
                         {item.title}
                       </h3>
+                      <p className="font-body text-sm text-[var(--fg-muted)] leading-relaxed max-w-2xl">
+                        {item.description}
+                      </p>
                     </div>
 
-                    <button className="text-slate-400 hover:text-white p-1">
+                    <div className="w-8 h-8 rounded-full bg-[var(--surface-strong)] border border-[var(--border)] flex items-center justify-center text-[var(--fg-muted)] shrink-0 mt-1">
                       <ChevronDown
-                        className={`w-5 h-5 transition-transform duration-200 ${
-                          isExpanded ? "rotate-180" : ""
+                        className={`w-4 h-4 transition-transform duration-300 ${
+                          isExpanded ? "rotate-180 text-[#0088cc]" : ""
                         }`}
                       />
-                    </button>
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                    {item.description}
-                  </p>
+                    </div>
+                  </button>
 
                   {isExpanded && (
-                    <div className="pt-4 border-t border-white/[0.06] space-y-2">
-                      <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-300">
-                        Deliverable Specifications
-                      </div>
-                      <ul className="space-y-2 text-xs text-slate-400">
-                        {item.details.map((d, i) => (
-                          <li key={i} className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                            <span>{d}</span>
+                    <div className="px-6 sm:px-7 pb-6 sm:pb-7 pt-2 border-t border-[var(--border)] bg-[var(--surface)]/50">
+                      <h4 className="font-ui text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-3">
+                        Technical Deliverables
+                      </h4>
+                      <ul className="space-y-2.5 font-body text-sm text-[var(--fg-muted)]">
+                        {item.details.map((detail, idx) => (
+                          <li key={idx} className="flex items-start gap-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#0088cc] mt-2 shrink-0" />
+                            <span>{detail}</span>
                           </li>
                         ))}
                       </ul>
@@ -194,10 +216,18 @@ export default function RoadmapPage() {
             );
           })}
         </div>
+
+        <div className="text-center pt-8">
+          <Link href="/dashboard">
+            <Button variant="primary" size="lg">
+              <span>Launch App in Sandbox</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </Link>
+        </div>
       </main>
 
       <MarketingFooter />
     </div>
   );
 }
-
