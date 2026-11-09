@@ -3,10 +3,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-16%20(Turbopack)-black)](https://nextjs.org/)
-[![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-4285F4)](https://ai.google.dev/)
+[![Gemini](https://img.shields.io/badge/Google%20Gemini-3.5%20%2F%202.5%20Flash-4285F4)](https://ai.google.dev/)
 [![PayPal](https://img.shields.io/badge/PayPal-Orders%20v2%20%2B%20Payouts%20v1-003087)](https://developer.paypal.com/)
 [![AG Grid](https://img.shields.io/badge/AG%20Grid-React%20Ledger-00A2E8)](https://www.ag-grid.com/)
-[![Deploy on Render](https://img.shields.io/badge/Deploy-Render-46E3B7)](https://render.com/)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/lengendzhub/Paygurad-AI)
 
 **PayGuard AI** is a fully autonomous decentralized escrow protocol that closes the trust gap between remote clients and freelancers. By combining two foundational PayPal APIs with Google's state-of-the-art **Gemini 2.5 Flash** structured inference, PayGuard AI replaces subjective, slow human intermediaries with an impartial, deterministic AI verification engine that holds real escrow funds and disburses them automatically within milliseconds of acceptance criteria satisfaction.
 
@@ -72,8 +72,8 @@ sequenceDiagram
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/payguard-ai.git
-cd payguard-ai
+git clone https://github.com/lengendzhub/Paygurad-AI.git
+cd Paygurad-AI
 npm install
 ```
 
