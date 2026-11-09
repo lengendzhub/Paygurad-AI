@@ -11,6 +11,9 @@ import {
   Lock,
   Code2,
   Mail,
+  Sparkles,
+  CheckCircle2,
+  XCircle,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -40,6 +43,34 @@ function BountySubmitContent({ params }: PageProps) {
   const [freelancerEmail, setFreelancerEmail] = useState("");
   const [submissionText, setSubmissionText] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
+
+  const fillPassingDemo = () => {
+    setFreelancerEmail((prev) => prev || "sb-freelancer@personal.example.com");
+    if (emailError) setEmailError(null);
+    setSubmissionText(`def validate_card(number_str: str) -> bool:
+    digits = [int(d) for d in number_str if d.isdigit()]
+    checksum = 0
+    reverse_digits = digits[::-1]
+    for i, d in enumerate(reverse_digits):
+        if i % 2 == 1:
+            d *= 2
+            if d > 9:
+                d -= 9
+        checksum += d
+    return checksum % 10 == 0
+
+# Unit Tests
+assert validate_card("4532015112830366") == True
+assert validate_card("4532015112830367") == False`);
+  };
+
+  const fillFailingDemo = () => {
+    setFreelancerEmail((prev) => prev || "sb-freelancer@personal.example.com");
+    if (emailError) setEmailError(null);
+    setSubmissionText(`def validate_card(number_str):
+    # TODO: finish Luhn math later
+    return len(number_str) == 16`);
+  };
 
   if (!bounty) {
     return (
@@ -162,42 +193,68 @@ function BountySubmitContent({ params }: PageProps) {
 
               {/* Code / Deliverable Input */}
               <div>
-                <div className="flex items-center justify-between mb-1.5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                   <label className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] block">
                     Deliverable / Code / Content Submission <span className="dark:text-red-400 text-red-600">*</span>
                   </label>
-                  <span className="text-[11px] font-mono text-[var(--fg-subtle)]">
-                    Plaintext / Python / JS
-                  </span>
+
+                  {/* 1-Click Test Code Helpers */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={fillPassingDemo}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold font-ui bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition cursor-pointer"
+                      title="Load fully verified passing code with unit tests"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>✓ Passing Code</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={fillFailingDemo}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold font-ui bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 hover:bg-red-500/20 transition cursor-pointer"
+                      title="Load incomplete code missing tests to verify rejection"
+                    >
+                      <XCircle className="w-3.5 h-3.5" />
+                      <span>✗ Failing Code</span>
+                    </button>
+                  </div>
                 </div>
+
                 <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] overflow-hidden focus-within:border-[#0088cc] transition">
-                  <div className="px-4 py-2 border-b border-[var(--border)] bg-[var(--surface)] flex items-center gap-2 text-xs font-mono text-[var(--fg-muted)]">
-                    <Code2 className="w-3.5 h-3.5 text-[#0088cc]" />
-                    <span>submission-payload</span>
+                  <div className="px-4 py-2 border-b border-[var(--border)] bg-[var(--surface)] flex items-center justify-between text-xs font-mono text-[var(--fg-muted)]">
+                    <div className="flex items-center gap-2">
+                      <Code2 className="w-3.5 h-3.5 text-[#0088cc]" />
+                      <span>submission-payload</span>
+                    </div>
+                    <span className="text-[11px] text-[var(--fg-subtle)]">
+                      Python / JS / Text
+                    </span>
                   </div>
                   <textarea
                     rows={12}
                     value={submissionText}
                     onChange={(e) => setSubmissionText(e.target.value)}
-                    placeholder="Paste your completed code or deliverable here..."
+                    placeholder="Paste your completed code or deliverable here (or click ✓ Passing Code / ✗ Failing Code above)..."
                     className="w-full bg-transparent p-4 text-xs font-mono text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none resize-none leading-relaxed"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Action Button: Verify & Get Paid */}
+            {/* Action Button: Run Gemini Audit & Trigger PayPal Payout */}
             <div className="pt-2">
               <Button
                 variant="primary"
                 size="lg"
-                className="w-full justify-center"
+                className="w-full justify-center text-sm font-semibold py-4"
                 disabled={!isFormValid}
                 disabledReason={getDisabledReason()}
                 onClick={handleSubmit}
               >
-                Verify &amp; Get Paid
-                <ArrowRight className="w-4 h-4 ml-1" />
+                <Sparkles className="w-4 h-4 mr-2 text-amber-300 shrink-0" />
+                <span>Run Gemini Audit &amp; Trigger PayPal Payout</span>
+                <ArrowRight className="w-4 h-4 ml-2 shrink-0" />
               </Button>
             </div>
           </GlassCard>

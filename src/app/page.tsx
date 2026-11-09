@@ -14,6 +14,7 @@ import {
   Zap,
   CheckCircle2,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
@@ -242,16 +243,17 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              {/* Payout Bar Skeleton */}
+              {/* Payout & Gemini Approval Bar Skeleton */}
               <div className="mt-5 pt-4 border-t border-[var(--border)] flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="w-4 h-4 text-[#0088cc]" />
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   <span className="font-ui text-xs uppercase tracking-wider text-[var(--fg-muted)]">
-                    Disbursement
+                    Gemini Approval Gate
                   </span>
                 </div>
-                <span className="font-ui text-xs text-[#0088cc] font-semibold">
-                  PayPal Payouts v1
+                <span className="font-ui text-xs text-emerald-500 font-semibold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" />
+                  Payout Dispatched
                 </span>
               </div>
             </div>

@@ -15,6 +15,7 @@ import {
   DollarSign,
   AlertCircle,
   Check,
+  Sparkles,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -48,6 +49,7 @@ function VerificationSignatureContent({ params }: PageProps) {
 
   const bounty = usePayGuardStore((state) => state.getBounty(id));
   const recordVerification = usePayGuardStore((state) => state.recordVerification);
+  const updateBountyStatus = usePayGuardStore((state) => state.updateBountyStatus);
 
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
   const [isAuditing, setIsAuditing] = useState(false);
@@ -178,17 +180,32 @@ function VerificationSignatureContent({ params }: PageProps) {
         </span>
       </div>
 
-      <div>
-        <div className="flex items-center gap-2 font-mono text-xs text-[#0088cc] uppercase tracking-widest mb-1">
-          <span className="w-2 h-2 rounded-full bg-[#0088cc] animate-pulse" />
-          <span>Gemini Autonomous Verification</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-xs text-[#0088cc] uppercase tracking-widest mb-1">
+            <span className="w-2 h-2 rounded-full bg-[#0088cc] animate-pulse" />
+            <span>Gemini Autonomous Verification &amp; Approval Gate</span>
+          </div>
+          <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
+            {bounty.title}
+          </h1>
+          <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
+            Escrow Value: ${bounty.amount} USD · Recipient: {bounty.freelancerEmail || "Not specified"}
+          </p>
         </div>
-        <h1 className="font-display text-4xl font-normal tracking-tight text-[var(--fg)]">
-          {bounty.title}
-        </h1>
-        <p className="font-body text-sm text-[var(--fg-muted)] mt-1">
-          Escrow Value: ${bounty.amount} USD · Recipient: {bounty.freelancerEmail || "Not specified"}
-        </p>
+
+        <div className="shrink-0 flex items-center gap-2">
+          <Button
+            variant="primary"
+            size="md"
+            onClick={runAudit}
+            disabled={isAuditing}
+            isLoading={isAuditing}
+          >
+            <Sparkles className="w-4 h-4 mr-2 text-amber-300" />
+            Run Gemini Audit &amp; Trigger PayPal Payout
+          </Button>
+        </div>
       </div>
 
       {/* Live Auditing Stage Indicator */}
@@ -305,13 +322,13 @@ function VerificationSignatureContent({ params }: PageProps) {
                     }`}
                   >
                     {auditResult.approved
-                      ? "Approved — Payout Dispatched"
-                      : "Rejected — Revision Needed"}
+                      ? "Approved — PayPal Payout Dispatched!"
+                      : "Rejected — Funds Locked in PayPal Escrow"}
                   </h2>
                   <p className="font-body text-xs text-[var(--fg-muted)] mt-1">
                     {auditResult.approved
-                      ? "All criteria verified. Funds disbursed to freelancer PayPal address."
-                      : "Submission does not fulfill 100% of acceptance criteria."}
+                      ? `AI Score: ${auditResult.score}/100 · All criteria verified. Payout disbursed via PayPal Payouts API v1.`
+                      : `AI Score: ${auditResult.score}/100 · Incomplete work detected. Client escrow funds remain safely locked.`}
                   </p>
                 </div>
               </div>
@@ -426,14 +443,45 @@ function VerificationSignatureContent({ params }: PageProps) {
             {!auditResult.approved && (
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="font-body text-xs text-[var(--fg-muted)]">
-                  Revise your deliverable according to Gemini feedback and resubmit.
+                  Submission rejected by Gemini arbiter. Revise code or test with passing code to verify payout release.
                 </p>
-                <Link href={`/bounties/${bounty.id}/submit`}>
-                  <Button variant="primary" size="md">
-                    <RotateCcw className="w-3.5 h-3.5 mr-1" />
-                    Revise &amp; Resubmit Work
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      updateBountyStatus(bounty.id, "VERIFYING", {
+                        submissionText: `def validate_card(number_str: str) -> bool:
+    digits = [int(d) for d in number_str if d.isdigit()]
+    checksum = 0
+    reverse_digits = digits[::-1]
+    for i, d in enumerate(reverse_digits):
+        if i % 2 == 1:
+            d *= 2
+            if d > 9:
+                d -= 9
+        checksum += d
+    return checksum % 10 == 0
+
+# Unit Tests
+assert validate_card("4532015112830366") == True
+assert validate_card("4532015112830367") == False`,
+                        freelancerEmail: bounty.freelancerEmail || "sb-freelancer@personal.example.com",
+                      });
+                      setTimeout(() => runAudit(), 100);
+                    }}
+                    disabled={isAuditing}
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-500" />
+                    Test With Passing Code
                   </Button>
-                </Link>
+                  <Link href={`/bounties/${bounty.id}/submit`}>
+                    <Button variant="primary" size="sm">
+                      <RotateCcw className="w-3.5 h-3.5 mr-1" />
+                      Revise Deliverable
+                    </Button>
+                  </Link>
+                </div>
               </div>
             )}
           </motion.div>

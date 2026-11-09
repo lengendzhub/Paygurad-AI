@@ -12,6 +12,7 @@ import {
   XCircle,
   Copy,
   AlertCircle,
+  Sparkles,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -240,10 +241,20 @@ function BountyDetailContent({ params }: PageProps) {
                 </p>
                 <Link href={`/bounties/${bounty.id}/submit`}>
                   <Button variant="primary" size="lg" className="w-full justify-center">
-                    Submit Work for Audit
+                    <Sparkles className="w-4 h-4 mr-2 text-amber-300" />
+                    Submit Work for Gemini AI Audit
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
+                {bounty.submissionText && (
+                  <Link href={`/verification/${bounty.id}`}>
+                    <Button variant="secondary" size="md" className="w-full justify-center mt-2">
+                      <Sparkles className="w-4 h-4 mr-2 text-[#0088cc]" />
+                      Run Gemini AI Verification &amp; Payout
+                      <ArrowRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </Link>
+                )}
               </div>
             ) : bounty.status === "RELEASED_BY_AI" ? (
               <div className="space-y-3">
