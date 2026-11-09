@@ -25,11 +25,13 @@ import { RevealStatement } from "@/components/marketing/RevealStatement";
 import { AccentText } from "@/components/marketing/AccentText";
 import { PipelineChip } from "@/components/marketing/PipelineChip";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { LandingPreloader } from "@/components/marketing/LandingPreloader";
 import { useScrollRefresh } from "@/hooks/useScrollRefresh";
 
 export default function LandingPage() {
   const [commandOpen, setCommandOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   // Hook to refresh GSAP ScrollTrigger
@@ -118,6 +120,9 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#0088cc]/30 selection:text-white overflow-x-hidden">
+      {/* Landing Page Load & Entrance Sequence */}
+      <LandingPreloader onComplete={() => setIsLoaded(true)} />
+
       <MarketingNav onOpenCommand={() => setCommandOpen(true)} />
 
       {/* ── 1. ATTENTION (HERO SECTION) ── */}
@@ -126,8 +131,13 @@ export default function LandingPage() {
         <HeroGradient />
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center flex-1 z-10 my-auto">
-          {/* Left Text Block */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+          {/* Left Text Block with Staggered Cascading Entrance */}
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 space-y-6 text-center lg:text-left"
+          >
             <div>
               <PipelineChip />
             </div>
@@ -157,10 +167,15 @@ export default function LandingPage() {
                 </Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Verification Card Mockup (Abstract Skeleton Only, NO Fake Data) */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          <motion.div
+            initial={{ opacity: 0, y: 36, scale: 0.96 }}
+            animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 36, scale: 0.96 }}
+            transition={{ duration: 0.85, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 flex justify-center lg:justify-end"
+          >
             <div
               ref={cardRef}
               className="w-full max-w-md rounded-[28px] border border-[var(--border)] bg-[var(--surface)] backdrop-blur-2xl p-6 sm:p-7 relative overflow-hidden transition-all duration-300"
@@ -240,7 +255,7 @@ export default function LandingPage() {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Scroll down indicator */}
