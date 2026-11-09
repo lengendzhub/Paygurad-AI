@@ -19,7 +19,7 @@ import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { Button } from "@/components/ui/Button";
 import { CommandPalette } from "@/components/app/CommandPalette";
-import { HeroLaser } from "@/components/marketing/HeroLaser";
+import { HeroGradient } from "@/components/marketing/HeroGradient";
 import { MarqueeRibbon } from "@/components/marketing/MarqueeRibbon";
 import { RevealStatement } from "@/components/marketing/RevealStatement";
 import { AccentText } from "@/components/marketing/AccentText";
@@ -122,8 +122,8 @@ export default function LandingPage() {
 
       {/* ── 1. ATTENTION (HERO SECTION) ── */}
       <section className="relative min-h-[100svh] flex flex-col justify-between overflow-hidden bg-[var(--bg)] pt-20 pb-16 px-6 lg:px-12">
-        {/* LaserFlow 3D light layer behind */}
-        <HeroLaser surfaceRef={cardRef} />
+        {/* Soft atmospheric gradient lighting in #78C5EF and #51A0D5 */}
+        <HeroGradient />
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center flex-1 z-10 my-auto">
           {/* Left Text Block */}
@@ -163,8 +163,16 @@ export default function LandingPage() {
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <div
               ref={cardRef}
-              className="w-full max-w-md rounded-[28px] border border-[var(--border)] bg-[var(--surface)] backdrop-blur-2xl p-6 sm:p-7 shadow-[0_16px_48px_rgba(0,0,0,0.45)] relative overflow-hidden transition-all duration-300"
+              className="w-full max-w-md rounded-[28px] border border-[var(--border)] bg-[var(--surface)] backdrop-blur-2xl p-6 sm:p-7 shadow-[0_20px_60px_rgba(81,160,213,0.14)] relative overflow-hidden transition-all duration-300"
             >
+              {/* Top-edge ambient highlight in #78C5EF and #51A0D5 */}
+              <div
+                className="absolute top-0 inset-x-0 h-[2px] opacity-80 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent 0%, #78C5EF 40%, #51A0D5 70%, transparent 100%)",
+                }}
+              />
               {/* Header with abstract indicator */}
               <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
                 <div className="flex items-center gap-2">

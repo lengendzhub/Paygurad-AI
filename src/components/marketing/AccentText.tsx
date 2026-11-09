@@ -21,8 +21,8 @@ export function AccentText({
   const isLight = resolvedTheme === "light";
 
   const colors = isLight
-    ? ["#0088cc", "#000000", "#666666"]
-    : ["#0088cc", "#eeeeee", "#979797"];
+    ? ["#51A0D5", "#78C5EF", "#000000"]
+    : ["#78C5EF", "#51A0D5", "#eeeeee"];
 
   if (preset === "hero") {
     return (
@@ -70,4 +70,3 @@ export function AccentText({
     </GradientText>
   );
 }
-
