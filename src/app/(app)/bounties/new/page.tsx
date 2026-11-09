@@ -429,10 +429,16 @@ export default function NewBountyWizardPage() {
                   </p>
                 </div>
 
-                {/* REAL PAYPAL BUTTON ONLY (No Demo Shortcuts) */}
-                <div className="pt-2">
+                {/* PayPal Checkout Button - Blue Apple Style (tagline disabled) */}
+                <div className="pt-2 rounded-2xl overflow-hidden bg-[var(--surface-strong)]">
                   <PayPalButtons
-                    style={{ layout: "horizontal", height: 44 }}
+                    style={{
+                      layout: "horizontal",
+                      color: "blue",
+                      shape: "rect",
+                      height: 48,
+                      tagline: false,
+                    }}
                     createOrder={async () => {
                       setFundError(null);
                       try {
