@@ -11,7 +11,7 @@ import {
   CheckCircle2,
   XCircle,
   Copy,
-  AlertCircle,
+  FileQuestion,
   Sparkles,
 } from "lucide-react";
 import { usePayGuardStore } from "@/lib/store";
@@ -44,7 +44,7 @@ function BountyDetailContent({ params }: PageProps) {
     return (
       <div className="max-w-2xl mx-auto py-12">
         <EmptyState
-          icon={AlertCircle}
+          icon={FileQuestion}
           title="Bounty Not Found"
           description={`No bounty with identifier ${id} was found in your local store. It may have been cleared or never created.`}
           actionLabel="Return to Bounties"
@@ -236,7 +236,7 @@ function BountyDetailContent({ params }: PageProps) {
               <div className="space-y-3">
                 <p className="font-body text-xs text-[var(--fg-muted)] leading-relaxed">
                   {bounty.status === "REJECTED_NEEDS_WORK"
-                    ? "The deliverable was rejected by Gemini. Revise the code or text and submit again for autonomous audit."
+                    ? "The deliverable requires revisions to meet all acceptance criteria. Update your submission to request another review."
                     : "The escrow funds are locked and waiting. Submit deliverable code to trigger Gemini AI verification."}
                 </p>
                 <Link href={`/bounties/${bounty.id}/submit`}>

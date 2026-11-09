@@ -13,7 +13,7 @@ import {
   RotateCcw,
   Copy,
   DollarSign,
-  AlertCircle,
+  FileQuestion,
   Check,
   Sparkles,
 } from "lucide-react";
@@ -22,6 +22,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { ScoreRing } from "@/components/ui/ScoreRing";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { ErrorBanner } from "@/components/ui/ErrorMessage";
 import { VerificationResult } from "@/types";
 
 interface PageProps {
@@ -147,7 +148,7 @@ function VerificationSignatureContent({ params }: PageProps) {
     return (
       <div className="max-w-2xl mx-auto py-12">
         <EmptyState
-          icon={AlertCircle}
+          icon={FileQuestion}
           title="Bounty Not Found"
           description={`No bounty with identifier ${id} was found.`}
           actionLabel="Return to Bounties"
@@ -262,21 +263,13 @@ function VerificationSignatureContent({ params }: PageProps) {
 
       {/* Error State with Retry */}
       {apiError && !isAuditing && (
-        <GlassCard className="p-6 border-red-500/25 bg-red-500/10 space-y-4">
-          <div className="flex items-center gap-3 dark:text-red-400 text-red-600">
-            <AlertCircle className="w-5 h-5 shrink-0" />
-            <h3 className="font-display text-xl text-[var(--fg)]">Verification Audit Error</h3>
-          </div>
-          <p className="font-mono text-xs dark:text-red-300 text-red-700 leading-relaxed">
-            {apiError}
-          </p>
-          <div className="pt-2">
-            <Button variant="secondary" size="md" onClick={runAudit}>
-              <RotateCcw className="w-3.5 h-3.5 mr-1" />
-              Retry Verification
-            </Button>
-          </div>
-        </GlassCard>
+        <ErrorBanner
+          title="Verification could not be completed"
+          message={apiError}
+          onDismiss={() => setApiError(null)}
+          onRetry={runAudit}
+          retryLabel="Retry Verification"
+        />
       )}
 
       {/* Audit Verdict Banner & Breakdown */}

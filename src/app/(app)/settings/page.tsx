@@ -187,13 +187,13 @@ export default function SettingsPage() {
       </GlassCard>
 
       {/* 3. Data Management: Clear Local Data */}
-      <GlassCard className="p-6 space-y-4 border-red-500/25 bg-red-500/[0.03]">
+      <GlassCard className="p-6 space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-red-500/15 flex items-center justify-center dark:text-red-400 text-red-600">
+          <div className="w-10 h-10 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] flex items-center justify-center text-[var(--fg-muted)]">
             <Trash2 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-display text-2xl dark:text-red-400 text-red-600">Local Data Storage</h2>
+            <h2 className="font-display text-2xl text-[var(--fg)]">Local Data Storage</h2>
             <p className="font-body text-xs text-[var(--fg-muted)]">
               Manage persisted browser state ({bountiesCount} bounties, {activityCount} events stored)
             </p>
@@ -227,9 +227,9 @@ export default function SettingsPage() {
         maxWidth="sm"
       >
         <div className="space-y-4 pt-2 font-body">
-          <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 dark:text-red-400 text-red-700 text-xs flex items-center gap-2.5">
-            <AlertTriangle className="w-4 h-4 shrink-0 dark:text-red-400 text-red-600" />
-            <span>All {bountiesCount} bounties and ledger entries will be permanently removed.</span>
+          <div className="p-3.5 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] text-xs text-[var(--fg-muted)] flex items-start gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0 mt-1.5" />
+            <span>This will permanently remove all {bountiesCount} stored {bountiesCount === 1 ? "bounty" : "bounties"} and ledger events from this browser.</span>
           </div>
 
           <div className="flex items-center justify-end gap-2.5 pt-2 font-ui">

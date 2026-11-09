@@ -7,7 +7,7 @@ import {
   ArrowLeft,
   ArrowRight,
   ShieldCheck,
-  AlertCircle,
+  FileQuestion,
   Lock,
   Code2,
   Mail,
@@ -18,6 +18,7 @@ import {
 import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import { FormFieldError } from "@/components/ui/ErrorMessage";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 interface PageProps {
@@ -76,7 +77,7 @@ assert validate_card("4532015112830367") == False`);
     return (
       <div className="max-w-2xl mx-auto py-12">
         <EmptyState
-          icon={AlertCircle}
+          icon={FileQuestion}
           title="Bounty Not Found"
           description={`No bounty with identifier ${id} was found.`}
           actionLabel="Return to Bounties"
@@ -104,17 +105,17 @@ assert validate_card("4532015112830367") == False`);
       return "Deliverable submission cannot be empty";
     }
     if (!freelancerEmail.trim()) {
-      return "PayPal sandbox receiver email is required";
+      return "Enter PayPal recipient address";
     }
     if (!validateEmail(freelancerEmail)) {
-      return "Please enter a valid email format";
+      return "Enter a valid email address (e.g. name@example.com)";
     }
     return undefined;
   };
 
   const handleSubmit = () => {
     if (!validateEmail(freelancerEmail)) {
-      setEmailError("Please enter a valid email format");
+      setEmailError("Please enter a valid PayPal email address");
       return;
     }
 
@@ -177,15 +178,12 @@ assert validate_card("4532015112830367") == False`);
                       if (emailError) setEmailError(null);
                     }}
                     placeholder="name@example.com"
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-11 pr-4 py-3 text-sm text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] font-mono transition"
+                    className={`w-full bg-[var(--surface)] border rounded-xl pl-11 pr-4 py-3 text-sm text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none font-mono transition ${
+                      emailError ? "border-rose-500/50 focus:border-rose-500" : "border-[var(--border)] focus:border-[#007AFF]"
+                    }`}
                   />
                 </div>
-                {emailError && (
-                  <p className="text-xs dark:text-red-400 text-red-600 mt-1 flex items-center gap-1 font-body">
-                    <AlertCircle className="w-3 h-3" />
-                    {emailError}
-                  </p>
-                )}
+                <FormFieldError message={emailError || undefined} />
                 <p className="text-[11px] font-body text-[var(--fg-muted)] mt-1">
                   The PayPal Payouts API will disburse the ${bounty.amount} USD directly to this address upon audit approval.
                 </p>

@@ -10,7 +10,6 @@ import {
   Trash2,
   Lock,
   CheckCircle2,
-  AlertCircle,
   ShieldCheck,
   ChevronUp,
   ChevronDown,
@@ -19,6 +18,7 @@ import { usePayGuardStore } from "@/lib/store";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Stepper } from "@/components/ui/Stepper";
+import { ErrorBanner, FormFieldError } from "@/components/ui/ErrorMessage";
 
 export default function NewBountyWizardPage() {
   const router = useRouter();
@@ -75,18 +75,18 @@ export default function NewBountyWizardPage() {
     const newErrors: { [key: string]: string } = {};
 
     if (step === 0) {
-      if (!title.trim()) newErrors.title = "Task title is required";
+      if (!title.trim()) newErrors.title = "Please provide a descriptive title";
       if (!amount.trim()) {
-        newErrors.amount = "Reward amount is required";
+        newErrors.amount = "Enter an escrow reward amount";
       } else if (isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
-        newErrors.amount = "Please enter a valid amount greater than $0.00";
+        newErrors.amount = "Enter an amount of at least $1.00 USD";
       }
     }
 
     if (step === 1) {
       const validCriteria = criteria.filter((c) => c.trim().length > 0);
       if (validCriteria.length === 0) {
-        newErrors.criteria = "At least one clear acceptance criterion is required";
+        newErrors.criteria = "Add at least one verification criterion for the freelancer";
       }
     }
 
@@ -148,16 +148,16 @@ export default function NewBountyWizardPage() {
                 <input
                   type="text"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    if (errors.title) setErrors((prev) => ({ ...prev, title: "" }));
+                  }}
                   placeholder="Task title"
-                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] transition"
+                  className={`w-full bg-[var(--surface)] border rounded-xl px-4 py-3 text-sm font-body text-[var(--fg)] placeholder-[var(--fg-subtle)] focus:outline-none transition ${
+                    errors.title ? "border-rose-500/50 focus:border-rose-500" : "border-[var(--border)] focus:border-[#007AFF]"
+                  }`}
                 />
-                {errors.title && (
-                  <p className="text-xs dark:text-red-400 text-red-600 mt-1 flex items-center gap-1 font-body">
-                    <AlertCircle className="w-3 h-3" />
-                    {errors.title}
-                  </p>
-                )}
+                <FormFieldError message={errors.title} />
               </div>
 
               <div>
@@ -184,17 +184,17 @@ export default function NewBountyWizardPage() {
                   <input
                     type="text"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                      if (errors.amount) setErrors((prev) => ({ ...prev, amount: "" }));
+                    }}
                     placeholder="0.00"
-                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-8 pr-4 py-3 text-sm font-body tabular-nums text-[var(--fg)] font-mono placeholder-[var(--fg-subtle)] focus:outline-none focus:border-[#007AFF] transition"
+                    className={`w-full bg-[var(--surface)] border rounded-xl pl-8 pr-4 py-3 text-sm font-body tabular-nums text-[var(--fg)] font-mono placeholder-[var(--fg-subtle)] focus:outline-none transition ${
+                      errors.amount ? "border-rose-500/50 focus:border-rose-500" : "border-[var(--border)] focus:border-[#007AFF]"
+                    }`}
                   />
                 </div>
-                {errors.amount && (
-                  <p className="text-xs dark:text-red-400 text-red-600 mt-1 flex items-center gap-1 font-body">
-                    <AlertCircle className="w-3 h-3" />
-                    {errors.amount}
-                  </p>
-                )}
+                <FormFieldError message={errors.amount} />
               </div>
             </div>
 
@@ -269,12 +269,7 @@ export default function NewBountyWizardPage() {
                 </div>
               ))}
 
-              {errors.criteria && (
-                <p className="text-xs dark:text-red-400 text-red-600 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {errors.criteria}
-                </p>
-              )}
+              <FormFieldError message={errors.criteria} />
 
               <button
                 type="button"
@@ -378,13 +373,11 @@ export default function NewBountyWizardPage() {
             </div>
 
             {fundError && (
-              <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 dark:text-red-400 text-red-600 text-xs flex items-start gap-2.5 font-body">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 dark:text-red-400 text-red-600" />
-                <div>
-                  <div className="font-semibold">PayPal Escrow Error</div>
-                  <div>{fundError}</div>
-                </div>
-              </div>
+              <ErrorBanner
+                title="Checkout canceled or interrupted"
+                message={fundError}
+                onDismiss={() => setFundError(null)}
+              />
             )}
 
             {fundSuccess ? (
@@ -393,7 +386,7 @@ export default function NewBountyWizardPage() {
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-display text-2xl text-[var(--fg)]">Escrow Successfully Locked!</h3>
+                  <h3 className="font-display text-2xl text-[var(--fg)]">Escrow Successfully Locked</h3>
                   <p className="font-body text-xs text-[var(--fg-muted)]">
                     Bounty ID: <span className="font-mono text-[#007AFF]">{fundSuccess.id}</span> · Order:{" "}
                     <span className="font-mono dark:text-emerald-400 text-emerald-600">{fundSuccess.escrowOrderId}</span>
@@ -419,13 +412,13 @@ export default function NewBountyWizardPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-[#007AFF]/10 border border-[#007AFF]/20 text-xs text-[var(--fg-muted)] space-y-1 font-body">
-                  <div className="font-semibold text-[#007AFF] flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4" />
-                    PayPal Orders v2 Non-Custodial Lock
+                <div className="p-4 rounded-2xl bg-[var(--surface-strong)] border border-[var(--border)] text-xs text-[var(--fg-muted)] space-y-1.5 font-ui">
+                  <div className="font-semibold text-[var(--fg)] flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[#007AFF]" />
+                    <span>Protected Escrow Lock</span>
                   </div>
-                  <p>
-                    Funds will be locked in the PayPal sandbox escrow buffer. The freelancer cannot access funds until Gemini audits and certifies all acceptance criteria.
+                  <p className="leading-relaxed">
+                    Funds remain securely locked in PayPal escrow until Gemini AI verifies all acceptance criteria. If work is not completed, funds are protected.
                   </p>
                 </div>
 
@@ -451,7 +444,7 @@ export default function NewBountyWizardPage() {
                         });
                         const order = await res.json();
                         if (!res.ok || order.error) {
-                          throw new Error(order.error || "Failed to create escrow order");
+                          throw new Error(order.error || "Unable to initialize PayPal checkout. Please try again.");
                         }
                         return order.id;
                       } catch (err: any) {
@@ -468,7 +461,7 @@ export default function NewBountyWizardPage() {
                         });
                         const capture = await res.json();
                         if (!res.ok || capture.error) {
-                          throw new Error(capture.error || "Failed to capture escrow order");
+                          throw new Error(capture.error || "PayPal could not capture authorization. Please check your account.");
                         }
 
                         // Store in real persistent Zustand store
@@ -486,7 +479,7 @@ export default function NewBountyWizardPage() {
                       }
                     }}
                     onError={() => {
-                      setFundError("PayPal popup interrupted or canceled.");
+                      setFundError("Checkout window was closed before completion. No funds were charged.");
                     }}
                   />
                 </div>
