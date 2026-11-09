@@ -271,10 +271,6 @@ export default function LedgerPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-xs font-ui bg-emerald-500/10 border border-emerald-500/25 px-3 py-1.5 rounded-full dark:text-emerald-400 text-emerald-700">
-            <span className="w-2 h-2 rounded-full dark:bg-emerald-400 bg-emerald-600 animate-pulse" />
-            <span>LIVE AUDIT</span>
-          </div>
           <Button
             variant="secondary"
             size="sm"
