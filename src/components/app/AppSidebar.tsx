@@ -13,7 +13,6 @@ import {
   Command,
   ExternalLink,
 } from "lucide-react";
-import { SandboxBadge } from "./SandboxBadge";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 interface AppSidebarProps {
@@ -52,11 +51,6 @@ export function AppSidebar({ onOpenCommand }: AppSidebarProps) {
               </div>
             </Link>
             <ThemeToggle />
-          </div>
-
-          {/* Sandbox Indicator */}
-          <div>
-            <SandboxBadge />
           </div>
 
           {/* Navigation Links */}
