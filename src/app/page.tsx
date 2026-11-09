@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
   Lock,
@@ -28,6 +29,20 @@ import { PipelineChip } from "@/components/marketing/PipelineChip";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { LandingPreloader } from "@/components/marketing/LandingPreloader";
 import { useScrollRefresh } from "@/hooks/useScrollRefresh";
+
+function InviteLinkHandler() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const bountyId = searchParams.get("bountyId");
+
+  useEffect(() => {
+    if (bountyId) {
+      router.push(`/bounties/${encodeURIComponent(bountyId)}?role=freelancer`);
+    }
+  }, [bountyId, router]);
+
+  return null;
+}
 
 export default function LandingPage() {
   const [commandOpen, setCommandOpen] = useState(false);
@@ -121,6 +136,9 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col selection:bg-[#007AFF]/30 selection:text-white overflow-x-hidden">
+      <Suspense fallback={null}>
+        <InviteLinkHandler />
+      </Suspense>
       {/* Landing Page Load & Entrance Sequence */}
       <LandingPreloader onComplete={() => setIsLoaded(true)} />
 

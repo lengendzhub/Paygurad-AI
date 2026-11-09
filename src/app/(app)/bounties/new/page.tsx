@@ -457,20 +457,26 @@ export default function NewBountyWizardPage() {
                         const res = await fetch("/api/paypal/capture-order", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ orderID: data.orderID }),
+                          body: JSON.stringify({
+                            orderID: data.orderID,
+                            title,
+                            description,
+                            requirements: criteria.filter((c) => c.trim().length > 0),
+                            amount,
+                          }),
                         });
                         const capture = await res.json();
                         if (!res.ok || capture.error) {
                           throw new Error(capture.error || "PayPal could not capture authorization. Please check your account.");
                         }
 
-                        // Store in real persistent Zustand store
-                        const newBounty = addBounty({
+                        // Store in real persistent Zustand store and sync with server
+                        const newBounty = capture.bounty || addBounty({
                           title,
                           description,
                           requirements: criteria.filter((c) => c.trim().length > 0),
                           amount,
-                          escrowOrderId: capture.id || data.orderID,
+                          escrowOrderId: capture.captureData?.id || data.orderID,
                         });
 
                         setFundSuccess(newBounty);

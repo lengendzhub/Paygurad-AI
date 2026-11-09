@@ -1,24 +1,59 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { triggerFreelancerPayout } from "@/lib/paypal";
+import { getServerBounty, updateServerBountyStatus } from "@/lib/serverStore";
 
 export async function POST(req: Request) {
   try {
-    const { bountyId, title, requirements, amount, freelancerEmail, submission } = await req.json();
+    const { bountyId, freelancerEmail, submission } = await req.json();
+
+    if (!bountyId) {
+      return NextResponse.json({ error: "Missing required bountyId" }, { status: 400 });
+    }
+
+    if (!freelancerEmail || !freelancerEmail.trim()) {
+      return NextResponse.json({ error: "Missing freelancer payout email address" }, { status: 400 });
+    }
+
+    // 1. Authoritative Server Lookup (Check #3: Never trust client-sent amounts or requirements)
+    const serverBounty = getServerBounty(bountyId);
+    if (!serverBounty) {
+      return NextResponse.json(
+        { error: `Bounty with ID ${bountyId} does not exist in the server escrow registry.` },
+        { status: 404 }
+      );
+    }
+
+    // 2. Double-Payout Prevention (Check #3)
+    if (serverBounty.status === "RELEASED_BY_AI") {
+      return NextResponse.json(
+        {
+          error: "Security Check: Escrow funds for this bounty have already been certified and released. Double payouts are strictly blocked.",
+          alreadyReleased: true,
+          payoutBatchId: serverBounty.payoutBatchId,
+        },
+        { status: 400 }
+      );
+    }
+
+    const authoritativeAmount = serverBounty.amount;
+    const authoritativeTitle = serverBounty.title;
+    const authoritativeRequirements = serverBounty.requirements.join("\n");
 
     const apiKey = process.env.GEMINI_API_KEY;
     const isApiKeyConfigured = Boolean(apiKey && apiKey !== "your_gemini_api_key_here");
 
     const prompt = `
 You are PayGuard AI, an autonomous, strict, and impartial Escrow Verification Agent.
-A client has locked $${amount} USD in PayPal Escrow for the following micro-bounty:
+A client has locked $${authoritativeAmount} USD in PayPal Escrow for the following micro-bounty:
 
-BOUNTY TITLE: ${title}
+BOUNTY ID: ${serverBounty.id}
+BOUNTY TITLE: ${authoritativeTitle}
 STRICT ACCEPTANCE CRITERIA:
-${requirements}
+${authoritativeRequirements}
 
 FREELANCER SUBMISSION:
-${submission}
+${submission || "No submission provided"}
 
 Evaluate whether the submission genuinely fulfills ALL acceptance criteria. Be rigorous: do not approve placeholder text, incomplete code, or missing requirements.
 `;
@@ -138,24 +173,43 @@ Evaluate whether the submission genuinely fulfills ALL acceptance criteria. Be r
       }
     }
 
-    // If Gemini approves the work, automatically release the funds via PayPal Payouts API!
+    // 3. Autonomous AI Payout Execution via PayPal Payouts API
     let payoutResult = null;
     if (auditResult.approved) {
       payoutResult = await triggerFreelancerPayout(
         freelancerEmail,
-        amount,
-        bountyId,
-        title
+        authoritativeAmount,
+        serverBounty.id,
+        authoritativeTitle
       );
+
+      // Record successful release in server store
+      const batchId = payoutResult?.data?.batch_header?.payout_batch_id || undefined;
+      const status = payoutResult?.ok ? "SUCCESS" : "FAILED";
+
+      updateServerBountyStatus(serverBounty.id, "RELEASED_BY_AI", {
+        audit: auditResult,
+        submissionText: submission,
+        freelancerEmail,
+        payoutBatchId: batchId,
+        payoutStatus: status,
+      });
+    } else {
+      // Record rejection in server store
+      updateServerBountyStatus(serverBounty.id, "REJECTED_NEEDS_WORK", {
+        audit: auditResult,
+        submissionText: submission,
+        freelancerEmail,
+      });
     }
 
     return NextResponse.json({
       audit: auditResult,
       payout: payoutResult,
+      bountyId: serverBounty.id,
     });
   } catch (error: any) {
     console.error("Verify & Payout Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message || "An unexpected error occurred" }, { status: 500 });
   }
 }
-

@@ -94,7 +94,7 @@ export async function captureEscrowOrder(orderId: string) {
   return res.json();
 }
 
-// 3. Autonomous AI Payout (Payouts v1 API)
+// 3. Autonomous AI Payout (Payouts v1 API) - Honest execution without fake fallback IDs
 export async function triggerFreelancerPayout(
   receiverEmail: string,
   amount: string,
@@ -104,7 +104,7 @@ export async function triggerFreelancerPayout(
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
   const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 
-  // Sandbox simulation fallback if keys are placeholders or not configured yet
+  // Controlled sandbox simulation if credentials are placeholders
   if (!clientId || !clientSecret || clientId === "your_paypal_sandbox_client_id_here" || clientId === "test") {
     const mockBatchId = `SANDBOX_SIM_${bountyId}_${Date.now()}`;
     return {
@@ -152,21 +152,34 @@ export async function triggerFreelancerPayout(
         ],
       }),
     });
+
     const data = await res.json();
-    return { ok: res.ok, status: res.status, data };
+
+    if (!res.ok) {
+      return {
+        ok: false,
+        status: res.status,
+        error: data.message || data.name || "PayPal Payouts API rejected payout disbursement",
+        data,
+      };
+    }
+
+    return {
+      ok: true,
+      status: res.status,
+      data,
+    };
   } catch (err: any) {
     console.error("PayPal Payouts error:", err);
+    // Honestly report failure with null batch ID
     return {
       ok: false,
       status: 500,
+      error: err.message || "Failed to connect to PayPal Payouts service",
       data: {
         error: err.message,
-        batch_header: {
-          payout_batch_id: `FALLBACK_${bountyId}_${Date.now()}`,
-          batch_status: `ERROR (${err.message})`,
-        },
+        batch_header: null,
       },
     };
   }
 }
-

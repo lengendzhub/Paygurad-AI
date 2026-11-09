@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { AgGridReact } from "ag-grid-react";
@@ -38,7 +38,12 @@ export default function LedgerPage() {
   const isLight = resolvedTheme === "light";
 
   const bounties = usePayGuardStore((state) => state.bounties);
+  const fetchBountiesFromServer = usePayGuardStore((state) => state.fetchBountiesFromServer);
   const gridApiRef = useRef<GridApi<Bounty> | null>(null);
+
+  useEffect(() => {
+    fetchBountiesFromServer();
+  }, [fetchBountiesFromServer]);
 
   const gridTheme = useMemo(() => {
     if (isLight) {

@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/Button";
 import { ScoreRing } from "@/components/ui/ScoreRing";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorBanner } from "@/components/ui/ErrorMessage";
-import { VerificationResult } from "@/types";
+import { VerificationResult, Bounty } from "@/types";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -48,31 +48,64 @@ function VerificationSignatureContent({ params }: PageProps) {
   const router = useRouter();
   const { id } = use(params);
 
-  const bounty = usePayGuardStore((state) => state.getBounty(id));
+  const localBounty = usePayGuardStore((state) => state.getBounty(id));
+  const fetchBountyById = usePayGuardStore((state) => state.fetchBountyById);
   const recordVerification = usePayGuardStore((state) => state.recordVerification);
   const updateBountyStatus = usePayGuardStore((state) => state.updateBountyStatus);
+
+  const [bounty, setBounty] = useState<Bounty | undefined>(localBounty);
+  const [loading, setLoading] = useState(!localBounty);
 
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
   const [isAuditing, setIsAuditing] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [copiedBatch, setCopiedBatch] = useState(false);
 
+  useEffect(() => {
+    if (localBounty) {
+      setBounty(localBounty);
+      setLoading(false);
+    } else {
+      setLoading(true);
+      fetchBountyById(id).then((serverBounty) => {
+        setBounty(serverBounty);
+        setLoading(false);
+      });
+    }
+  }, [id, localBounty, fetchBountyById]);
+
   // If already audited, show stored audit immediately; otherwise run verification
   const [auditResult, setAuditResult] = useState<VerificationResult | null>(
-    bounty?.audit || null
+    localBounty?.audit || null
   );
   const [payoutResult, setPayoutResult] = useState<any>(
-    bounty?.payoutBatchId
+    localBounty?.payoutBatchId
       ? {
           data: {
             batch_header: {
-              payout_batch_id: bounty.payoutBatchId,
-              batch_status: bounty.payoutStatus || "SUCCESS",
+              payout_batch_id: localBounty.payoutBatchId,
+              batch_status: localBounty.payoutStatus || "SUCCESS",
             },
           },
         }
       : null
   );
+
+  useEffect(() => {
+    if (bounty?.audit) {
+      setAuditResult(bounty.audit);
+    }
+    if (bounty?.payoutBatchId) {
+      setPayoutResult({
+        data: {
+          batch_header: {
+            payout_batch_id: bounty.payoutBatchId,
+            batch_status: bounty.payoutStatus || "SUCCESS",
+          },
+        },
+      });
+    }
+  }, [bounty]);
 
   const runAudit = async () => {
     if (!bounty) return;
@@ -95,9 +128,6 @@ function VerificationSignatureContent({ params }: PageProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bountyId: bounty.id,
-          title: bounty.title,
-          requirements: bounty.requirements.join("\n"),
-          amount: bounty.amount,
           freelancerEmail: bounty.freelancerEmail || "freelancer@example.com",
           submission: bounty.submissionText,
         }),
@@ -112,13 +142,12 @@ function VerificationSignatureContent({ params }: PageProps) {
       setAuditResult(data.audit);
       setPayoutResult(data.payout);
 
-      const batchId =
-        data.payout?.data?.batch_header?.payout_batch_id ||
-        (data.audit?.approved ? `SANDBOX_PAYOUT_${Date.now()}` : undefined);
+      // Honest batch ID from server / PayPal (zero fake fallback IDs)
+      const batchId = data.payout?.data?.batch_header?.payout_batch_id || undefined;
 
       const payoutStatus =
         data.payout?.data?.batch_header?.batch_status ||
-        (data.audit?.approved ? "SUCCESS" : undefined);
+        (data.payout?.ok ? "SUCCESS" : undefined);
 
       // Record in persistent Zustand store
       recordVerification(

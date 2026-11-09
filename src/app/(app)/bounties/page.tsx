@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   Coins,
@@ -18,6 +18,11 @@ import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function BountiesListPage() {
   const bounties = usePayGuardStore((state) => state.bounties);
+  const fetchBountiesFromServer = usePayGuardStore((state) => state.fetchBountiesFromServer);
+
+  useEffect(() => {
+    fetchBountiesFromServer();
+  }, [fetchBountiesFromServer]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");

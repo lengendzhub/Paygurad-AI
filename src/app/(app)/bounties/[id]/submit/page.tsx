@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -20,6 +20,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { FormFieldError } from "@/components/ui/ErrorMessage";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Bounty } from "@/types";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -37,13 +38,30 @@ function BountySubmitContent({ params }: PageProps) {
   const router = useRouter();
   const { id } = use(params);
 
-  const bounty = usePayGuardStore((state) => state.getBounty(id));
+  const localBounty = usePayGuardStore((state) => state.getBounty(id));
+  const fetchBountyById = usePayGuardStore((state) => state.fetchBountyById);
   const updateBountyStatus = usePayGuardStore((state) => state.updateBountyStatus);
+
+  const [bounty, setBounty] = useState<Bounty | undefined>(localBounty);
+  const [loading, setLoading] = useState(!localBounty);
 
   // Form State - STRICTLY EMPTY INITIAL VALUES (Hard Rule #0)
   const [freelancerEmail, setFreelancerEmail] = useState("");
   const [submissionText, setSubmissionText] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (localBounty) {
+      setBounty(localBounty);
+      setLoading(false);
+    } else {
+      setLoading(true);
+      fetchBountyById(id).then((serverBounty) => {
+        setBounty(serverBounty);
+        setLoading(false);
+      });
+    }
+  }, [id, localBounty, fetchBountyById]);
 
   const fillPassingDemo = () => {
     setFreelancerEmail((prev) => prev || "sb-freelancer@personal.example.com");
@@ -73,13 +91,22 @@ assert validate_card("4532015112830367") == False`);
     return len(number_str) == 16`);
   };
 
+  if (loading) {
+    return (
+      <div className="max-w-2xl mx-auto py-16 text-center space-y-3 font-ui">
+        <div className="w-8 h-8 border-2 border-[#007AFF] border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-xs text-[var(--fg-muted)] font-mono">Loading bounty requirements from server...</p>
+      </div>
+    );
+  }
+
   if (!bounty) {
     return (
       <div className="max-w-2xl mx-auto py-12">
         <EmptyState
           icon={FileQuestion}
           title="Bounty Not Found"
-          description={`No bounty with identifier ${id} was found.`}
+          description={`No bounty with identifier ${id} was found on the server.`}
           actionLabel="Return to Bounties"
           actionHref="/bounties"
         />

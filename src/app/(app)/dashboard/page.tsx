@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   Plus,
@@ -21,6 +21,11 @@ type StatusFilterType = "ALL" | "ACTIVE" | "RELEASED" | "REVISION";
 export default function DashboardPage() {
   const bounties = usePayGuardStore((state) => state.bounties);
   const activity = usePayGuardStore((state) => state.activity);
+  const fetchBountiesFromServer = usePayGuardStore((state) => state.fetchBountiesFromServer);
+
+  useEffect(() => {
+    fetchBountiesFromServer();
+  }, [fetchBountiesFromServer]);
 
   // Status Filter State
   const [statusFilter, setStatusFilter] = useState<StatusFilterType>("ALL");

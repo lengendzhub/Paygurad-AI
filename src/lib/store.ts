@@ -68,6 +68,8 @@ interface PayGuardStore {
     escrowOrderId: string;
   }) => Bounty;
   getBounty: (id: string) => Bounty | undefined;
+  fetchBountiesFromServer: () => Promise<void>;
+  fetchBountyById: (id: string) => Promise<Bounty | undefined>;
   updateBountyStatus: (id: string, status: BountyStatus, patch?: Partial<Bounty>) => void;
   recordVerification: (
     id: string,
@@ -87,6 +89,59 @@ export const usePayGuardStore = create<PayGuardStore>()(
       bounties: INITIAL_BOUNTIES,
       activity: INITIAL_ACTIVITY,
       hasDismissedTour: false,
+
+      fetchBountiesFromServer: async () => {
+        try {
+          const res = await fetch("/api/bounties");
+          if (res.ok) {
+            const data = await res.json();
+            if (data.bounties && Array.isArray(data.bounties)) {
+              // Merge server bounties into client state
+              set((state) => {
+                const map = new Map<string, Bounty>();
+                // Add server bounties first
+                data.bounties.forEach((b: Bounty) => map.set(b.id.toLowerCase(), b));
+                // Add any local bounties that aren't on server yet
+                state.bounties.forEach((b: Bounty) => {
+                  if (!map.has(b.id.toLowerCase())) {
+                    map.set(b.id.toLowerCase(), b);
+                  }
+                });
+                return { bounties: Array.from(map.values()) };
+              });
+            }
+          }
+        } catch {
+          // Keep offline state gracefully
+        }
+      },
+
+      fetchBountyById: async (id: string) => {
+        try {
+          const res = await fetch(`/api/bounties?id=${encodeURIComponent(id)}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.bounty) {
+              set((state) => {
+                const existingIndex = state.bounties.findIndex(
+                  (b) => b.id.toLowerCase() === id.toLowerCase()
+                );
+                if (existingIndex >= 0) {
+                  const updated = [...state.bounties];
+                  updated[existingIndex] = { ...updated[existingIndex], ...data.bounty };
+                  return { bounties: updated };
+                } else {
+                  return { bounties: [data.bounty, ...state.bounties] };
+                }
+              });
+              return data.bounty;
+            }
+          }
+        } catch {
+          // Return local cached bounty if available
+        }
+        return get().getBounty(id);
+      },
 
       addBounty: (payload) => {
         const timestamp = new Date().toISOString();
@@ -119,25 +174,34 @@ export const usePayGuardStore = create<PayGuardStore>()(
           activity: [newActivity, ...state.activity],
         }));
 
+        // Asynchronously persist to server store
+        fetch("/api/bounties", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newBounty),
+        }).catch(() => {
+          // Best effort sync
+        });
+
         return newBounty;
       },
 
       getBounty: (id) => {
-        return get().bounties.find((b) => b.id === id);
+        return get().bounties.find((b) => b.id.toLowerCase() === id.toLowerCase());
       },
 
       updateBountyStatus: (id, status, patch = {}) => {
         const timestamp = new Date().toISOString();
         set((state) => ({
           bounties: state.bounties.map((b) =>
-            b.id === id ? { ...b, ...patch, status, updatedAt: timestamp } : b
+            b.id.toLowerCase() === id.toLowerCase() ? { ...b, ...patch, status, updatedAt: timestamp } : b
           ),
         }));
       },
 
       recordVerification: (id, audit, payoutBatchId, payoutStatus, freelancerEmail) => {
         const timestamp = new Date().toISOString();
-        const bounty = get().bounties.find((b) => b.id === id);
+        const bounty = get().bounties.find((b) => b.id.toLowerCase() === id.toLowerCase());
         if (!bounty) return;
 
         const nextStatus: BountyStatus = audit.approved
@@ -168,7 +232,7 @@ export const usePayGuardStore = create<PayGuardStore>()(
 
         set((state) => ({
           bounties: state.bounties.map((b) =>
-            b.id === id
+            b.id.toLowerCase() === id.toLowerCase()
               ? {
                   ...b,
                   status: nextStatus,
