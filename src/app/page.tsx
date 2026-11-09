@@ -3,7 +3,13 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { AgGridReact } from "ag-grid-react";
-import { AllCommunityModule, ModuleRegistry, ColDef } from "ag-grid-community";
+import {
+  AllCommunityModule,
+  ModuleRegistry,
+  ColDef,
+  themeQuartz,
+  colorSchemeDark
+} from "ag-grid-community";
 import {
   ShieldCheck,
   Sparkles,
@@ -18,10 +24,9 @@ import {
   Cpu,
   RefreshCw
 } from "lucide-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+const gridDarkTheme = themeQuartz.withPart(colorSchemeDark);
 
 interface Bounty {
   id: string;
@@ -280,6 +285,7 @@ assert validate_card("4532015112830367") == False`);
                 {/* Official PayPal Sandbox Checkout Button */}
                 <div className="pt-2 space-y-2">
                   <PayPalButtons
+                    key={paypalClientId}
                     style={{ layout: "horizontal", height: 42 }}
                     createOrder={async () => {
                       const res = await fetch("/api/paypal/create-order", {
@@ -308,6 +314,12 @@ assert validate_card("4532015112830367") == False`);
                       };
                       setBounties([created, ...bounties]);
                       setSelectedBountyId(newId);
+                    }}
+                    onError={(err) => {
+                      console.log("PayPal checkout info:", err);
+                    }}
+                    onCancel={() => {
+                      console.log("PayPal checkout cancelled by user.");
                     }}
                   />
 
@@ -554,8 +566,8 @@ assert validate_card("4532015112830367") == False`);
               </div>
             </div>
 
-            <div className="ag-theme-quartz-dark h-64 w-full rounded-xl overflow-hidden border border-slate-800">
-              <AgGridReact rowData={bounties} columnDefs={columnDefs} />
+            <div className="h-64 w-full rounded-xl overflow-hidden border border-slate-800">
+              <AgGridReact theme={gridDarkTheme} rowData={bounties} columnDefs={columnDefs} />
             </div>
           </div>
         </div>
