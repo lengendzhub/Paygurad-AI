@@ -9,13 +9,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY;
     const isApiKeyConfigured = Boolean(apiKey && apiKey !== "your_gemini_api_key_here");
 
-    let auditResult: any = null;
-
-    if (isApiKeyConfigured) {
-      try {
-        const ai = new GoogleGenAI({ apiKey });
-
-        const prompt = `
+    const prompt = `
 You are PayGuard AI, an autonomous, strict, and impartial Escrow Verification Agent.
 A client has locked $${amount} USD in PayPal Escrow for the following micro-bounty:
 
@@ -29,66 +23,58 @@ ${submission}
 Evaluate whether the submission genuinely fulfills ALL acceptance criteria. Be rigorous: do not approve placeholder text, incomplete code, or missing requirements.
 `;
 
-        const response = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
-          contents: prompt,
-          config: {
-            responseMimeType: "application/json",
-            responseSchema: {
-              type: Type.OBJECT,
-              properties: {
-                approved: {
-                  type: Type.BOOLEAN,
-                  description: "True ONLY if all acceptance criteria are completely met.",
-                },
-                score: {
-                  type: Type.INTEGER,
-                  description: "Quality score from 0 to 100",
-                },
-                summary: {
-                  type: Type.STRING,
-                  description: "Concise explanation of why the submission passed or failed.",
-                },
-                criteriaChecklist: {
-                  type: Type.ARRAY,
-                  items: {
-                    type: Type.OBJECT,
-                    properties: {
-                      criterion: { type: Type.STRING },
-                      passed: { type: Type.BOOLEAN },
-                      reason: { type: Type.STRING },
+    let auditResult: any = null;
+
+    if (isApiKeyConfigured) {
+      const candidateModels = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-2.5-flash", "gemini-flash-latest"];
+      const ai = new GoogleGenAI({ apiKey });
+
+      for (const modelName of candidateModels) {
+        try {
+          const response = await ai.models.generateContent({
+            model: modelName,
+            contents: prompt,
+            config: {
+              responseMimeType: "application/json",
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  approved: {
+                    type: Type.BOOLEAN,
+                    description: "True ONLY if all acceptance criteria are completely met.",
+                  },
+                  score: {
+                    type: Type.INTEGER,
+                    description: "Quality score from 0 to 100",
+                  },
+                  summary: {
+                    type: Type.STRING,
+                    description: "Concise explanation of why the submission passed or failed.",
+                  },
+                  criteriaChecklist: {
+                    type: Type.ARRAY,
+                    items: {
+                      type: Type.OBJECT,
+                      properties: {
+                        criterion: { type: Type.STRING },
+                        passed: { type: Type.BOOLEAN },
+                        reason: { type: Type.STRING },
+                      },
+                      required: ["criterion", "passed", "reason"],
                     },
-                    required: ["criterion", "passed", "reason"],
                   },
                 },
+                required: ["approved", "score", "summary", "criteriaChecklist"],
               },
-              required: ["approved", "score", "summary", "criteriaChecklist"],
             },
-          },
-        });
-
-        auditResult = JSON.parse(response.text || "{}");
-      } catch (geminiError: any) {
-        console.warn("Gemini 2.5 Flash call failed, attempting fallback:", geminiError?.message);
-        // If gemini-2.5-flash fails due to model availability, try gemini-2.0-flash
-        try {
-          const ai = new GoogleGenAI({ apiKey });
-          const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash",
-            contents: `Evaluate this escrow submission strictly against requirements. Output JSON format only:
-{
-  "approved": boolean,
-  "score": number (0-100),
-  "summary": string,
-  "criteriaChecklist": [{"criterion": string, "passed": boolean, "reason": string}]
-}
-Requirements: ${requirements}
-Submission: ${submission}`,
           });
-          const text = response.text?.replace(/```json|```/g, "").trim() || "{}";
-          auditResult = JSON.parse(text);
-        } catch (fallbackErr) {
-          console.error("Secondary Gemini call error:", fallbackErr);
+
+          if (response.text) {
+            auditResult = JSON.parse(response.text);
+            break;
+          }
+        } catch (modelErr: any) {
+          console.warn(`Model ${modelName} attempt error:`, modelErr?.message?.slice(0, 80));
         }
       }
     }
