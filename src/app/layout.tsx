@@ -28,6 +28,15 @@ export const metadata: Metadata = {
   title: "PayGuard AI — Autonomous Escrow & Bounty Arbiter",
   description:
     "Autonomous Escrow & Work-Verification Protocol powered by PayPal Orders v2, PayPal Payouts v1, and Google Gemini.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
